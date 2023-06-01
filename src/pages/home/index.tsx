@@ -7,8 +7,6 @@ function Index() {
     const randomMutation = api.assignment.randomize.useMutation()
     return (
         <div className='flex flex-col'>
-            {Array(100).fill(0).map((e, i)=>(<button key={i}>{counter}</button>))}
-            <button className='p-12 text-2xl' onClick={() => randomMutation.mutate()}>mutate</button>
         </div>
     );
 }
