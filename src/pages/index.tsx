@@ -1,11 +1,16 @@
 import {type NextPage} from "next";
 import Head from "next/head";
-import {api} from "~/utils/api";
-import {SignIn, SignOutButton, useAuth} from "@clerk/nextjs";
+import {SignOutButton, useUser} from "@clerk/nextjs";
+import React, {useEffect} from "react";
+import {useRouter} from "next/router";
 
 const Home: NextPage = () => {
-    const hello = api.assignment.hello.useQuery({text: "from tRPC"});
-    const user = useAuth()
+    const user = useUser()
+    const router = useRouter()
+
+    useEffect(() => {
+        void router.push(user.isSignedIn ? 'home' : 'login')
+    }, [user.isSignedIn])
 
     return (
         <>
@@ -15,8 +20,8 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
             <main
-                className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-                {user.isSignedIn ? <SignOutButton/> : <SignIn/>}
+                className="flex flex-col">
+                {user.isSignedIn && <SignOutButton/>}
             </main>
         </>
     );

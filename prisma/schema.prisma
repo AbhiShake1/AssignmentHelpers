@@ -11,8 +11,112 @@ datasource db {
   relationMode = "prisma"
 }
 
+// User model for storing user information
+model User {
+  id                Int          @id @default(autoincrement())
+  name              String
+  email             String       @unique
+  password          String
+  referrals         Referral[]
+  referredBy        Referral[]   @relation("ReferredBy")
+  assignments       Assignment[]
+  biddedAssignments Bid[]
+  payments          Payment[]
+  chats             Chat[]
+  Message           Message[]
+}
+
+// Referral model for tracking referrals made by users
+model Referral {
+  id           Int    @id @default(autoincrement())
+  code         String @unique
+  user         User   @relation(fields: [userId], references: [id])
+  referredBy   User?  @relation("ReferredBy", fields: [referredById], references: [id])
+  referredById Int?
+  userId       Int
+
+  @@index([referredById])
+  @@index([userId])
+}
+
+// Assignment model for storing assignment details
 model Assignment {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  budget      Float
+  deadline    DateTime
+  postedBy    User      @relation(fields: [postedById], references: [id])
+  bidders     Bid[]
+  payments    Payment[]
+  chats       Chat[]
+  isLocked    Boolean   @default(true)
+  postedById  Int
+  Message     Message[]
+
+  @@index([postedById])
+}
+
+// Bid model for tracking bids made by users on assignments
+model Bid {
+  id           Int        @id @default(autoincrement())
+  amount       Float
+  bidder       User       @relation(fields: [bidderId], references: [id])
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  payment      Payment?   @relation(fields: [paymentId], references: [id])
+  bidderId     Int
+  assignmentId Int
+  paymentId    Int?
+
+  @@index([bidderId])
+  @@index([assignmentId])
+  @@index([paymentId])
+}
+
+// Payment model for storing payment details
+model Payment {
+  id             Int        @id @default(autoincrement())
+  amount         Float
+  merchantAmount Float
+  referrerAmount Float
+  bidderAmount   Float
+  referralCode   String?
+  assignment     Assignment @relation(fields: [assignmentId], references: [id])
+  payer          User       @relation(fields: [payerId], references: [id])
+  paymentToken   String
+  paid           Boolean    @default(false)
+  Bid            Bid[]
+  assignmentId   Int
+  payerId        Int
+
+  @@index([assignmentId])
+  @@index([payerId])
+}
+
+// Chat model for storing chat messages between users
+model Chat {
+  id           Int        @id @default(autoincrement())
+  messages     Message[]
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  participants User[]
+  assignmentId Int
+
+  @@index([assignmentId])
+}
+
+// Message model for storing individual chat messages
+model Message {
+  id           Int         @id @default(autoincrement())
+  text         String
+  sender       User        @relation(fields: [senderId], references: [id])
+  createdAt    DateTime    @default(now())
+  chat         Chat        @relation(fields: [chatId], references: [id])
+  chatId       Int
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id])
+  assignmentId Int?
+  senderId     Int
+
+  @@index([senderId])
+  @@index([chatId])
+  @@index([assignmentId])
 }
