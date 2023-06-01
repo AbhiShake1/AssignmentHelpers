@@ -1,7 +1,7 @@
 import {type AppType} from "next/app";
 import {api} from "~/utils/api";
 import "~/styles/globals.css";
-import {ClerkProvider, SignOutButton, useUser} from '@clerk/nextjs'
+import {ClerkProvider, SignOutButton, UserButton, useUser} from '@clerk/nextjs'
 import React, {useEffect} from "react";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
@@ -31,9 +31,9 @@ function NavBar() {
                     <span className='text-gray-500 bg-transparent'>Helpers</span>
                 </Link>
                 <div className='flex flex-row-reverse space-x-4 w-full bg-transparent'>
+                    <div className='mx-4 p-2'><UserButton/></div>
                     <Link href='' scroll={false} className='mx-4 rounded-md bg-blue-500 py-2 px-8 hover:bg-blue-900'>Post an
                         assignment</Link>
-                    <SignOutButton/>
                     <Link href='findWork' scroll={false}
                           className={`hover:text-blue-500 p-2 bg-transparent ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Find
                         Work</Link>
