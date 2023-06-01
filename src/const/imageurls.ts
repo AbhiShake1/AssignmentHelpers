@@ -1,0 +1,1 @@
+export const ONBOARDING_ILLUSTRATION_URL = 'https://media.istockphoto.com/id/955148158/vector/handsome-man-is-working-at-his-laptop-modern-office-interior-with-work-process-icons-on-the.jpg?s=612x612&w=0&k=20&c=wCJsF-VujlUQ4-_YKVUL2pHG0FXTlqThwk7z2GoqiqY='
