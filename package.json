@@ -5,7 +5,6 @@
   "packageManager": "pnpm@8.4.0",
   "scripts": {
     "build": "next build",
-    "dev:wss": "cross-env PORT=3001 tsx watch src/server/wsServer.ts --tsconfig tsconfig.server.json",
     "dev:next": "next dev",
     "dev": "pnpm dev:next",
     "postinstall": "prisma generate",
@@ -48,7 +47,6 @@
     "cross-env": "^7.0.3",
     "eslint": "^8.40.0",
     "eslint-config-next": "^13.4.2",
-    "file-loader": "^6.2.0",
     "postcss": "^8.4.21",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",
