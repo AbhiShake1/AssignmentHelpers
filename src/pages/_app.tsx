@@ -7,6 +7,7 @@ import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {ThemeProvider} from "@mui/material";
 import Hamburger from "~/components/Hamburger";
+import ChatDialog from "~/components/ChatDialog";
 
 
 function MobileNavbar() {
@@ -72,8 +73,6 @@ function NavBar() {
         };
     }, []);
 
-    // return (<div className='overflow-y-hidden'><SmoothScroll/></div>)
-
     return (
         <div className='top-0 left-0 right-0'>
             <div className='lg:block md:hidden sm:hidden xs:hidden'>
@@ -91,6 +90,7 @@ const MyApp: AppType = ({Component, pageProps}) => {
         <ClerkProvider {...pageProps}>
             <ThemeProvider theme={{}}>
                 <NavBar/>
+                <ChatDialog/>
                 <Component {...pageProps} />
             </ThemeProvider>
         </ClerkProvider>
