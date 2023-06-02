@@ -1,5 +1,6 @@
-import React, {FC, ReactNode, useState} from 'react';
+import React, {FC, ReactNode, useEffect, useState} from 'react';
 import {useAutoAnimate} from "@formkit/auto-animate/react";
+import {useUser} from "@clerk/nextjs";
 
 interface Props {
     children?: ReactNode
@@ -8,7 +9,11 @@ interface Props {
 const Hamburger: FC<Props> = ({children}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [parent] = useAutoAnimate({duration: 500, easing: "linear"})
+    const user = useUser()
 
+    useEffect(() => {
+        setIsOpen(false)
+    }, [user.isSignedIn])
 
     const handleMenuClick = () => {
         setIsOpen(!isOpen);
