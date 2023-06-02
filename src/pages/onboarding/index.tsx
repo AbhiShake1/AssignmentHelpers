@@ -3,6 +3,7 @@ import Image from "next/image";
 import {ONBOARDING_ILLUSTRATION_URL} from "~/const/imageurls";
 import {FindInPageTwoTone, LockOpenTwoTone, SaveTwoTone, SearchRounded} from "@mui/icons-material";
 import {responsiveSubtitle, responsiveTitle} from "~/const/responsive";
+import Hamburger from "~/components/Hamburger";
 
 function Index() {
     return (
