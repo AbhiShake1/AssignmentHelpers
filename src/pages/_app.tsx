@@ -31,11 +31,11 @@ function DesktopNavbar() {
             <Link href='findFreelancers' scroll={true}
                   className={`hover:text-blue-500 p-4 ${path.includes('findFreelancers') ? 'text-blue-700' : ''}`}>Find
                 Freelancers</Link>
-            {!user.isSignedIn && <Link href=''
-                                       className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Log
-                in</Link>}
             <Link href='/' scroll={true}
                   className={`hover:text-blue-500 p-4 ${path == '/' ? 'text-blue-700' : ''}`}>Home</Link>
+            {!user.isSignedIn && <Link href='login'
+                                       className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Log
+                in</Link>}
         </div>
     </div>
 }
@@ -57,7 +57,7 @@ function MobileNavbar() {
         <Link href='' scroll={true}
               className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post an
             assignment</Link>
-        {!user.isSignedIn && <Link href=''
+        {!user.isSignedIn && <Link href='login'
                                    className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Log
             in</Link>}
     </Hamburger>
