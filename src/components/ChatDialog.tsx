@@ -7,7 +7,7 @@ function ChatDialog() {
     const [open, setOpen] = useState(false)
     const [msg, setMsg] = useState('')
     const [msgs, setMsgs] = useState<string[]>([])
-    const [animate] = useAutoAnimate({duration: 200, easing: 'ease-in'})
+    const [animate] = useAutoAnimate({duration: 200, easing: 'linear'})
 
     function sendMsg() {
         if (!msg || msg.length == 0) return
