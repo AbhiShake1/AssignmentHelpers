@@ -17,7 +17,7 @@ function ChatDialog() {
     }
 
     return (
-        <div ref={animate} className='fixed bottom-8 right-8 bg-transparent'>
+        <div ref={animate} className='fixed bottom-8 right-8 bg-transparent z-10'>
             {
                 open && <div className='w-[50vh] h-[70vh] bg-blue-300 p-4 rounded-xl flex flex-col space-y-2'>
                     <div className='w-full bg-white px-4 py-2 rounded-lg flex flex-row space-x-2'>
