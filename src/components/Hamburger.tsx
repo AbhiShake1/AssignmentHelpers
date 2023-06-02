@@ -24,7 +24,7 @@ const Hamburger: FC<Props> = ({children}) => {
             <div
                 id="menuButton"
                 role="button"
-                className={`close flex flex-col gap-1 pointer w-20 relative m-10 bg-transparent ${isOpen ? 'open' : 'close'}`}
+                className={`close flex flex-col gap-1 pointer w-20 relative m-10 ${isOpen ? 'open' : 'close'}`}
                 onClick={handleMenuClick}
             >
                 <div
