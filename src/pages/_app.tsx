@@ -15,20 +15,20 @@ function MobileNavbar() {
 
     return <Hamburger>
         {user.isSignedIn && <div className='mx-4 p-4'><UserButton/></div>}
-        <Link href='' scroll={true}
-              className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post an
-            assignment</Link>
-        <Link href='findWork' scroll={true}
-              className={`hover:text-blue-500 p-4 bg-transparent ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Find
-            Work</Link>
+        <Link href='home' scroll={true}
+              className={`hover:text-blue-500 p-4 bg-transparent ${path.includes('home') ? 'text-blue-700' : ''}`}>Home</Link>
         <Link href='findFreelancers' scroll={true}
               className={`hover:text-blue-500 p-4 bg-transparent ${path.includes('findFreelancers') ? 'text-blue-700' : ''}`}>Find
             Freelancers</Link>
+        <Link href='findWork' scroll={true}
+              className={`hover:text-blue-500 p-4 bg-transparent ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Find
+            Work</Link>
+        <Link href='' scroll={true}
+              className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post an
+            assignment</Link>
         {!user.isSignedIn && <Link href=''
                                    className={`hover:text-blue-500 p-4 bg-transparent ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Log
             in</Link>}
-        <Link href='home' scroll={true}
-              className={`hover:text-blue-500 p-4 bg-transparent ${path.includes('home') ? 'text-blue-700' : ''}`}>Home</Link>
     </Hamburger>
 }
 
@@ -76,7 +76,7 @@ function NavBar() {
 
     return (
         <div className='top-0 left-0 right-0'>
-            <div className='lg:block md:hidden'>
+            <div className='lg:block md:hidden sm:hidden xs:hidden'>
                 <DesktopNavbar/>
             </div>
             <div className='md:block lg:hidden'>

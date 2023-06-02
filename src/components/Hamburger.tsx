@@ -1,4 +1,5 @@
 import React, {FC, ReactNode, useState} from 'react';
+import {useAutoAnimate} from "@formkit/auto-animate/react";
 
 interface Props {
     children?: ReactNode
@@ -6,13 +7,14 @@ interface Props {
 
 const Hamburger: FC<Props> = ({children}) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [parent] = useAutoAnimate({duration: 500, easing: "linear"})
 
     const handleMenuClick = () => {
         setIsOpen(!isOpen);
     };
 
     return (
-        <div className={`flex flex-col space-y-2 ${isOpen ? 'bg-white' : ''}`}>
+        <div className={`flex flex-col space-y-2 ${isOpen ? 'bg-white' : ''}`} ref={parent}>
             <div
                 id="menuButton"
                 role="button"
@@ -26,9 +28,9 @@ const Hamburger: FC<Props> = ({children}) => {
                 <div
                     className={`absolute top-6 h-1 w-8 rounded-sm bg-black transform transition-all ease-in-out duration-300 ${isOpen ? '-rotate-45 top-4' : 'rotate-0 top-6'}`}/>
             </div>
-            <div className={`bg-white w-full text-xl p-8 ${isOpen ? 'block' : 'hidden'} flex flex-col`}>
+            {isOpen && <div className={`bg-white w-full text-xl p-8 ${isOpen ? 'block' : 'hidden'} flex flex-col items-center`}>
                 {children}
-            </div>
+            </div>}
         </div>
     );
 };
