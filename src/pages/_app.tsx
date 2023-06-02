@@ -15,7 +15,7 @@ function MobileNavbar() {
     const path = usePathname()
 
     return <Hamburger>
-        {user.isSignedIn && <div className='mx-4 p-4'><UserButton/></div>}
+        {user.isSignedIn && <div className='mx-4 p-4'><UserButton afterSignOutUrl='/onboarding'/></div>}
         <Link href='home' scroll={true}
               className={`hover:text-blue-500 p-4 bg-transparent ${path.includes('home') ? 'text-blue-700' : ''}`}>Home</Link>
         <Link href='findFreelancers' scroll={true}
@@ -44,7 +44,7 @@ function DesktopNavbar() {
             <span className='text-gray-500 bg-transparent text-3xl'>Helpers</span>
         </Link>
         <div className='flex flex-row-reverse space-x-4 w-full bg-transparent'>
-            {user.isSignedIn && <div className='mx-4 p-4'><UserButton/></div>}
+            {user.isSignedIn && <div className='mx-4 p-4'><UserButton afterSignOutUrl='/onboarding'/></div>}
             <Link href='' scroll={true}
                   className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post an
                 assignment</Link>

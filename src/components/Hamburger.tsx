@@ -9,6 +9,7 @@ const Hamburger: FC<Props> = ({children}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [parent] = useAutoAnimate({duration: 500, easing: "linear"})
 
+
     const handleMenuClick = () => {
         setIsOpen(!isOpen);
     };
@@ -28,7 +29,8 @@ const Hamburger: FC<Props> = ({children}) => {
                 <div
                     className={`absolute top-6 h-1 w-8 rounded-sm bg-black transform transition-all ease-in-out duration-300 ${isOpen ? '-rotate-45 top-4' : 'rotate-0 top-6'}`}/>
             </div>
-            {isOpen && <div className={`bg-white w-full text-xl p-8 ${isOpen ? 'block' : 'hidden'} flex flex-col items-center`}>
+            {isOpen && <div
+                className={`bg-white w-full text-xl p-8 ${isOpen ? 'block' : 'hidden'} flex flex-col items-center`}>
                 {children}
             </div>}
         </div>
