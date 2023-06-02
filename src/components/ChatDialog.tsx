@@ -17,9 +17,15 @@ function ChatDialog() {
     }
 
     return (
-        <div ref={animate} className='fixed bottom-8 right-8 bg-transparent z-10'>
+        <div ref={animate} className='fixed bottom-8 right-8 bg-transparent z-10 md:w-1/2 h-2/3 sm:w-3/4 xs:w-3/4'>
             {
-                open && <div className='w-[50vh] h-[70vh] bg-blue-300 p-4 rounded-xl flex flex-col space-y-2'>
+                !open && <button onClick={() => setOpen(true)}
+                                 className='w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center shadow-2xl hover:bg-blue-900 absolute bottom-2 right-2'>
+                    <ChatTwoTone className='scale-150 text-white'/>
+                </button>
+            }
+            {
+                open && <div className='w-full h-full bg-blue-300 p-4 rounded-xl flex flex-col space-y-2'>
                     <div className='w-full bg-white px-4 py-2 rounded-lg flex flex-row space-x-2'>
                         <button onClick={() => setOpen(false)}>
                             <CancelTwoTone className='hover:text-blue-900'/>
@@ -59,12 +65,6 @@ function ChatDialog() {
                                <SendTwoTone className='bg-transparent'/>
                            </button>}/>
                 </div>
-            }
-            {
-                !open && <button onClick={() => setOpen(true)}
-                                 className='w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center shadow-2xl hover:bg-blue-900'>
-                    <ChatTwoTone className='scale-150 text-white'/>
-                </button>
             }
         </div>
     );
