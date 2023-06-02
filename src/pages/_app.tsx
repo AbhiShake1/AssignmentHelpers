@@ -9,14 +9,13 @@ import {ThemeProvider} from "@mui/material";
 import ChatDialog from "~/components/ChatDialog";
 import Hamburger from "~/components/Hamburger";
 
-
 function DesktopNavbar() {
     const user = useUser()
     const path = usePathname()
 
     return <div
         className='border-blue-500 border-opacity-25 border m-12 p-4 rounded-2xl shadow-2xl flex flex-row bg-white'>
-        <Link href='/' scroll={true} className='p-4 bg-transparent'>
+        <Link href='resgister' scroll={true} className='p-4 bg-transparent'>
             <span className='text-blue-500 text-3xl'>Assignment</span>
             <span className='text-gray-500 text-3xl'>Helpers</span>
         </Link>
