@@ -16,12 +16,12 @@ function DesktopNavbar() {
 
     return <div
         className='border-blue-500 border-opacity-25 border m-12 p-4 rounded-2xl shadow-2xl flex flex-row bg-white'>
-        <Link href='home' scroll={true} className='p-4 bg-transparent'>
+        <Link href='/' scroll={true} className='p-4 bg-transparent'>
             <span className='text-blue-500 text-3xl'>Assignment</span>
             <span className='text-gray-500 text-3xl'>Helpers</span>
         </Link>
         <div className='flex flex-row-reverse space-x-4 w-full bg-transparent'>
-            {user.isSignedIn && <div className='mx-4 p-4'><UserButton afterSignOutUrl='/home'/></div>}
+            {user.isSignedIn && <div className='mx-4 p-4'><UserButton afterSignOutUrl='/'/></div>}
             <Link href='' scroll={true}
                   className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post an
                 assignment</Link>
@@ -34,8 +34,8 @@ function DesktopNavbar() {
             {!user.isSignedIn && <Link href=''
                                        className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Log
                 in</Link>}
-            <Link href='home' scroll={true}
-                  className={`hover:text-blue-500 p-4 ${path.includes('home') ? 'text-blue-700' : ''}`}>Home</Link>
+            <Link href='/' scroll={true}
+                  className={`hover:text-blue-500 p-4 ${path == '/' ? 'text-blue-700' : ''}`}>Home</Link>
         </div>
     </div>
 }
@@ -46,8 +46,8 @@ function MobileNavbar() {
 
     return <Hamburger>
         {user.isSignedIn && <div className='mx-4 p-4'><UserButton afterSignOutUrl='/onboarding'/></div>}
-        <Link href='home' scroll={true}
-              className={`hover:text-blue-500 p-4 ${path.includes('home') ? 'text-blue-700' : ''}`}>Home</Link>
+        <Link href='/' scroll={true}
+              className={`hover:text-blue-500 p-4 ${path == 'home' ? 'text-blue-700' : ''}`}>Home</Link>
         <Link href='findFreelancers' scroll={true}
               className={`hover:text-blue-500 p-4 ${path.includes('findFreelancers') ? 'text-blue-700' : ''}`}>Find
             Freelancers</Link>

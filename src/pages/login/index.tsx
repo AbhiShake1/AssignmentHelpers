@@ -4,7 +4,7 @@ import {SignIn} from "@clerk/nextjs";
 function Index() {
     return (
         <div className='flex text-center items-center justify-center'>
-            <SignIn afterSignInUrl="home" afterSignUpUrl="register"/>
+            <SignIn afterSignInUrl="/" afterSignUpUrl="register"/>
         </div>
     );
 }
