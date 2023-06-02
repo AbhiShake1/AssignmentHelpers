@@ -19,7 +19,7 @@ function ChatDialog() {
     return (
         <div ref={animate} className='fixed bottom-8 right-8 bg-transparent'>
             {
-                open && <div className='w-64 h-96 bg-blue-300 p-4 rounded-xl flex flex-col space-y-2'>
+                open && <div className='w-[25vw] h-[50vh] bg-blue-300 p-4 rounded-xl flex flex-col space-y-2'>
                     <div className='w-full bg-white px-4 py-2 rounded-lg flex flex-row space-x-2'>
                         <button onClick={() => setOpen(false)}>
                             <CancelTwoTone className='hover:text-blue-900'/>
