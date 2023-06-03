@@ -15,6 +15,7 @@ import {useAutoAnimate} from "@formkit/auto-animate/react";
 
 interface Props {
     steps: { step: string, child: React.ReactNode }[]
+    onSubmit?: React.FormEventHandler<HTMLFormElement>
 }
 
 const QontoConnector = styled(StepConnector)(({theme}) => ({
@@ -77,7 +78,7 @@ function QontoStepIcon(props: StepIconProps) {
     );
 }
 
-const MultiStepForm: React.FC<Props> = ({steps}) => {
+const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
     const [activeStep, setActiveStep] = useState(0);
     const [animation] = useAutoAnimate({duration: 200, disrespectUserMotionPreference: true})
 
@@ -101,7 +102,7 @@ const MultiStepForm: React.FC<Props> = ({steps}) => {
                 }
             </Stepper>
 
-            <form className="mt-8 space-y-4" ref={animation}>
+            <form className="mt-8 space-y-4" ref={animation} onSubmit={onSubmit}>
                 {steps[activeStep]?.child}
                 <div className="flex flex-row space-x-6" ref={animation}>
                     {activeStep > 0 && <Button onClick={handleBack} variant='outlined'>back</Button>}
