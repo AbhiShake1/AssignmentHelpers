@@ -12,7 +12,11 @@ import superjson from "superjson";
 import {ZodError} from "zod";
 import {prisma} from "~/server/db";
 import {EventEmitter} from "events"
-import {getAuth, SignedInAuthObject, SignedOutAuthObject} from "@clerk/nextjs/server";
+import {getAuth, type SignedInAuthObject, type SignedOutAuthObject} from "@clerk/nextjs/server";
+import {type NodeHTTPCreateContextFnOptions} from "@trpc/server/src/adapters/node-http";
+import {type NextIncomingMessage} from "next/dist/server/request-meta";
+import type ws from "ws";
+import {type NextApiRequest} from "next";
 
 
 const emitter = new EventEmitter()
@@ -53,9 +57,13 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (_opts: CreateNextContextOptions /*| NodeHTTPCreateContextFnOptions<NextIncomingMessage, ws>*/) => {
-    const auth = getAuth(_opts.req)
-    return createInnerTRPCContext({auth});
+export const createTRPCContext = (_opts: CreateNextContextOptions | NodeHTTPCreateContextFnOptions<NextIncomingMessage, ws>) => {
+    try {
+        const auth = getAuth(_opts.req as NextApiRequest)
+        return createInnerTRPCContext({auth});
+    } catch (e) {
+        return createInnerTRPCContext({auth: undefined});
+    }
 };
 
 /**

@@ -7,12 +7,15 @@ import {
     type StepIconProps,
     StepLabel,
     Stepper,
-    TextField
 } from '@mui/material';
 import {styled} from "@mui/joy";
 import {Check} from "@mui/icons-material";
+import {useAutoAnimate} from "@formkit/auto-animate/react";
 
-const steps = ['Personal', 'Professional', 'Link Account'];
+
+interface Props {
+    steps: { step: string, child: React.ReactNode }[]
+}
 
 const QontoConnector = styled(StepConnector)(({theme}) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -74,66 +77,36 @@ function QontoStepIcon(props: StepIconProps) {
     );
 }
 
-const MultiStepForm = () => {
+const MultiStepForm: React.FC<Props> = ({steps}) => {
     const [activeStep, setActiveStep] = useState(0);
+    const [animation] = useAutoAnimate({duration: 200, disrespectUserMotionPreference: true})
 
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
+        setActiveStep(s => s == steps.length ? steps.length : s + 1)
+    }
 
     const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
+        setActiveStep(s => s == 0 ? 0 : s - 1)
+    }
 
     return (
         <div className="w-96 mx-auto mb-8">
             <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector/>}>
-                {steps.map((label) => (
-                    <Step key={label}>
-                        <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
-                    </Step>
-                ))}
+                {
+                    steps.map((e) => (
+                        <Step key={e.step}>
+                            <StepLabel StepIconComponent={QontoStepIcon}>{e.step}</StepLabel>
+                        </Step>
+                    ))
+                }
             </Stepper>
 
-            <form className="mt-8 space-y-4">
-                {activeStep === 0 && (
-                    <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
-                        <h2 className="text-2xl font-semibold">Create your account</h2>
-                        <TextField label="Email" variant="outlined" fullWidth/>
-                        <TextField label="Password" variant="outlined" type="password" fullWidth/>
-                        <TextField label="Confirm Password" variant="outlined" type="password" fullWidth/>
-                    </div>
-                )}
-
-                {activeStep === 1 && (
-                    <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
-                        <h2 className="text-2xl font-semibold">Social Profiles</h2>
-                        <h3 className="text-lg font-medium">Your presence on the social network</h3>
-                        <TextField label="Twitter" variant="outlined" fullWidth/>
-                        <TextField label="Facebook" variant="outlined" fullWidth/>
-                        <TextField label="Google Plus" variant="outlined" fullWidth/>
-                    </div>
-                )}
-
-                {activeStep === 2 && (
-                    <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
-                        <h2 className="text-2xl font-semibold">Social Profiles</h2>
-                        <h3 className="text-lg font-medium">Your presence on the social network</h3>
-                        <TextField label="Twitter" variant="outlined" fullWidth/>
-                        <TextField label="Facebook" variant="outlined" fullWidth/>
-                        <TextField label="Google Plus" variant="outlined" fullWidth/>
-                    </div>
-                )}
-
-                <div className="flex justify-between">
-                    {activeStep !== 0 && (
-                        <Button variant="outlined" onClick={handleBack}>
-                            Back
-                        </Button>
-                    )}
-                    <Button variant="contained" onClick={handleNext}>
-                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                    </Button>
+            <form className="mt-8 space-y-4" ref={animation}>
+                {steps[activeStep]?.child}
+                <div className="flex flex-row space-x-6" ref={animation}>
+                    {activeStep > 0 && <Button onClick={handleBack} variant='outlined'>back</Button>}
+                    <Button onClick={handleNext} variant='contained' type={activeStep == steps.length ? 'submit' : 'button'}
+                            style={{backgroundColor: 'blue'}}>{activeStep == steps.length ? 'finish' : 'next'}</Button>
                 </div>
             </form>
         </div>

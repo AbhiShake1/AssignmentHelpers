@@ -45,7 +45,7 @@ export const api = createTRPCNext<AppRouter>({
                 splitLink({
                     condition: op => op.type == "subscription",
                     true: wsLink<AppRouter>({
-                        client: createWSClient({url: `${getBaseWSUrl()}`}),
+                        client: createWSClient({url: `${getBaseWSUrl()}/api/trpc`}),
                     }),
                     false: httpBatchLink({
                         url: `${getBaseUrl()}/api/trpc`,
