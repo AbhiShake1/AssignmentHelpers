@@ -21,7 +21,7 @@ const TagsInput: NextPage<TagPropType, { tags: [] }> = ({onChange, placeholder})
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const val = event.target.value
-        const newChips = val.length == 0 ? [] : val.split(' ')
+        const newChips = val.length == 0 ? [] : val.split(' ').filter(v=>v.trim() != '')
 
         if(newChips.length>3){
             toast.error('Only upto 3 skills allowed')
