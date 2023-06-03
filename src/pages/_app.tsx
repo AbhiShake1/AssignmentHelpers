@@ -73,14 +73,12 @@ function DesktopNavbar() {
 }
 
 function MobileNavbar() {
-    const router = useRouter()
     const user = useUser()
     const path = usePathname()
 
-    const referrer: string | null = router.query.referrer?.toString() || null
-
     return <Hamburger>
         {user.isSignedIn && <div className='mx-4 p-4'><UserButton afterSignOutUrl='/onboarding'/></div>}
+        <Share/>
         <Link href='/' scroll={true}
               className={`hover:text-blue-500 p-4 ${path == 'home' ? 'text-blue-700' : ''}`}>Home</Link>
         <Link href='findFreelancers' scroll={true}
