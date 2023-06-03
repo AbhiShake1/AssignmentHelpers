@@ -83,7 +83,7 @@ const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
     const [animation] = useAutoAnimate({duration: 200, disrespectUserMotionPreference: true})
 
     const handleNext = () => {
-        setActiveStep(s => s == steps.length ? steps.length : s + 1)
+        setActiveStep(s => s == steps.length + 1 ? steps.length : s + 1)
     }
 
     const handleBack = () => {
@@ -106,7 +106,8 @@ const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
                 {steps[activeStep]?.child}
                 <div className="flex flex-row space-x-6" ref={animation}>
                     {activeStep > 0 && <Button onClick={handleBack} variant='outlined'>back</Button>}
-                    <Button onClick={handleNext} variant='contained' type={activeStep == steps.length ? 'submit' : 'button'}
+                    <Button onClick={handleNext} variant='contained'
+                            type={activeStep == steps.length + 1 ? 'submit' : 'button'}
                             style={{backgroundColor: 'blue'}}>{activeStep == steps.length ? 'finish' : 'next'}</Button>
                 </div>
             </form>

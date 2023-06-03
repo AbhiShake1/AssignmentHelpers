@@ -10,7 +10,7 @@ function Register() {
     const [desc, setDesc] = useState('')
     return (
         <div>
-            <MultiStepForm onSubmit={(e)=>console.log(e)} steps={[
+            <MultiStepForm onSubmit={(e) => console.log(e)} steps={[
                 {
                     step: 'Personal',
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
