@@ -40,9 +40,7 @@ function Register() {
                 {
                     step: 'Link Account',
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
-                        <TextField label="Twitter" variant="outlined" fullWidth/>
-                        <TextField label="Facebook" variant="outlined" fullWidth/>
-                        <TextField label="Google Plus" variant="outlined" fullWidth/>
+                        <TextField label="Referral Code" variant="outlined" fullWidth/>
                     </div>
                 }
             ]}/>
