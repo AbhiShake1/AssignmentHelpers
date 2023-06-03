@@ -14,7 +14,7 @@ import {Check} from "@mui/icons-material";
 
 const steps = ['Account Setup', 'Social Profiles', 'Personal Details'];
 
-const QontoConnector = styled(StepConnector)(({ theme }) => ({
+const QontoConnector = styled(StepConnector)(({theme}) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
         top: 10,
         left: 'calc(-50% + 16px)',
@@ -38,7 +38,7 @@ const QontoConnector = styled(StepConnector)(({ theme }) => ({
 }))
 
 const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
-    ({ theme, ownerState }) => ({
+    ({theme, ownerState}) => ({
         color: theme.palette.mode === 'dark' ? 'gray' : '#eaeaf0',
         display: 'flex',
         height: 22,
@@ -61,14 +61,14 @@ const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
 );
 
 function QontoStepIcon(props: StepIconProps) {
-    const { active, completed, className } = props;
+    const {active, completed, className} = props;
 
     return (
-        <QontoStepIconRoot ownerState={{ active }} className={className}>
+        <QontoStepIconRoot ownerState={{active}} className={className}>
             {completed ? (
-                <Check className="QontoStepIcon-completedIcon" />
+                <Check className="QontoStepIcon-completedIcon"/>
             ) : (
-                <div className="QontoStepIcon-circle" />
+                <div className="QontoStepIcon-circle"/>
             )}
         </QontoStepIconRoot>
     );
@@ -87,7 +87,7 @@ const MultiStepForm = () => {
 
     return (
         <div className="w-96 mx-auto">
-            <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
+            <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector/>}>
                 {steps.map((label) => (
                     <Step key={label}>
                         <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
