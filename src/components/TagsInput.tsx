@@ -25,27 +25,24 @@ const TagsInput: NextPage<TagPropType, { tags: [] }> = ({onChange, placeholder})
     }
 
     return (
-        <div>
-            <TextField
-                fullWidth
-                placeholder={placeholder}
-                value={txt}
-                InputProps={{
-                    startAdornment: chips.map(item => (
-                        <Chip
-                            key={item}
-                            tabIndex={-1}
-                            label={item}
-                            className='space-x-2 mx-2'
-                            onDelete={handleDelete(item)}
-                        />
-                    )),
-                    onChange: event => {
-                        handleInputChange(event);
-                    },
-                }}
-            />
-        </div>
+        <TextField
+            fullWidth
+            label={placeholder}
+            variant="outlined"
+            value={txt}
+            onChange={handleInputChange}
+            InputProps={{
+                startAdornment: chips.length==0 ? undefined : chips.map(item => (
+                    <Chip
+                        key={item}
+                        tabIndex={-1}
+                        label={item}
+                        className='space-x-2 mx-2'
+                        onDelete={handleDelete(item)}
+                    />
+                )),
+            }}
+        />
     );
 }
 
