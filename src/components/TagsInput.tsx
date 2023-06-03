@@ -8,9 +8,10 @@ import Typography from "@mui/joy/Typography";
 interface TagPropType {
     onChange: (selectedTags: string[]) => void,
     placeholder: string
+    required: boolean
 }
 
-const TagsInput: NextPage<TagPropType, { tags: [] }> = ({onChange, placeholder}) => {
+const TagsInput: NextPage<TagPropType, { tags: [], required: false }> = ({onChange, placeholder, required}) => {
     const [chips, setChips] = useState<string[]>([])
     const [txt, setTxt] = useState('')
 
@@ -35,7 +36,7 @@ const TagsInput: NextPage<TagPropType, { tags: [] }> = ({onChange, placeholder})
     }
 
     return (
-        <Textarea placeholder={placeholder} minRows={3} value={txt} onChange={handleInputChange} startDecorator={
+        <Textarea required={required} placeholder={placeholder} minRows={3} value={txt} onChange={handleInputChange} startDecorator={
             chips.length == 0 ? undefined : chips.map(item => (
                 <Chip
                     key={item}
