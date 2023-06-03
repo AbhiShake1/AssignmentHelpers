@@ -24,6 +24,7 @@ const TagsInput: NextPage<TagPropType, { tags: [] }> = ({onChange, placeholder})
         const newChips = val.length == 0 ? [] : val.split(' ').filter(v=>v.trim() != '')
 
         if(newChips.length>3){
+            toast.remove()
             toast.error('Only upto 3 skills allowed')
             return
         }
