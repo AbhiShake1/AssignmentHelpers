@@ -8,25 +8,21 @@ import {usePathname} from "next/navigation";
 import {Button, ThemeProvider} from "@mui/material";
 import ChatDialog from "~/components/ChatDialog";
 import Hamburger from "~/components/Hamburger";
-import {useRouter} from "next/router";
 import {IconButton, Input} from "@mui/joy";
 import {ShareTwoTone} from "@mui/icons-material";
 import {toast, Toaster} from "react-hot-toast";
 import AppDialog from "~/components/AppDialog";
 
 function Share() {
-    const router = useRouter()
     const [showDialog, setShowDialog] = useState(false)
     const {user} = useUser()
 
     if (!user) return null
 
-    const referrer: string | null = router.query.referrer?.toString() || null
-
     const referralLink = `localhost:3000/?referrer=${user.id}`
 
-    const onCopy = async () => {
-        await navigator.clipboard.writeText(referralLink)
+    const onCopy = () => {
+        void navigator.clipboard.writeText(referralLink)
         toast.success('Copied to clipboard')
     }
 
