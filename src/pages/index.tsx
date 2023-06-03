@@ -4,13 +4,8 @@ import {ONBOARDING_ILLUSTRATION_URL} from "~/const/imageurls";
 import {FindInPageTwoTone, LockOpenTwoTone, SaveTwoTone, SearchRounded} from "@mui/icons-material";
 import {responsiveButtonText, responsiveSubtitle, responsiveTitle} from "~/const/responsive";
 import Head from "next/head";
-import {useUser} from "@clerk/nextjs";
 
 function Index() {
-    const auth = useUser()
-
-    console.log(auth.user?.unsafeMetadata)
-
     return (
         <>
             <Head>
@@ -22,7 +17,7 @@ function Index() {
                 <div className='px-16 py-8 flex flex-row justify-between space-x-12 items-center'>
                     <div className=''>
                         <h1 className={`${responsiveTitle} font-bold`}>Are you looking for
-                            Freelancers? {auth.user?.unsafeMetadata['phoneNumber']?.toString()}</h1>
+                            Freelancers?</h1>
                         <h3 className={`mt-8 text-gray-500 mb-44 ${responsiveSubtitle}`}>Hire Great
                             Freelancers, Fast.
                             AssignmentHelpers helps you hire elite freelancers at a moment&apos;s notice</h3>

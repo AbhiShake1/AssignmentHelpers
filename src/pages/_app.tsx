@@ -12,6 +12,7 @@ import {IconButton, Input} from "@mui/joy";
 import {ShareTwoTone} from "@mui/icons-material";
 import {toast, Toaster} from "react-hot-toast";
 import AppDialog from "~/components/AppDialog";
+import {useRouter} from "next/router";
 
 function Share() {
     const [showDialog, setShowDialog] = useState(false)
@@ -43,7 +44,7 @@ function DesktopNavbar() {
 
     return <div
         className='border-blue-500 border-opacity-25 border m-12 p-4 rounded-2xl shadow-2xl flex flex-row bg-white'>
-        <Link href='resgister' scroll={true} className='p-4 bg-transparent'>
+        <Link href='register' scroll={true} className='p-4 bg-transparent'>
             <span className='text-blue-500 text-3xl'>Assignment</span>
             <span className='text-gray-500 text-3xl'>Helpers</span>
         </Link>
@@ -114,11 +115,27 @@ function NavBar() {
     )
 }
 
+const RegisterHandler = () => {
+    const router = useRouter()
+    const auth = useUser()
+
+    useEffect(() => {
+        if (router.pathname == '/' || router.pathname.includes('register')) return
+
+        // use any mandatory field
+        const registered = auth.user?.unsafeMetadata['phoneNumber']
+        if (!registered) void router.replace('register')
+    }, [router.pathname, auth.user?.unsafeMetadata])
+
+    return null
+}
+
 const MyApp: AppType = ({Component, pageProps}) => {
     return (
         <ClerkProvider {...pageProps}>
             <ThemeProvider theme={{}}>
                 <Toaster toastOptions={{position: 'bottom-center'}}/>
+                <RegisterHandler/>
                 <NavBar/>
                 <ChatDialog/>
                 <Component {...pageProps} />

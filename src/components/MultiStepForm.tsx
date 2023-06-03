@@ -12,7 +12,7 @@ import {
 import {styled} from "@mui/joy";
 import {Check} from "@mui/icons-material";
 
-const steps = ['Account Setup', 'Social Profiles', 'Personal Details'];
+const steps = ['Personal', 'Professional', 'Link Account'];
 
 const QontoConnector = styled(StepConnector)(({theme}) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -86,7 +86,7 @@ const MultiStepForm = () => {
     };
 
     return (
-        <div className="w-96 mx-auto">
+        <div className="w-96 mx-auto mb-8">
             <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector/>}>
                 {steps.map((label) => (
                     <Step key={label}>
@@ -97,9 +97,8 @@ const MultiStepForm = () => {
 
             <form className="mt-8 space-y-4">
                 {activeStep === 0 && (
-                    <div>
+                    <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
                         <h2 className="text-2xl font-semibold">Create your account</h2>
-                        <h3 className="text-lg font-medium">This is step 1</h3>
                         <TextField label="Email" variant="outlined" fullWidth/>
                         <TextField label="Password" variant="outlined" type="password" fullWidth/>
                         <TextField label="Confirm Password" variant="outlined" type="password" fullWidth/>
@@ -107,7 +106,17 @@ const MultiStepForm = () => {
                 )}
 
                 {activeStep === 1 && (
-                    <div>
+                    <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
+                        <h2 className="text-2xl font-semibold">Social Profiles</h2>
+                        <h3 className="text-lg font-medium">Your presence on the social network</h3>
+                        <TextField label="Twitter" variant="outlined" fullWidth/>
+                        <TextField label="Facebook" variant="outlined" fullWidth/>
+                        <TextField label="Google Plus" variant="outlined" fullWidth/>
+                    </div>
+                )}
+
+                {activeStep === 2 && (
+                    <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
                         <h2 className="text-2xl font-semibold">Social Profiles</h2>
                         <h3 className="text-lg font-medium">Your presence on the social network</h3>
                         <TextField label="Twitter" variant="outlined" fullWidth/>
