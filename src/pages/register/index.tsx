@@ -14,8 +14,8 @@ function Register() {
                 {
                     step: 'Personal',
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
-                        <TextField label="Phone" type='tel' variant="outlined" fullWidth/>
-                        <Textarea placeholder="About you.." minRows={5} value={desc} onChange={(e) => {
+                        <TextField label="Phone" type='tel' variant="outlined" fullWidth required/>
+                        <Textarea required placeholder="About you.." minRows={5} value={desc} onChange={(e) => {
                             if (e.target.value.length <= 150) {
                                 setDesc(e.target.value)
                             } else {
@@ -33,8 +33,8 @@ function Register() {
                     step: 'Professional',
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
                         <TextField label="Education" variant="outlined" fullWidth/>
-                        <TagsInput onChange={() => ''} placeholder='Skills'/>
-                        <TextField label="Specialization" variant="outlined" fullWidth/>
+                        <TagsInput onChange={() => ''} placeholder='Skills' />
+                        <TextField label="Specialization" variant="outlined" fullWidth required/>
                     </div>
                 },
                 {
