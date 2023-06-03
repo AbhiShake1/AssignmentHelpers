@@ -11,8 +11,8 @@ import Hamburger from "~/components/Hamburger";
 import {useRouter} from "next/router";
 import {IconButton, Input} from "@mui/joy";
 import {ShareTwoTone} from "@mui/icons-material";
-import AppDialog from "~/components/AppDialog";
 import {toast, Toaster} from "react-hot-toast";
+import AppDialog from "~/components/AppDialog";
 
 function Share() {
     const router = useRouter()
@@ -80,7 +80,7 @@ function MobileNavbar() {
         {user.isSignedIn && <div className='mx-4 p-4'><UserButton afterSignOutUrl='/onboarding'/></div>}
         <Share/>
         <Link href='/' scroll={true}
-              className={`hover:text-blue-500 p-4 ${path == 'home' ? 'text-blue-700' : ''}`}>Home</Link>
+              className={`hover:text-blue-500 p-4 ${path == '/' ? 'text-blue-700' : ''}`}>Home</Link>
         <Link href='findFreelancers' scroll={true}
               className={`hover:text-blue-500 p-4 ${path.includes('findFreelancers') ? 'text-blue-700' : ''}`}>Find
             Freelancers</Link>
