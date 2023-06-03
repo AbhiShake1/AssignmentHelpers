@@ -108,7 +108,7 @@ const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
                     {activeStep > 0 && <Button onClick={handleBack} variant='outlined'>back</Button>}
                     <Button onClick={handleNext} variant='contained'
                             type={activeStep == steps.length + 1 ? 'submit' : 'button'}
-                            style={{backgroundColor: 'blue'}}>{activeStep == steps.length ? 'finish' : 'next'}</Button>
+                            style={{backgroundColor: 'blue'}}>{activeStep >= steps.length ? 'finish' : 'next'}</Button>
                 </div>
             </form>
         </div>
