@@ -13,30 +13,19 @@ datasource db {
 
 // User model for storing user information
 model User {
-  id                Int          @id @default(autoincrement())
+  id                String       @id
   name              String
   email             String       @unique
-  password          String
-  referrals         Referral[]
-  referredBy        Referral[]   @relation("ReferredBy")
+  referredBy        User?        @relation("ReferredBy", fields: [referredById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  referredById      String?
+  referredUsers     User[]       @relation("ReferredBy")
   assignments       Assignment[]
   biddedAssignments Bid[]
   payments          Payment[]
   chats             Chat[]
   Message           Message[]
-}
-
-// Referral model for tracking referrals made by users
-model Referral {
-  id           Int    @id @default(autoincrement())
-  code         String @unique
-  user         User   @relation(fields: [userId], references: [id])
-  referredBy   User?  @relation("ReferredBy", fields: [referredById], references: [id])
-  referredById Int?
-  userId       Int
 
   @@index([referredById])
-  @@index([userId])
 }
 
 // Assignment model for storing assignment details
@@ -51,7 +40,7 @@ model Assignment {
   payments    Payment[]
   chats       Chat[]
   isLocked    Boolean   @default(true)
-  postedById  Int
+  postedById  String
   Message     Message[]
 
   @@index([postedById])
@@ -64,7 +53,7 @@ model Bid {
   bidder       User       @relation(fields: [bidderId], references: [id])
   assignment   Assignment @relation(fields: [assignmentId], references: [id])
   payment      Payment?   @relation(fields: [paymentId], references: [id])
-  bidderId     Int
+  bidderId     String
   assignmentId Int
   paymentId    Int?
 
@@ -87,7 +76,7 @@ model Payment {
   paid           Boolean    @default(false)
   Bid            Bid[]
   assignmentId   Int
-  payerId        Int
+  payerId        String
 
   @@index([assignmentId])
   @@index([payerId])
@@ -114,7 +103,7 @@ model Message {
   chatId       Int
   assignment   Assignment? @relation(fields: [assignmentId], references: [id])
   assignmentId Int?
-  senderId     Int
+  senderId     String
 
   @@index([senderId])
   @@index([chatId])
