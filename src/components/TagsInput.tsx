@@ -19,7 +19,7 @@ const TagsInput: NextPage<TagPropType, { tags: [] }> = ({onChange, placeholder})
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const val = event.target.value
         setTxt(val)
-        const newChips = val.split(' ')
+        const newChips = val.length == 0 ? [] : val.split(' ')
         setChips(newChips)
         onChange(newChips)
     }
