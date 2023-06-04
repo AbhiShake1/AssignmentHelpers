@@ -15,9 +15,9 @@ const TagsInput: NextPage<TagPropType, { tags: [], required: false }> = ({onChan
     const [chips, setChips] = useState<string[]>([])
 
     function handleInputChange(newChips: string[]) {
-        if (newChips.length > 3) {
+        if (newChips.length > 5) {
             toast.remove()
-            toast.error('Only upto 3 skills allowed')
+            toast.error('Only upto 5 skills allowed')
             return
         }
 
@@ -25,7 +25,7 @@ const TagsInput: NextPage<TagPropType, { tags: [], required: false }> = ({onChan
         onChange(newChips)
     }
 
-    return <MuiChipsInput value={chips} onChange={handleInputChange} variant='outlined' label={placeholder} required={required} inputValue={'sjao'}/>
+    return <MuiChipsInput value={chips} onChange={handleInputChange} variant='outlined' label={placeholder} required={required}/>
 }
 
 export default TagsInput
