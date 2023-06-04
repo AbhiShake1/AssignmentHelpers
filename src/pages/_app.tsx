@@ -41,6 +41,7 @@ function Share() {
 function DesktopNavbar() {
     const path = usePathname()
     const user = useUser()
+    const isFreelancer = user.user?.unsafeMetadata?.accountType == 'professional'
 
     return <div
         className='border-blue-500 border-opacity-25 border m-12 p-4 rounded-2xl shadow-2xl flex flex-row bg-white'>
@@ -54,12 +55,12 @@ function DesktopNavbar() {
             <Link href='' scroll={true}
                   className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post an
                 assignment</Link>
-            <Link href='findWork' scroll={true}
-                  className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Find
-                Work</Link>
-            <Link href='findFreelancers' scroll={true}
-                  className={`hover:text-blue-500 p-4 ${path.includes('findFreelancers') ? 'text-blue-700' : ''}`}>Find
-                Freelancers</Link>
+            {isFreelancer && <Link href='findWork' scroll={true}
+                                   className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Find
+                Work</Link>}
+            {!isFreelancer && <Link href='findFreelancers' scroll={true}
+                                    className={`hover:text-blue-500 p-4 ${path.includes('findFreelancers') ? 'text-blue-700' : ''}`}>Find
+                Freelancers</Link>}
             <Link href='/' scroll={true}
                   className={`hover:text-blue-500 p-4 ${path == '/' ? 'text-blue-700' : ''}`}>Home</Link>
             {!user.isSignedIn && <Link href='login'
@@ -72,6 +73,7 @@ function DesktopNavbar() {
 function MobileNavbar() {
     const user = useUser()
     const path = usePathname()
+    const isFreelancer = user.user?.unsafeMetadata?.accountType == 'professional'
 
     return <Hamburger>
         {user.isSignedIn && <div className='mx-4 p-4'><UserButton afterSignOutUrl='/onboarding'/></div>}
@@ -81,12 +83,13 @@ function MobileNavbar() {
         <Link href='findFreelancers' scroll={true}
               className={`hover:text-blue-500 p-4 ${path.includes('findFreelancers') ? 'text-blue-700' : ''}`}>Find
             Freelancers</Link>
-        <Link href='findWork' scroll={true}
-              className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Find
-            Work</Link>
-        <Link href='' scroll={true}
-              className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post an
-            assignment</Link>
+        {isFreelancer && <Link href='findWork' scroll={true}
+                               className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Find
+            Work</Link>}
+        {!isFreelancer && <Link href='' scroll={true}
+                                className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post
+            an
+            assignment</Link>}
         {!user.isSignedIn && <Link href='login'
                                    className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Log
             in</Link>}
