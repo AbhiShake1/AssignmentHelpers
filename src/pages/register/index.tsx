@@ -55,6 +55,7 @@ function Register() {
                     step: 'Personal',
                     onNext: () => {
                         if (phone == '') throw new Error('Phone number is required')
+                        if(phone.length != 10) throw new Error('Phone number must be exactly 10 digits')
                     },
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
                         <TextField label="Phone" type='tel' inputMode='numeric' variant="outlined" fullWidth
