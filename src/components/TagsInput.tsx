@@ -1,9 +1,8 @@
 import React, {useState} from "react";
-import {Chip} from "@mui/material";
+import {Chip, TextField} from "@mui/material";
 import {type NextPage} from "next";
-import {Textarea} from "@mui/joy";
+import {Input} from "@mui/joy";
 import {toast} from "react-hot-toast";
-import Typography from "@mui/joy/Typography";
 
 interface TagPropType {
     onChange: (selectedTags: string[]) => void,
@@ -22,9 +21,9 @@ const TagsInput: NextPage<TagPropType, { tags: [], required: false }> = ({onChan
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const val = event.target.value
-        const newChips = val.length == 0 ? [] : val.split(' ').filter(v=>v.trim() != '')
+        const newChips = val.length == 0 ? [] : val.split(' ').filter(v => v.trim() != '')
 
-        if(newChips.length>3){
+        if (newChips.length > 3) {
             toast.remove()
             toast.error('Only upto 3 skills allowed')
             return
@@ -36,8 +35,8 @@ const TagsInput: NextPage<TagPropType, { tags: [], required: false }> = ({onChan
     }
 
     return (
-        <Textarea required={required} placeholder={placeholder} minRows={3} value={txt} onChange={handleInputChange} startDecorator={
-            chips.length == 0 ? undefined : chips.map(item => (
+        <TextField required={required} fullWidth label={placeholder} value={txt} variant='outlined' onChange={handleInputChange} InputProps={{
+            startAdornment: chips.length == 0 ? undefined : chips.map(item => (
                 <Chip
                     key={item}
                     tabIndex={-1}
@@ -46,7 +45,7 @@ const TagsInput: NextPage<TagPropType, { tags: [], required: false }> = ({onChan
                     onDelete={handleDelete(item)}
                 />
             ))
-        }/>
+        }}/>
     )
 }
 
