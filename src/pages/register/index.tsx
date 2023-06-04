@@ -32,12 +32,12 @@ function Register() {
         }
     })
 
-    useEffect(() => {
-        const registered = auth.user?.unsafeMetadata['phone']
-        if (registered) return void router.replace('/')
-        const referrer = localStorage.getItem('referrer')
-        if (referrer) setReferral(referrer)
-    }, [auth, router])
+    // useEffect(() => {
+    //     const registered = auth.user?.unsafeMetadata['phone']
+    //     if (registered) return void router.replace('/')
+    //     const referrer = localStorage.getItem('referrer')
+    //     if (referrer) setReferral(referrer)
+    // }, [auth, router])
 
     async function updateUser() {
         try {
@@ -100,7 +100,7 @@ function Register() {
                     step: 'Professional',
                     onNext: () => {
                         if (skills.length == 0) throw new Error('Skills is required')
-                        if (specialization.length == 0) throw new Error('Skills is required')
+                        if (specialization.length == 0) throw new Error('Specialization is required')
                     },
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
                         <TextField label="Education" variant="outlined" fullWidth value={education}
