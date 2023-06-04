@@ -21,7 +21,6 @@ function Register() {
     const [specialization, setSpecialization] = useState('')
     const [referral, setReferral] = useState('')
     const signupMutation = api.user.create.useMutation({
-        onMutate: () => toast.loading('signing up...'),
         onSuccess: () => {
             toast.remove()
             localStorage.removeItem('referrer')
@@ -40,6 +39,7 @@ function Register() {
 
     async function updateUser() {
         try {
+            toast.loading('signing up...')
             await auth.user?.update({
                 unsafeMetadata: {
                     'skills': skills,
@@ -59,6 +59,7 @@ function Register() {
             })
         } catch (e) {
             if (e) toast.error(e.toString())
+            toast.remove()
         }
     }
 
