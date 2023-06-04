@@ -19,12 +19,19 @@ function Register() {
     const [specialization, setSpecialization] = useState('')
     const signupMutation = api.user.create.useMutation({
         onSuccess: () => router.replace('/'),
-        onError: toast.error
+        onError: err => toast.error(err.message)
     })
 
     async function updateUser() {
         try {
-            await auth.user?.update({})
+            await auth.user?.update({
+                unsafeMetadata: {
+                    'skills': skills,
+                    'specialization': specialization,
+                    'education': education,
+                    'phone': phone,
+                }
+            })
             signupMutation.mutate({
                 id: auth.user!.id,
                 email: auth.user?.emailAddresses[0]?.emailAddress || '',
