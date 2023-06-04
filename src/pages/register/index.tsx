@@ -17,7 +17,10 @@ function Register() {
     const [education, setEduction] = useState('')
     const [skills, setSkills] = useState<string[]>([])
     const [specialization, setSpecialization] = useState('')
-    const signupMutation = api.user.create.useMutation()
+    const signupMutation = api.user.create.useMutation({
+        onSuccess: () => router.replace('/'),
+        onError: toast.error
+    })
 
     async function updateUser() {
         try {
