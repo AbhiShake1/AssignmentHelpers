@@ -88,10 +88,10 @@ const MultiStepForm: React.FC<Props> = ({steps, onSubmit, onNext, onPrevious}) =
     const handleNext = () => {
         setActiveStep(s => {
             try {
-                if (onNext) onNext()
+                if (onNext) onNext(s)
                 return s == steps.length + 1 ? steps.length : s + 1
             } catch (e) {
-                toast.error(e)
+                if (e) toast.error(e.toString())
                 return s
             }
         })
@@ -103,7 +103,7 @@ const MultiStepForm: React.FC<Props> = ({steps, onSubmit, onNext, onPrevious}) =
                 if (onPrevious) onPrevious(s)
                 return s == 0 ? 0 : s - 1
             } catch (e) {
-                toast.error(e)
+                if (e) toast.error(e.toString())
                 return s
             }
         })
