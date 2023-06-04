@@ -17,8 +17,8 @@ import {toast} from "react-hot-toast";
 interface Props {
     steps: { step: string, child: React.ReactNode }[]
     onSubmit?: React.FormEventHandler<HTMLFormElement>
-    onNext?: (number) => void
-    onPrevious?: (number) => void
+    onNext?: (count: number) => void
+    onPrevious?: (count: number) => void
 }
 
 const QontoConnector = styled(StepConnector)(({theme}) => ({
