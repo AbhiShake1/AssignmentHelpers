@@ -27,6 +27,7 @@
     "@trpc/react-query": "^10.26.0",
     "@trpc/server": "^10.26.0",
     "@types/ws": "^8.5.4",
+    "mui-chips-input": "^2.0.2",
     "next": "^13.4.2",
     "next-images": "^1.8.5",
     "react": "18.2.0",
