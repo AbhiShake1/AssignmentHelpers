@@ -44,7 +44,7 @@ function Index() {
                 </div>
                 <div
                     className='flex flex-row text-center sm:flex-col xs:flex-col md:flex-col xs:space-y-8 sm:space-y-8 md:space-y-12 lg:space-y-0
-                xl:space-y-0 lg:flex-row items-center justify-between bg-white p-12 rounded-2xl shadow-2xl w-full my-32
+                xl:space-y-0 lg:flex-row items-center justify-between bg-white p-12 rounded-2xl shadow-2xl w-5/4 my-32
                 xl:mx-0 md:mx-6'>
                     <div className='flex flex-col items-center space-y-2 bg-transparent'>
                         <LockOpenTwoTone className='scale-150 bg-transparent' color='primary'/>
