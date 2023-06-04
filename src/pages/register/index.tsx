@@ -1,17 +1,32 @@
-import React, {useEffect, useState} from 'react';
+import React, {type FC, useEffect, useState} from 'react';
 import MultiStepForm from "~/components/MultiStepForm";
-import {TextField} from "@mui/material";
-import {Textarea} from "@mui/joy";
+import {Button, FormControlLabel, TextField} from "@mui/material";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import Typography from "@mui/joy/Typography";
 import {toast} from "react-hot-toast";
 import TagsInput from "~/components/TagsInput";
 import {useRouter} from "next/router";
 import {api} from "~/utils/api";
 import {useUser} from "@clerk/nextjs";
+import {Textarea} from "@mui/joy";
+import {useAutoAnimate} from "@formkit/auto-animate/react";
 
 const numberRegex = /^\d*$/
 
-function Register() {
+type AccountType = 'personal' | 'professional'
+
+interface RegisterFormProps {
+    accountType: AccountType
+}
+
+interface ChoiceFormProps {
+    onSubmit: (choice: AccountType) => void
+}
+
+const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
     const router = useRouter()
     const auth = useUser()
     const [desc, setDesc] = useState('')
@@ -32,12 +47,12 @@ function Register() {
         }
     })
 
-    // useEffect(() => {
-    //     const registered = auth.user?.unsafeMetadata['phone']
-    //     if (registered) return void router.replace('/')
-    //     const referrer = localStorage.getItem('referrer')
-    //     if (referrer) setReferral(referrer)
-    // }, [auth, router])
+    useEffect(() => {
+        const registered = auth.user?.unsafeMetadata['phone']
+        if (registered) return void router.replace('/')
+        const referrer = localStorage.getItem('referrer')
+        if (referrer) setReferral(referrer)
+    }, [auth, router])
 
     async function updateUser() {
         try {
@@ -96,20 +111,22 @@ function Register() {
                         }/>
                     </div>,
                 },
-                {
-                    step: 'Professional',
-                    onNext: () => {
-                        if (skills.length == 0) throw new Error('Skills is required')
-                        if (specialization.length == 0) throw new Error('Specialization is required')
-                    },
-                    child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
-                        <TextField label="Education" variant="outlined" fullWidth value={education}
-                                   onChange={e => setEduction(e.target.value)}/>
-                        <TagsInput onChange={setSkills} value={skills} label='Skills' limit={5} required/>
-                        <TextField label="Specialization" variant="outlined" value={specialization}
-                                   onChange={e => setSpecialization(e.target.value)} fullWidth required/>
-                    </div>
-                },
+                ...(accountType != 'professional' ? [] : [
+                    {
+                        step: 'Professional',
+                        onNext: () => {
+                            if (skills.length == 0) throw new Error('Skills is required')
+                            if (specialization.length == 0) throw new Error('Specialization is required')
+                        },
+                        child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
+                            <TextField label="Education" variant="outlined" fullWidth value={education}
+                                       onChange={e => setEduction(e.target.value)}/>
+                            <TagsInput onChange={setSkills} value={skills} label='Skills' limit={5} required/>
+                            <TextField label="Specialization" variant="outlined" value={specialization}
+                                       onChange={e => setSpecialization(e.target.value)} fullWidth required/>
+                        </div>
+                    }
+                ]),
                 {
                     step: 'Link Account',
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
@@ -120,6 +137,38 @@ function Register() {
             ]}/>
         </div>
     );
+}
+
+const ChoiceForm: FC<ChoiceFormProps> = ({onSubmit}) => {
+    const [value, setValue] = useState<AccountType | undefined>()
+    return <form onSubmit={(e) => {
+        e.preventDefault()
+        if (!value) return toast.error('Please choose one')
+        onSubmit(value)
+    }}>
+        <FormControl sx={{m: 3}} variant="standard">
+            <FormLabel>Why are you here?</FormLabel>
+            <RadioGroup
+                value={value}
+                onChange={e => setValue(e.target.value == 'personal' ? 'personal' : 'professional')}
+            >
+                <FormControlLabel value="personal" control={<Radio/>} label="I want to find freelancers"/>
+                <FormControlLabel value="professional" control={<Radio/>} label="I want to find work"/>
+            </RadioGroup>
+            <Button sx={{mt: 1, mr: 1}} type="submit" variant="outlined" disabled={!value}>
+                Proceed
+            </Button>
+        </FormControl>
+    </form>
+}
+
+function Register() {
+    const [choice, setChoice] = useState<AccountType | undefined>()
+    const [animation] = useAutoAnimate()
+
+    return <div className='flex flex-col items-center justify-center' ref={animation}>
+        {choice ? <RegisterForm accountType={choice}/> : <ChoiceForm onSubmit={setChoice}/>}
+    </div>
 }
 
 export default Register;
