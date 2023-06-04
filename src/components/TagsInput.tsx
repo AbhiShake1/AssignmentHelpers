@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {Chip, TextField} from "@mui/material";
 import {type NextPage} from "next";
-import {Input} from "@mui/joy";
 import {toast} from "react-hot-toast";
 import {MuiChipsInput} from "mui-chips-input";
 
@@ -9,15 +8,16 @@ interface TagPropType {
     onChange: (selectedTags: string[]) => void,
     placeholder: string
     required: boolean
+    limit?: number
 }
 
-const TagsInput: NextPage<TagPropType, { tags: [], required: false }> = ({onChange, placeholder, required}) => {
+const TagsInput: NextPage<TagPropType, { tags: [], required: false }> = ({onChange, placeholder, required, limit}) => {
     const [chips, setChips] = useState<string[]>([])
 
     function handleInputChange(newChips: string[]) {
-        if (newChips.length > 5) {
+        if (limit && newChips.length > limit) {
             toast.remove()
-            toast.error('Only upto 5 skills allowed')
+            toast.error(`Only upto ${limit} allowed`)
             return
         }
 

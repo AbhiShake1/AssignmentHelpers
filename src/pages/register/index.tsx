@@ -33,7 +33,7 @@ function Register() {
                     step: 'Professional',
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
                         <TextField label="Education" variant="outlined" fullWidth/>
-                        <TagsInput onChange={() => ''} placeholder='Skills' required/>
+                        <TagsInput onChange={() => ''} placeholder='Skills' limit={5} required/>
                         <TextField label="Specialization" variant="outlined" fullWidth required/>
                     </div>
                 },
