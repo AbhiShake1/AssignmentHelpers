@@ -63,6 +63,8 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
                     'specialization': specialization,
                     'education': education,
                     'phone': phone,
+                    'accountType': accountType,
+                    'referredBy': referral,
                 }
             })
             signupMutation.mutate({
