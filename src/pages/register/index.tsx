@@ -5,12 +5,14 @@ import {Textarea} from "@mui/joy";
 import Typography from "@mui/joy/Typography";
 import {toast} from "react-hot-toast";
 import TagsInput from "~/components/TagsInput";
+import {useRouter} from "next/router";
 
 function Register() {
+    const router = useRouter()
     const [desc, setDesc] = useState('')
     return (
         <div>
-            <MultiStepForm onSubmit={(e) => console.log(e)} steps={[
+            <MultiStepForm onSubmit={() => void router.replace('/')} steps={[
                 {
                     step: 'Personal',
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>

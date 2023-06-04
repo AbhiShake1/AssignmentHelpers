@@ -102,7 +102,10 @@ const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
                 }
             </Stepper>
 
-            <form className="mt-8 space-y-4" ref={animation} onSubmit={onSubmit}>
+            <form className="mt-8 space-y-4" ref={animation} onSubmit={(e)=>{
+                e.preventDefault()
+                if(onSubmit) onSubmit(e)
+            }}>
                 {steps[activeStep]?.child}
                 <div className="flex flex-row space-x-6" ref={animation}>
                     {activeStep > 0 && <Button onClick={handleBack} variant='outlined'>back</Button>}
