@@ -17,7 +17,7 @@ const TagsInput: NextPage<TagPropType, { tags: [], required: false }> = ({onChan
     function handleInputChange(newChips: string[]) {
         if (limit && newChips.length > limit) {
             toast.remove()
-            toast.error(`Only upto ${limit} allowed`)
+            toast.error(`Only upto ${limit} ${placeholder} allowed`)
             return
         }
 
