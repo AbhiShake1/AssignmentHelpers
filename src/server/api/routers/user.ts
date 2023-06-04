@@ -25,22 +25,31 @@ export const userRouter = createTRPCRouter({
                     id: input.referredBy,
                 }
             })
-            await ctx.prisma.user.create({
-                data: {
-                    id: input.id,
-                    name: input.name,
-                    email: input.email,
-                    referredBy: {
-                        connect: {
-                            id: referrer?.id || undefined,
-                        }
-                    },
-                    skills: input.skills.join(',').toString(),
-                    specialization: input.specialization,
-                    education: input.education || undefined,
-                    phone: input.phone,
-                }
-            })
+            const data = {
+                id: input.id,
+                name: input.name,
+                email: input.email,
+                skills: input.skills.join(',').toString(),
+                specialization: input.specialization,
+                education: input.education || undefined,
+                phone: input.phone,
+            }
+            if (!referrer) {
+                await ctx.prisma.user.create({
+                    data: data
+                })
+            } else {
+                await ctx.prisma.user.create({
+                    data: {
+                        ...data,
+                        referredBy: {
+                            connect: {
+                                id: referrer?.id || undefined,
+                            }
+                        },
+                    }
+                })
+            }
         })
 })
 
