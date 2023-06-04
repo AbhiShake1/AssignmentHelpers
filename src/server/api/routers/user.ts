@@ -1,6 +1,8 @@
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 import {z} from "zod";
 
+type AccountType = 'personal' | 'professional'
+
 interface CreateUserArgs {
     id: string
     phone: string
@@ -11,6 +13,7 @@ interface CreateUserArgs {
     qualification?: string
     specialization: string
     education?: string
+    accountType: AccountType
 }
 
 export const userRouter = createTRPCRouter({
@@ -33,6 +36,7 @@ export const userRouter = createTRPCRouter({
                 specialization: input.specialization,
                 education: input.education || undefined,
                 phone: input.phone,
+                accountType: input.accountType,
             }
             if (!referrer) {
                 await ctx.prisma.user.create({

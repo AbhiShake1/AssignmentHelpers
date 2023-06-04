@@ -47,12 +47,12 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
         }
     })
 
-    useEffect(() => {
-        const registered = auth.user?.unsafeMetadata['phone']
-        if (registered) return void router.replace('/')
-        const referrer = localStorage.getItem('referrer')
-        if (referrer) setReferral(referrer)
-    }, [auth, router])
+    // useEffect(() => {
+    //     const registered = auth.user?.unsafeMetadata['phone']
+    //     if (registered) return void router.replace('/')
+    //     const referrer = localStorage.getItem('referrer')
+    //     if (referrer) setReferral(referrer)
+    // }, [auth, router])
 
     async function updateUser() {
         try {
@@ -73,6 +73,7 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
                 specialization,
                 education,
                 phone,
+                accountType: accountType,
             })
         } catch (e) {
             if (e) toast.error(e.toString())

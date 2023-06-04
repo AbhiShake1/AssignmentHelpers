@@ -11,6 +11,11 @@ datasource db {
   relationMode = "prisma"
 }
 
+enum AccountType {
+  personal
+  professional
+}
+
 // User model for storing user information
 model User {
   id                String       @id
@@ -22,6 +27,7 @@ model User {
   specialization    String
   education         String?
   phone             String
+  accountType       AccountType  @default(personal)
   referredUsers     User[]       @relation("ReferredBy")
   assignments       Assignment[]
   biddedAssignments Bid[]
