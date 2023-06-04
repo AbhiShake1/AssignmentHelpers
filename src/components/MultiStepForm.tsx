@@ -15,10 +15,11 @@ import {toast} from "react-hot-toast";
 
 
 interface Props {
-    steps: { step: string, child: React.ReactNode }[]
+    steps: {
+        step: string, child: React.ReactNode, onNext?: (count: number) => void
+        onPrevious?: (count: number) => void,
+    }[]
     onSubmit?: React.FormEventHandler<HTMLFormElement>
-    onNext?: (count: number) => void
-    onPrevious?: (count: number) => void
 }
 
 const QontoConnector = styled(StepConnector)(({theme}) => ({
@@ -81,14 +82,15 @@ function QontoStepIcon(props: StepIconProps) {
     );
 }
 
-const MultiStepForm: React.FC<Props> = ({steps, onSubmit, onNext, onPrevious}) => {
+const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
     const [activeStep, setActiveStep] = useState(0);
     const [animation] = useAutoAnimate({duration: 200, disrespectUserMotionPreference: true})
 
+    const step = steps[activeStep]
     const handleNext = () => {
         setActiveStep(s => {
             try {
-                if (onNext) onNext(s)
+                if (step?.onNext) step.onNext(s)
                 return s == steps.length + 1 ? steps.length : s + 1
             } catch (e) {
                 if (e) toast.error(e.toString())
@@ -100,7 +102,7 @@ const MultiStepForm: React.FC<Props> = ({steps, onSubmit, onNext, onPrevious}) =
     const handleBack = () => {
         setActiveStep(s => {
             try {
-                if (onPrevious) onPrevious(s)
+                if (step?.onPrevious) step.onPrevious(s)
                 return s == 0 ? 0 : s - 1
             } catch (e) {
                 if (e) toast.error(e.toString())

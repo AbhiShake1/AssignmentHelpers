@@ -10,13 +10,15 @@ import {useRouter} from "next/router";
 function Register() {
     const router = useRouter()
     const [desc, setDesc] = useState('')
+    const [phone, setPhone] = useState('')
     return (
         <div>
             <MultiStepForm onSubmit={() => void router.replace('/')} steps={[
                 {
                     step: 'Personal',
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
-                        <TextField label="Phone" type='tel' variant="outlined" fullWidth required/>
+                        <TextField label="Phone" type='tel' variant="outlined" fullWidth value={phone}
+                                   onChange={(e) => setPhone(e.target.value)} required/>
                         <Textarea required placeholder="About you.." minRows={5} value={desc} onChange={(e) => {
                             if (e.target.value.length <= 150) {
                                 setDesc(e.target.value)
@@ -29,7 +31,7 @@ function Register() {
                                 {desc.length}/150
                             </Typography>
                         }/>
-                    </div>
+                    </div>,
                 },
                 {
                     step: 'Professional',
