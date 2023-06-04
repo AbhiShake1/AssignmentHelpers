@@ -33,9 +33,11 @@ function Register() {
     })
 
     useEffect(() => {
+        const registered = auth.user?.unsafeMetadata['phone']
+        if (registered) return void router.replace('/')
         const referrer = localStorage.getItem('referrer')
         if (referrer) setReferral(referrer)
-    }, [])
+    }, [auth, router])
 
     async function updateUser() {
         try {
