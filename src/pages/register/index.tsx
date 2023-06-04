@@ -20,8 +20,15 @@ function Register() {
     const [skills, setSkills] = useState<string[]>([])
     const [specialization, setSpecialization] = useState('')
     const signupMutation = api.user.create.useMutation({
-        onSuccess: () => router.replace('/'),
-        onError: err => toast.error(err.message)
+        onMutate: () => toast.loading('signing up...'),
+        onSuccess: () => {
+            toast.remove()
+            router.replace('/')
+        },
+        onError: err => {
+            toast.remove()
+            toast.error(err.message)
+        }
     })
 
     async function updateUser() {
@@ -55,7 +62,7 @@ function Register() {
                     step: 'Personal',
                     onNext: () => {
                         if (phone == '') throw new Error('Phone number is required')
-                        if(phone.length != 10) throw new Error('Phone number must be exactly 10 digits')
+                        if (phone.length != 10) throw new Error('Phone number must be exactly 10 digits')
                     },
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
                         <TextField label="Phone" type='tel' inputMode='numeric' variant="outlined" fullWidth
