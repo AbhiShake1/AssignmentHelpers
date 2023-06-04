@@ -24,6 +24,7 @@ function Register() {
         onMutate: () => toast.loading('signing up...'),
         onSuccess: () => {
             toast.remove()
+            localStorage.removeItem('referrer')
             void router.replace('/')
         },
         onError: err => {
