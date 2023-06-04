@@ -1,5 +1,4 @@
-import React, {useState} from "react";
-import {Chip, TextField} from "@mui/material";
+import React from "react";
 import {type NextPage} from "next";
 import {toast} from "react-hot-toast";
 import {MuiChipsInput} from "mui-chips-input";
@@ -9,11 +8,20 @@ interface TagPropType {
     label: string
     required: boolean
     limit?: number
+    value?: string[]
 }
 
-const TagsInput: NextPage<TagPropType, { tags: [], required: false }> = ({onChange, label, required, limit}) => {
-    const [chips, setChips] = useState<string[]>([])
-
+const TagsInput: NextPage<TagPropType, {
+    tags: [],
+    required: false,
+    value: [],
+}> = ({
+          onChange,
+          label,
+          required,
+          limit,
+          value
+      }) => {
     function handleInputChange(newChips: string[]) {
         if (limit && newChips.length > limit) {
             toast.remove()
@@ -21,11 +29,11 @@ const TagsInput: NextPage<TagPropType, { tags: [], required: false }> = ({onChan
             return
         }
 
-        setChips(newChips)
         onChange(newChips)
     }
 
-    return <MuiChipsInput value={chips} onChange={handleInputChange} variant='outlined' label={label} required={required}/>
+    return <MuiChipsInput value={value} onChange={handleInputChange} variant='outlined' label={label}
+                          required={required}/>
 }
 
 export default TagsInput

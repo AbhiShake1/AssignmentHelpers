@@ -95,7 +95,7 @@ function Register() {
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
                         <TextField label="Education" variant="outlined" fullWidth value={education}
                                    onChange={e => setEduction(e.target.value)}/>
-                        <TagsInput onChange={setSkills} label='Skills' limit={5} required/>
+                        <TagsInput onChange={setSkills} value={skills} label='Skills' limit={5} required/>
                         <TextField label="Specialization" variant="outlined" value={specialization}
                                    onChange={e => setSpecialization(e.target.value)} fullWidth required/>
                     </div>
