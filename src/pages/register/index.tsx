@@ -1,4 +1,4 @@
-import React, {type FC, useEffect, useState} from 'react';
+import React, {type FC, useState} from 'react';
 import MultiStepForm from "~/components/MultiStepForm";
 import {Button, FormControlLabel, TextField} from "@mui/material";
 import Radio from '@mui/material/Radio';
@@ -74,6 +74,7 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
                 education,
                 phone,
                 accountType: accountType,
+                referredBy: referral,
             })
         } catch (e) {
             if (e) toast.error(e.toString())
