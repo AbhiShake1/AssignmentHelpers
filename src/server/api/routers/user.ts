@@ -30,6 +30,10 @@ export const userRouter = createTRPCRouter({
                             id: input.referredBy,
                         }
                     },
+                    skills: input.skills.join(',').toString(),
+                    specialization: input.specialization,
+                    education: input.education || undefined,
+                    phone: input.phone,
                 }
             })
         })

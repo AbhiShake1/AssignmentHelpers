@@ -18,6 +18,10 @@ model User {
   email             String       @unique
   referredBy        User?        @relation("ReferredBy", fields: [referredById], references: [id], onDelete: NoAction, onUpdate: NoAction)
   referredById      String?
+  skills            String
+  specialization    String
+  education         String?
+  phone             String
   referredUsers     User[]       @relation("ReferredBy")
   assignments       Assignment[]
   biddedAssignments Bid[]
