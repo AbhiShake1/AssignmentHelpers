@@ -3,9 +3,14 @@ import {z} from "zod";
 
 interface CreateUserArgs {
     id: string
+    phone: string
     name: string
     email: string
     referredBy?: string
+    skills: string[]
+    qualification?: string
+    specialization: string
+    education?: string
 }
 
 export const userRouter = createTRPCRouter({

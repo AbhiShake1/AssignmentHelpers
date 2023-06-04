@@ -6,18 +6,39 @@ import Typography from "@mui/joy/Typography";
 import {toast} from "react-hot-toast";
 import TagsInput from "~/components/TagsInput";
 import {useRouter} from "next/router";
+import {api} from "~/utils/api";
+import {useUser} from "@clerk/nextjs";
 
 function Register() {
     const router = useRouter()
+    const auth = useUser()
     const [desc, setDesc] = useState('')
     const [phone, setPhone] = useState('')
     const [education, setEduction] = useState('')
     const [skills, setSkills] = useState<string[]>([])
     const [specialization, setSpecialization] = useState('')
+    const signupMutation = api.user.create.useMutation()
+
+    async function updateUser() {
+        try {
+            await auth.user?.update({})
+            signupMutation.mutate({
+                id: auth.user!.id,
+                email: auth.user?.emailAddresses[0]?.emailAddress || '',
+                name: `${auth.user!.firstName!} ${auth.user!.lastName!}`,
+                skills,
+                specialization,
+                education,
+                phone,
+            })
+        } catch (e) {
+            if (e) toast.error(e.toString())
+        }
+    }
 
     return (
         <div>
-            <MultiStepForm onSubmit={() => void router.replace('/')} steps={[
+            <MultiStepForm onSubmit={() => void updateUser()} steps={[
                 {
                     step: 'Personal',
                     onNext: () => {
