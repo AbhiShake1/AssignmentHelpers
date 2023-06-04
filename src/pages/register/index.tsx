@@ -14,6 +14,7 @@ function Register() {
     const [education, setEduction] = useState('')
     const [skills, setSkills] = useState<string[]>([])
     const [specialization, setSpecialization] = useState('')
+
     return (
         <div>
             <MultiStepForm onSubmit={() => void router.replace('/')} steps={[
@@ -23,7 +24,8 @@ function Register() {
                         if (phone == '') throw new Error('Phone number is required')
                     },
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
-                        <TextField label="Phone" type='tel' variant="outlined" fullWidth value={phone}
+                        <TextField label="Phone" type='tel' inputMode='numeric' variant="outlined" fullWidth
+                                   value={phone}
                                    onChange={(e) => setPhone(e.target.value)} required/>
                         <Textarea required placeholder="About you.." minRows={5} value={desc} onChange={(e) => {
                             if (e.target.value.length <= 150) {
