@@ -11,11 +11,14 @@ import {
 import {styled} from "@mui/joy";
 import {Check} from "@mui/icons-material";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
+import {toast} from "react-hot-toast";
 
 
 interface Props {
     steps: { step: string, child: React.ReactNode }[]
     onSubmit?: React.FormEventHandler<HTMLFormElement>
+    onNext?: (number) => void
+    onPrevious?: (number) => void
 }
 
 const QontoConnector = styled(StepConnector)(({theme}) => ({
@@ -78,16 +81,32 @@ function QontoStepIcon(props: StepIconProps) {
     );
 }
 
-const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
+const MultiStepForm: React.FC<Props> = ({steps, onSubmit, onNext, onPrevious}) => {
     const [activeStep, setActiveStep] = useState(0);
     const [animation] = useAutoAnimate({duration: 200, disrespectUserMotionPreference: true})
 
     const handleNext = () => {
-        setActiveStep(s => s == steps.length + 1 ? steps.length : s + 1)
+        setActiveStep(s => {
+            try {
+                if (onNext) onNext()
+                return s == steps.length + 1 ? steps.length : s + 1
+            } catch (e) {
+                toast.error(e)
+                return s
+            }
+        })
     }
 
     const handleBack = () => {
-        setActiveStep(s => s == 0 ? 0 : s - 1)
+        setActiveStep(s => {
+            try {
+                if (onPrevious) onPrevious(s)
+                return s == 0 ? 0 : s - 1
+            } catch (e) {
+                toast.error(e)
+                return s
+            }
+        })
     }
 
     return (
@@ -102,9 +121,9 @@ const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
                 }
             </Stepper>
 
-            <form className="mt-8 space-y-4" ref={animation} onSubmit={(e)=>{
+            <form className="mt-8 space-y-4" ref={animation} onSubmit={(e) => {
                 e.preventDefault()
-                if(onSubmit) onSubmit(e)
+                if (onSubmit) onSubmit(e)
             }}>
                 {steps[activeStep]?.child}
                 <div className="flex flex-row space-x-6" ref={animation}>

@@ -119,13 +119,13 @@ const RegisterHandler = () => {
     const router = useRouter()
     const auth = useUser()
 
-    // useEffect(() => {
-    //     if (router.pathname == '/' || router.pathname.includes('register')) return
-    //
-    //     // use any mandatory field
-    //     const registered = auth.user?.unsafeMetadata['phoneNumber']
-    //     if (!registered) void router.replace('register')
-    // }, [router.pathname, auth.user?.unsafeMetadata])
+    useEffect(() => {
+        if (router.pathname == '/' || router.pathname.includes('register')) return
+
+        // use any mandatory field
+        const registered = auth.user?.unsafeMetadata['phoneNumber']
+        if (!registered) void router.replace('register')
+    }, [router.pathname, auth.user?.unsafeMetadata])
 
     return null
 }
