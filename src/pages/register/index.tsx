@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import MultiStepForm from "~/components/MultiStepForm";
 import {TextField} from "@mui/material";
 import {Textarea} from "@mui/joy";
@@ -19,6 +19,7 @@ function Register() {
     const [education, setEduction] = useState('')
     const [skills, setSkills] = useState<string[]>([])
     const [specialization, setSpecialization] = useState('')
+    const [referral, setReferral] = useState('')
     const signupMutation = api.user.create.useMutation({
         onMutate: () => toast.loading('signing up...'),
         onSuccess: () => {
@@ -30,6 +31,11 @@ function Register() {
             toast.error(err.message)
         }
     })
+
+    useEffect(() => {
+        const referrer = localStorage.getItem('referrer')
+        if (referrer) setReferral(referrer)
+    }, [])
 
     async function updateUser() {
         try {
@@ -103,7 +109,8 @@ function Register() {
                 {
                     step: 'Link Account',
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
-                        <TextField label="Referral Code" variant="outlined" fullWidth/>
+                        <TextField label="Referral Code" value={referral} onChange={e => setReferral(e.target.value)}
+                                   variant="outlined" fullWidth/>
                     </div>
                 }
             ]}/>
