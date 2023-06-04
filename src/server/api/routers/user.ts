@@ -20,6 +20,11 @@ export const userRouter = createTRPCRouter({
     create: protectedProcedure
         .input(z.custom<CreateUserArgs>())
         .mutation(async ({ctx, input}) => {
+            const referrer = !input.referredBy ? undefined : await ctx.prisma.user.findFirst({
+                where: {
+                    id: input.referredBy,
+                }
+            })
             await ctx.prisma.user.create({
                 data: {
                     id: input.id,
@@ -27,7 +32,7 @@ export const userRouter = createTRPCRouter({
                     email: input.email,
                     referredBy: {
                         connect: {
-                            id: input.referredBy,
+                            id: referrer?.id || undefined,
                         }
                     },
                     skills: input.skills.join(',').toString(),
