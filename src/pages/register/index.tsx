@@ -23,7 +23,7 @@ function Register() {
         onMutate: () => toast.loading('signing up...'),
         onSuccess: () => {
             toast.remove()
-            router.replace('/')
+            void router.replace('/')
         },
         onError: err => {
             toast.remove()
