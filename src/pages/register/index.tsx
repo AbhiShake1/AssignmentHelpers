@@ -9,6 +9,8 @@ import {useRouter} from "next/router";
 import {api} from "~/utils/api";
 import {useUser} from "@clerk/nextjs";
 
+const numberRegex = /^\d*$/
+
 function Register() {
     const router = useRouter()
     const auth = useUser()
@@ -57,7 +59,11 @@ function Register() {
                     child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
                         <TextField label="Phone" type='tel' inputMode='numeric' variant="outlined" fullWidth
                                    value={phone}
-                                   onChange={(e) => setPhone(e.target.value)} required/>
+                                   onChange={(e) => {
+                                       const val = e.target.value
+                                       if (val.length > 0 && !numberRegex.test(val)) return
+                                       setPhone(val)
+                                   }} required/>
                         <Textarea required placeholder="About you.." minRows={5} value={desc} onChange={(e) => {
                             if (e.target.value.length <= 150) {
                                 setDesc(e.target.value)
