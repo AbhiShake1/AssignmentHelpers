@@ -1,11 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Image from "next/image";
 import {ONBOARDING_ILLUSTRATION_URL} from "~/const/imageurls";
 import {FindInPageTwoTone, LockOpenTwoTone, SaveTwoTone, SearchRounded} from "@mui/icons-material";
 import {responsiveButtonText, responsiveSubtitle, responsiveTitle} from "~/const/responsive";
 import Head from "next/head";
+import {useUser} from "@clerk/nextjs";
+import {useRouter} from "next/router";
 
 function Index() {
+    const user = useUser()
+    const router = useRouter()
+
+    useEffect(() => {
+        if (!user.isSignedIn && router.query['referrer']) {
+            localStorage.setItem('referrer', router.query['referrer'] as string)
+        }
+    }, [user.isSignedIn])
+
     return (
         <>
             <Head>
