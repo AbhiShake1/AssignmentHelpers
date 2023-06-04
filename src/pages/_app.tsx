@@ -123,7 +123,7 @@ const RegisterHandler = () => {
         if (router.pathname == '/' || router.pathname.includes('register')) return
 
         // use any mandatory field
-        const registered = auth.user?.unsafeMetadata['phoneNumber']
+        const registered = auth.user?.unsafeMetadata['phone']
         if (!registered) void router.replace('register')
     }, [router.pathname, auth.user?.unsafeMetadata])
 
