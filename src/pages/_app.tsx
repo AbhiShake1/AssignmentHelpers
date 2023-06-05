@@ -1,6 +1,7 @@
 import {type AppType} from "next/app";
 import {api} from "~/utils/api";
 import "~/styles/globals.css";
+import "@uploadthing/react/styles.css";
 import {ClerkProvider, UserButton, useUser} from '@clerk/nextjs'
 import React, {useEffect, useState} from "react";
 import Link from "next/link";

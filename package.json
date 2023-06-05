@@ -27,6 +27,7 @@
     "@trpc/react-query": "^10.26.0",
     "@trpc/server": "^10.26.0",
     "@types/ws": "^8.5.4",
+    "@uploadthing/react": "^4.1.0",
     "mui-chips-input": "^2.0.2",
     "next": "^13.4.2",
     "next-images": "^1.8.5",
@@ -35,6 +36,7 @@
     "react-hot-toast": "^2.4.1",
     "superjson": "1.12.2",
     "tsx": "^3.12.7",
+    "uploadthing": "^4.1.0",
     "ws": "^8.13.0",
     "zod": "^3.21.4"
   },

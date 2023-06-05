@@ -19,7 +19,10 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    domains: ['media.istockphoto.com']
+    domains: ['media.istockphoto.com', 'uploadthing.com']
+  },
+  experimental: {
+    esmExternals: false,
   }
 };
 
