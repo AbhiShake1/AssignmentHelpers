@@ -159,7 +159,8 @@ const ChoiceForm: FC<ChoiceFormProps> = ({onSubmit}) => {
                 <FormControlLabel value="personal" control={<Radio/>} label="I want to find freelancers"/>
                 <FormControlLabel value="professional" control={<Radio/>} label="I want to find work"/>
             </RadioGroup>
-            <Button sx={{mt: 1, mr: 1}} type="submit" variant="outlined" disabled={!value}>
+            <Button className={`m-1 ${value ? 'bg-blue-600 hover:bg-blue-900' : ''}`} type="submit" variant="contained"
+                    disabled={!value}>
                 Proceed
             </Button>
         </FormControl>
