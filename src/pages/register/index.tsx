@@ -48,8 +48,6 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
     })
 
     useEffect(() => {
-        const registered = auth.user?.unsafeMetadata['phone']
-        if (registered) return void router.replace('/')
         const referrer = localStorage.getItem('referrer')
         if (referrer) setReferral(referrer)
     }, [auth, router])
@@ -145,10 +143,7 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
 
 const ChoiceForm: FC<ChoiceFormProps> = ({onSubmit}) => {
     const [value, setValue] = useState<AccountType | undefined>()
-    return <form onSubmit={(e) => {
-        e.preventDefault()
-        onSubmit(value)
-    }}>
+    return <form>
         <FormControl sx={{m: 3}} variant="standard">
             <FormLabel>Why are you here?</FormLabel>
             <RadioGroup
@@ -159,7 +154,8 @@ const ChoiceForm: FC<ChoiceFormProps> = ({onSubmit}) => {
                 <FormControlLabel value="professional" control={<Radio/>} label="I want to find work"/>
             </RadioGroup>
             <Button className={`m-1 ${value ? 'bg-blue-600 hover:bg-blue-900' : ''}`} type="submit" variant="contained"
-                    disabled={!value}>
+                    disabled={!value}
+                    onClick={() => onSubmit(value!)}>
                 Proceed
             </Button>
         </FormControl>
@@ -169,6 +165,15 @@ const ChoiceForm: FC<ChoiceFormProps> = ({onSubmit}) => {
 function Register() {
     const [choice, setChoice] = useState<AccountType | undefined>()
     const [animation] = useAutoAnimate()
+    const router = useRouter()
+    const auth = useUser()
+
+    useEffect(() => {
+        const registered = auth.user?.unsafeMetadata['phone']
+        if (registered) return void router.replace('/')
+        const referrer = localStorage.getItem('referrer')
+        if (referrer) setReferral(referrer)
+    }, [auth, router])
 
     return <div className='flex flex-col items-center justify-center' ref={animation}>
         {choice ? <RegisterForm accountType={choice}/> : <ChoiceForm onSubmit={setChoice}/>}
