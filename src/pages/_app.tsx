@@ -1,5 +1,5 @@
 import {type AppType} from "next/app";
-import {api} from "~/utils/api";
+import {api, getBaseUrl} from "~/utils/api";
 import "~/styles/globals.css";
 import {ClerkProvider, UserButton, useUser} from '@clerk/nextjs'
 import React, {useEffect, useState} from "react";
@@ -20,7 +20,7 @@ function Share() {
 
     if (!user) return null
 
-    const referralLink = `localhost:3000/?referrer=${user.id}`
+    const referralLink = `${getBaseUrl()}/?referrer=${user.id}`
 
     const onCopy = () => {
         void navigator.clipboard.writeText(referralLink)
