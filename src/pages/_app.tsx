@@ -1,5 +1,5 @@
 import {type AppType} from "next/app";
-import {api, getBaseUrl} from "~/utils/api";
+import {api} from "~/utils/api";
 import "~/styles/globals.css";
 import {ClerkProvider, UserButton, useUser} from '@clerk/nextjs'
 import React, {useEffect, useState} from "react";
@@ -16,14 +16,13 @@ import {useRouter} from "next/router";
 
 function Share() {
     const [showDialog, setShowDialog] = useState(false)
+    const referralLinkQuery = api.referral.link.useQuery()
     const {user} = useUser()
 
     if (!user) return null
 
-    const referralLink = `${getBaseUrl()}/?referrer=${user.id}`
-
     const onCopy = () => {
-        void navigator.clipboard.writeText(referralLink)
+        void navigator.clipboard.writeText(referralLinkQuery.data!)
         toast.success('Copied to clipboard')
     }
 
@@ -31,8 +30,8 @@ function Share() {
         <IconButton className='rounded-full' onClick={() => setShowDialog(true)}><ShareTwoTone/></IconButton>
         <AppDialog open={showDialog} setOpen={setShowDialog} title='Refer and earn'
                    description='Share this link, and get 2% commission off their transaction for lifetime'>
-            <Input className='mt-4' value={referralLink}
-                   endDecorator={<Button onClick={onCopy}>Copy</Button>}
+            <Input className='mt-4' value={referralLinkQuery.data || ''} disabled={!referralLinkQuery.isSuccess}
+                   endDecorator={<Button onClick={onCopy} disabled={!referralLinkQuery.isSuccess}>Copy</Button>}
             />
         </AppDialog>
     </>
