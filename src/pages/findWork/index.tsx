@@ -1,39 +1,29 @@
-import {UploadDropzone} from "@uploadthing/react";
-
-import type {UploadAssignmentRouter} from "~/server/api/routers/uploadAssignment";
-import {toast} from "react-hot-toast";
 import React, {useState} from "react";
-import Image from "next/image";
+import {Button} from "@mui/material";
+import {api} from "~/utils/api";
 import AssignmentPost from "~/components/AssignmentPost";
+import AppDialog from "~/components/AppDialog";
+import PostAssignmentModal from "~/pages/findWork/@modal/PostAssignmentModal";
 
 export default function Index() {
-    const [urls, setUrls] = useState<string[]>([])
+    const assignmentsQuery = api.assignment.getAll.useInfiniteQuery({limit: 20}, {getNextPageParam: l => l.nextCursor})
+    const [open, setOpen] = useState(false)
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-            <div className=''>
-                <AssignmentPost/>
+        <div className="flex flex-col items-center justify-between py-6 px-12">
+            <Button variant='contained' onClick={() => setOpen(true)}>Post an assignment</Button>
+            <div className='mt-12 grid grid-flow-col auto-cols-auto gap-16'>
                 {
-                    urls.length == 0 ? <UploadDropzone<UploadAssignmentRouter>
-                        endpoint="imageUploader"
-                        onClientUploadComplete={(res) => {
-                            if (res)
-                                setUrls(res.map(r => r.fileUrl))
-                        }}
-                        onUploadError={(error: Error) => {
-                            toast.error(error.message)
-                        }}
-                    /> : <div className='flex flex-row space-x-4'>
-                        {
-                            urls.map((url, index)=>(
-                                <div className='shadow-2xl rounded-lg' key={index}>
-                                    <Image src={url} alt={`${index} file`} width={64} height={64}/>
-                                </div>
-                            ))
-                        }
-                    </div>
+                    assignmentsQuery.data?.pages?.flatMap(p => p.assignments).map((assignment, index) => (
+                        <div key={index}>
+                            <AssignmentPost assignment={assignment}/>
+                        </div>
+                    ))
                 }
             </div>
-        </main>
+            <AppDialog open={open} setOpen={setOpen} title='Post new assignment'>
+                <PostAssignmentModal/>
+            </AppDialog>
+        </div>
     );
 }

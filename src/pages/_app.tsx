@@ -14,6 +14,8 @@ import {ShareTwoTone} from "@mui/icons-material";
 import {toast, Toaster} from "react-hot-toast";
 import AppDialog from "~/components/AppDialog";
 import {useRouter} from "next/router";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 
 function Share() {
     const [showDialog, setShowDialog] = useState(false)
@@ -136,13 +138,15 @@ const RegisterHandler = () => {
 const MyApp: AppType = ({Component, pageProps}) => {
     return (
         <ClerkProvider {...pageProps}>
-            <ThemeProvider theme={{}}>
-                <Toaster toastOptions={{position: 'bottom-center'}}/>
-                <RegisterHandler/>
-                <NavBar/>
-                <ChatDialog/>
-                <Component {...pageProps} />
-            </ThemeProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <ThemeProvider theme={{}}>
+                    <Toaster toastOptions={{position: 'bottom-center'}}/>
+                    <RegisterHandler/>
+                    <NavBar/>
+                    <ChatDialog/>
+                    <Component {...pageProps} />
+                </ThemeProvider>
+            </LocalizationProvider>
         </ClerkProvider>
     );
 };
