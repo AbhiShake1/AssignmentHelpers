@@ -147,7 +147,6 @@ const ChoiceForm: FC<ChoiceFormProps> = ({onSubmit}) => {
     const [value, setValue] = useState<AccountType | undefined>()
     return <form onSubmit={(e) => {
         e.preventDefault()
-        if (!value) return toast.error('Please choose one')
         onSubmit(value)
     }}>
         <FormControl sx={{m: 3}} variant="standard">
