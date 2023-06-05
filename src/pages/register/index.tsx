@@ -1,4 +1,4 @@
-import React, {type FC, useState} from 'react';
+import React, {type FC, useEffect, useState} from 'react';
 import MultiStepForm from "~/components/MultiStepForm";
 import {Button, FormControlLabel, TextField} from "@mui/material";
 import Radio from '@mui/material/Radio';
@@ -47,12 +47,12 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
         }
     })
 
-    // useEffect(() => {
-    //     const registered = auth.user?.unsafeMetadata['phone']
-    //     if (registered) return void router.replace('/')
-    //     const referrer = localStorage.getItem('referrer')
-    //     if (referrer) setReferral(referrer)
-    // }, [auth, router])
+    useEffect(() => {
+        const registered = auth.user?.unsafeMetadata['phone']
+        if (registered) return void router.replace('/')
+        const referrer = localStorage.getItem('referrer')
+        if (referrer) setReferral(referrer)
+    }, [auth, router])
 
     async function updateUser() {
         try {
