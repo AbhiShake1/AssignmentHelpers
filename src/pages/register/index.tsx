@@ -171,8 +171,6 @@ function Register() {
     useEffect(() => {
         const registered = auth.user?.unsafeMetadata['phone']
         if (registered) return void router.replace('/')
-        const referrer = localStorage.getItem('referrer')
-        if (referrer) setReferral(referrer)
     }, [auth, router])
 
     return <div className='flex flex-col items-center justify-center' ref={animation}>
