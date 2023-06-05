@@ -55,10 +55,10 @@ function DesktopNavbar() {
             <Link href='' scroll={true}
                   className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post an
                 assignment</Link>
-            {isFreelancer && <Link href='findWork' scroll={true}
+            {user.isSignedIn && isFreelancer && <Link href='findWork' scroll={true}
                                    className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Find
                 Work</Link>}
-            {!isFreelancer && <Link href='findFreelancers' scroll={true}
+            {user.isSignedIn && !isFreelancer && <Link href='findFreelancers' scroll={true}
                                     className={`hover:text-blue-500 p-4 ${path.includes('findFreelancers') ? 'text-blue-700' : ''}`}>Find
                 Freelancers</Link>}
             <Link href='/' scroll={true}
@@ -83,10 +83,10 @@ function MobileNavbar() {
         <Link href='findFreelancers' scroll={true}
               className={`hover:text-blue-500 p-4 ${path.includes('findFreelancers') ? 'text-blue-700' : ''}`}>Find
             Freelancers</Link>
-        {isFreelancer && <Link href='findWork' scroll={true}
+        {user.isSignedIn && isFreelancer && <Link href='findWork' scroll={true}
                                className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Find
             Work</Link>}
-        {!isFreelancer && <Link href='' scroll={true}
+        {user.isSignedIn && !isFreelancer && <Link href='' scroll={true}
                                 className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post
             an
             assignment</Link>}
