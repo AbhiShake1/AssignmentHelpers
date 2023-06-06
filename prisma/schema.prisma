@@ -46,6 +46,7 @@ model Assignment {
   budget      String
   deadline    DateTime
   postedBy    User      @relation(fields: [postedById], references: [id])
+  files       String
   bidders     Bid[]
   payments    Payment[]
   chats       Chat[]
