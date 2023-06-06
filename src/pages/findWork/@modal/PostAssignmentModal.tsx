@@ -31,11 +31,12 @@ const PostAssignmentModal: React.FC<Props> = ({onPost}) => {
         if (!title) return toast.error('Title is required')
         if (!budget) return toast.error('Budget is required')
         if (!deadline) return toast.error('Deadline is required')
+        if (urls.length == 0) return toast.error('Please upload files before posting')
         void createAssignmentMutation.mutate({
-            budget: budget,
-            title: title,
+            budget,
+            title,
             description: description || undefined,
-            deadline: deadline,
+            deadline,
         })
     }
 
