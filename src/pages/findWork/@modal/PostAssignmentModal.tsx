@@ -4,11 +4,10 @@ import type {UploadAssignmentRouter} from "~/server/api/routers/uploadAssignment
 import {toast} from "react-hot-toast";
 import React, {useState} from "react";
 import Image from "next/image";
-import {Input} from "@mui/joy";
+import {Button, Input} from "@mui/joy";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import {DatePicker} from "@mui/x-date-pickers";
-import {Button} from "@mui/joy";
 import {api} from "~/utils/api";
 
 export default function PostAssignmentModal() {
@@ -55,7 +54,7 @@ export default function PostAssignmentModal() {
                             <Input placeholder='Budget' variant='outlined' onChange={e => setBudget(e.target.value)}/>
                         </div>
                         <div>
-                            <DatePicker label='Deadline' disablePast onAccept={d => setDeadline(new Date(d.$d))}/>
+                            <DatePicker<Date> label='Deadline' disablePast onAccept={console.log}/>
                         </div>
                         <div className='pb-8'>
                             {
