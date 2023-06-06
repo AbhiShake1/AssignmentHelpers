@@ -27,7 +27,7 @@ export default function PostAssignmentModal() {
     const onClick = () => {
         if (!title) return toast.error('Title is required')
         if (!budget) return toast.error('Budget is required')
-        if (!description) return toast.error('Deadline is required')
+        if (!deadline) return toast.error('Deadline is required')
         void createAssignmentMutation.mutate({
             budget: budget,
             title: title,
