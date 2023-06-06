@@ -21,6 +21,9 @@ export const assignmentRouter = createTRPCRouter({
                 where: {
                     postedById: ctx.auth!.userId!,
                 },
+                include: {
+                    postedBy: true,
+                },
                 take: limit + 1,
                 skip: skip,
             })
