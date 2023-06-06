@@ -32,7 +32,7 @@ export default function PostAssignmentModal() {
             budget: budget,
             title: title,
             description: description || undefined,
-            deadline: new Date(),
+            deadline: deadline,
         })
     }
 
@@ -59,7 +59,7 @@ export default function PostAssignmentModal() {
                             <Input placeholder='Budget' variant='outlined' onChange={e => setBudget(e.target.value)}/>
                         </div>
                         <div>
-                            <DatePicker<Date> label='Deadline' disablePast onAccept={console.log}/>
+                            <DatePicker<Date> label='Deadline' disablePast onAccept={d=>setDeadline(d!)}/>
                         </div>
                         <div className='pb-8'>
                             {
@@ -83,7 +83,7 @@ export default function PostAssignmentModal() {
                                 </div>
                             }
                         </div>
-                        <Button className='mt-8' type='submit' loading={createAssignmentMutation.isLoading}>Post</Button>
+                        <Button className='mt-8 bg-blue-600 shadow-2xl shadow-blue-600 text-black hover:bg-blue-900 hover:text-white transition duration-200' type='submit' loading={createAssignmentMutation.isLoading}>Post</Button>
                     </FormControl>
                 </form>
             </div>
