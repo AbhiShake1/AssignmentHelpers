@@ -4,9 +4,15 @@ import {api} from "~/utils/api";
 import AssignmentPost from "~/components/AssignmentPost";
 import AppDialog from "~/components/AppDialog";
 import PostAssignmentModal from "~/pages/findWork/@modal/PostAssignmentModal";
+import {toast} from "react-hot-toast";
+import {useQueryClient} from "@tanstack/react-query";
+import {Assignment} from "@prisma/client";
 
 export default function Index() {
-    const assignmentsQuery = api.assignment.getAll.useInfiniteQuery({limit: 20}, {getNextPageParam: l => l.nextCursor})
+    const client = useQueryClient()
+    api.assignment.getAll.useQuery({limit: 20, skip: 0}, {
+        onSuccess: data => client.setQueryData(['assignment'], data)
+    })
     const [open, setOpen] = useState(false)
 
     return (
@@ -14,7 +20,7 @@ export default function Index() {
             <Button variant='contained' onClick={() => setOpen(true)}>Post an assignment</Button>
             <div className='mt-12 grid grid-flow-col auto-cols-auto gap-16'>
                 {
-                    assignmentsQuery.data?.pages?.flatMap(p => p.assignments).map((assignment, index) => (
+                    client.getQueryData<Assignment[]>(['assignment'])?.map((assignment, index) => (
                         <div key={index}>
                             <AssignmentPost assignment={assignment}/>
                         </div>
@@ -22,7 +28,11 @@ export default function Index() {
                 }
             </div>
             <AppDialog open={open} setOpen={setOpen} title='Post new assignment'>
-                <PostAssignmentModal/>
+                <PostAssignmentModal onPost={(assignment) => {
+                    toast.success('New assignment posted')
+                    client.setQueryData<Assignment[]>(['assignment'], d => !d ? d : [...d, assignment])
+                    setOpen(false)
+                }}/>
             </AppDialog>
         </div>
     );

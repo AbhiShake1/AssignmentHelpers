@@ -9,8 +9,13 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import {DatePicker} from "@mui/x-date-pickers";
 import {api} from "~/utils/api";
+import {Assignment} from "@prisma/client";
 
-export default function PostAssignmentModal() {
+interface Props {
+    onPost: (assignment: Assignment) => void
+}
+
+const PostAssignmentModal: React.FC<Props> = ({onPost}) => {
     const [urls, setUrls] = useState<string[]>([])
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState<string | undefined>()
@@ -18,9 +23,7 @@ export default function PostAssignmentModal() {
     const [deadline, setDeadline] = useState<Date | undefined>()
 
     const createAssignmentMutation = api.assignment.create.useMutation({
-        onSuccess: ()=>{
-            toast.success('Posted')
-        },
+        onSuccess: onPost,
         onError: err => toast.error(err.message)
     })
 
@@ -59,7 +62,7 @@ export default function PostAssignmentModal() {
                             <Input placeholder='Budget' variant='outlined' onChange={e => setBudget(e.target.value)}/>
                         </div>
                         <div>
-                            <DatePicker<Date> label='Deadline' disablePast onAccept={d=>setDeadline(d!)}/>
+                            <DatePicker<Date> label='Deadline' disablePast onAccept={d => setDeadline(d!)}/>
                         </div>
                         <div className='pb-8'>
                             {
@@ -83,10 +86,14 @@ export default function PostAssignmentModal() {
                                 </div>
                             }
                         </div>
-                        <Button className='mt-8 bg-blue-600 shadow-2xl shadow-blue-600 text-black hover:bg-blue-900 hover:text-white transition duration-200' type='submit' loading={createAssignmentMutation.isLoading}>Post</Button>
+                        <Button
+                            className='mt-8 bg-blue-600 shadow-2xl shadow-blue-600 text-black hover:bg-blue-900 hover:text-white transition duration-200'
+                            type='submit' loading={createAssignmentMutation.isLoading}>Post</Button>
                     </FormControl>
                 </form>
             </div>
         </div>
     );
 }
+
+export default PostAssignmentModal

@@ -12,29 +12,18 @@ export const assignmentRouter = createTRPCRouter({
     getAll: protectedProcedure
         .input(z.object({
             limit: z.number().min(1).max(100),
-            cursor: z.number(),
             skip: z.number().optional(),
         }))
         .query(async ({ctx, input}) => {
-            const {limit, skip, cursor} = input;
+            const {limit, skip} = input;
 
-            const assignments = await ctx.prisma.assignment.findMany({
+            return await ctx.prisma.assignment.findMany({
                 where: {
                     postedById: ctx.auth!.userId!,
                 },
                 take: limit + 1,
                 skip: skip,
-                cursor: cursor ? {id: cursor} : undefined,
             })
-            let nextCursor: typeof cursor | undefined = undefined;
-            if (assignments.length > limit) {
-                const nextItem = assignments.pop(); // return the last item from the array
-                nextCursor = nextItem?.id;
-            }
-            return {
-                assignments,
-                nextCursor,
-            };
         }),
     create: protectedProcedure
         .input(z.custom<AssignmentCreateArgs>())
