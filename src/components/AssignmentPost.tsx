@@ -2,6 +2,7 @@ import React from 'react';
 import type {Assignment, User} from "@prisma/client";
 import type {NextPage} from "next";
 import {TimerTwoTone} from "@mui/icons-material";
+import Image from "next/image";
 
 
 interface Props {
@@ -20,6 +21,17 @@ const AssignmentPost: NextPage<Props> = ({assignment}) => {
                 </div>
                 <div>
                     <h3 className='text-gray-600'>{assignment.description}</h3>
+                </div>
+                <div className='flex flex-col space-y-4'>
+                    <h1 className='text-gray-500'>Attachments:</h1>
+                    {
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                        assignment.files.split(',').map((url, index) => (
+                            <div className='shadow-2xl rounded-lg flex flex-row justify-center' key={index}>
+                                <Image src={url} alt={`${index} file`} width={64} height={64}/>
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
         </div>
