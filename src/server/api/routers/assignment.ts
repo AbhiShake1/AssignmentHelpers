@@ -1,5 +1,6 @@
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 import {z} from "zod";
+import {TRPCError} from "@trpc/server";
 
 interface AssignmentCreateArgs {
     title: string

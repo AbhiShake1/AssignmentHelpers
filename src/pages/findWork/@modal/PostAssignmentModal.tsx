@@ -77,7 +77,7 @@ const PostAssignmentModal: React.FC<Props> = ({onPost}) => {
                                     onUploadError={(error: Error) => {
                                         toast.error(error.message)
                                     }}
-                                /> : <div className='flex flex-row space-x-4'>
+                                /> : <div className='flex flex-row space-x-4 justify-center'>
                                     {
                                         urls.map((url, index) => (
                                             <div className='shadow-2xl rounded-lg' key={index}>
