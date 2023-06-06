@@ -9,7 +9,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import {DatePicker} from "@mui/x-date-pickers";
 import {api} from "~/utils/api";
-import {Assignment} from "@prisma/client";
+import type {Assignment} from "@prisma/client";
 
 interface Props {
     onPost: (assignment: Assignment) => void
@@ -37,6 +37,7 @@ const PostAssignmentModal: React.FC<Props> = ({onPost}) => {
             title,
             description: description || undefined,
             deadline,
+            files: urls.join(','),
         })
     }
 

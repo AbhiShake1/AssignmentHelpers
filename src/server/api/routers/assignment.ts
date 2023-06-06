@@ -6,6 +6,7 @@ interface AssignmentCreateArgs {
     description?: string
     budget: string
     deadline: Date
+    files: string
 }
 
 export const assignmentRouter = createTRPCRouter({
