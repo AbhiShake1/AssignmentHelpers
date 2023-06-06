@@ -41,8 +41,12 @@ export const assignmentRouter = createTRPCRouter({
         .mutation(({ctx, input}) => {
             return ctx.prisma.assignment.create({
                 data: {
-                    postedById: ctx.auth!.userId!,
                     ...input,
+                    postedBy: {
+                        connect: {
+                            id: ctx.auth!.userId!,
+                        },
+                    }
                 }
             })
         })

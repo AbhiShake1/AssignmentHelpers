@@ -17,7 +17,12 @@ export default function PostAssignmentModal() {
     const [budget, setBudget] = useState('')
     const [deadline, setDeadline] = useState<Date | undefined>()
 
-    const createAssignmentMutation = api.assignment.create.useMutation()
+    const createAssignmentMutation = api.assignment.create.useMutation({
+        onSuccess: ()=>{
+            toast.success('Posted')
+        },
+        onError: err => toast.error(err.message)
+    })
 
     const onClick = () => {
         if (!title) return toast.error('Title is required')
@@ -27,7 +32,7 @@ export default function PostAssignmentModal() {
             budget: budget,
             title: title,
             description: description || undefined,
-            deadline: deadline!,
+            deadline: new Date(),
         })
     }
 
@@ -78,7 +83,7 @@ export default function PostAssignmentModal() {
                                 </div>
                             }
                         </div>
-                        <Button className='mt-8' type='submit' loading>Post</Button>
+                        <Button className='mt-8' type='submit' loading={createAssignmentMutation.isLoading}>Post</Button>
                     </FormControl>
                 </form>
             </div>
