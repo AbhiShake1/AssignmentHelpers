@@ -42,8 +42,8 @@ model User {
 model Assignment {
   id          Int       @id @default(autoincrement())
   title       String
-  description String
-  budget      Float
+  description String?
+  budget      String
   deadline    DateTime
   postedBy    User      @relation(fields: [postedById], references: [id])
   bidders     Bid[]

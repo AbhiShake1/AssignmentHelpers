@@ -3,11 +3,9 @@ import {z} from "zod";
 
 interface AssignmentCreateArgs {
     title: string
-    description: string
-    budget: number
+    description?: string
+    budget: string
     deadline: Date
-    isLocked?: boolean
-    postedById?: string
 }
 
 export const assignmentRouter = createTRPCRouter({
