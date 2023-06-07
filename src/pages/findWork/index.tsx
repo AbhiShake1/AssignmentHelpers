@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {Button} from "@mui/material";
 import {api} from "~/utils/api";
 import AssignmentPost from "~/components/AssignmentPost";
 import AppDialog from "~/components/AppDialog";
@@ -15,7 +14,6 @@ export default function Index() {
     api.assignment.getAll.useQuery({limit: 20, skip: 0}, {
         onSuccess: data => client.setQueryData(['assignment'], data)
     })
-    const [open, setOpen] = useState(false)
 
     return (
         <div className="flex flex-col items-center justify-between py-6 px-12">
@@ -28,13 +26,6 @@ export default function Index() {
                     ))
                 }
             </div>
-            <AppDialog open={open} setOpen={setOpen} title='Post new assignment'>
-                <PostAssignmentModal onPost={(assignment) => {
-                    toast.success('New assignment posted')
-                    client.setQueryData<Assignment[]>(['assignment'], d => !d ? d : [...d, assignment])
-                    setOpen(false)
-                }}/>
-            </AppDialog>
         </div>
     );
 }
