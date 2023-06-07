@@ -31,13 +31,14 @@ const PostAssignmentModal: React.FC<Props> = ({onPost}) => {
         if (!title) return toast.error('Title is required')
         if (!budget) return toast.error('Budget is required')
         if (!deadline) return toast.error('Deadline is required')
-        if (urls.length == 0) return toast.error('Please upload files before posting')
+        // if (urls.length == 0) return toast.error('Please upload files before posting')
         void createAssignmentMutation.mutate({
             budget,
             title,
             description: description || undefined,
             deadline,
-            files: urls.join(','),
+            // files: urls.join(','),
+            files: '',
         })
     }
 
@@ -68,24 +69,24 @@ const PostAssignmentModal: React.FC<Props> = ({onPost}) => {
                         </div>
                         <div className='pb-8'>
                             {
-                                urls.length == 0 ? <UploadDropzone<UploadAssignmentRouter>
-                                    endpoint="imageUploader"
-                                    onClientUploadComplete={(res) => {
-                                        if (res)
-                                            setUrls(res.map(r => r.fileUrl))
-                                    }}
-                                    onUploadError={(error: Error) => {
-                                        toast.error(error.message)
-                                    }}
-                                /> : <div className='flex flex-row space-x-4 justify-center'>
-                                    {
-                                        urls.map((url, index) => (
-                                            <div className='shadow-2xl rounded-lg' key={index}>
-                                                <Image src={url} alt={`${index} file`} width={64} height={64}/>
-                                            </div>
-                                        ))
-                                    }
-                                </div>
+                                // urls.length == 0 ? <UploadDropzone<UploadAssignmentRouter>
+                                //     endpoint="imageUploader"
+                                //     onClientUploadComplete={(res) => {
+                                //         if (res)
+                                //             setUrls(res.map(r => r.fileUrl))
+                                //     }}
+                                //     onUploadError={(error: Error) => {
+                                //         toast.error(error.message)
+                                //     }}
+                                // /> : <div className='flex flex-row space-x-4 justify-center'>
+                                //     {
+                                //         urls.map((url, index) => (
+                                //             <div className='shadow-2xl rounded-lg' key={index}>
+                                //                 <Image src={url} alt={`${index} file`} width={64} height={64}/>
+                                //             </div>
+                                //         ))
+                                //     }
+                                // </div>
                             }
                         </div>
                         <Button
