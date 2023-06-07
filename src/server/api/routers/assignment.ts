@@ -19,6 +19,22 @@ export const assignmentRouter = createTRPCRouter({
             const {limit, skip} = input;
 
             return await ctx.prisma.assignment.findMany({
+                include: {
+                    postedBy: true,
+                },
+                take: limit + 1,
+                skip: skip,
+            })
+        }),
+    getMy: protectedProcedure
+        .input(z.object({
+            limit: z.number().min(1).max(100),
+            skip: z.number().optional(),
+        }))
+        .query(async ({ctx, input}) => {
+            const {limit, skip} = input;
+
+            return await ctx.prisma.assignment.findMany({
                 where: {
                     postedById: ctx.auth!.userId!,
                 },

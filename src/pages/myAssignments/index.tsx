@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {Button} from "@mui/material";
 import {api} from "~/utils/api";
 import AssignmentPost from "~/components/AssignmentPost";
 import AppDialog from "~/components/AppDialog";
@@ -12,7 +11,7 @@ type AssignmentWithUser = Assignment & { postedBy: User }
 
 export default function Index() {
     const client = useQueryClient()
-    api.assignment.getAll.useQuery({limit: 20, skip: 0}, {
+    api.assignment.getMy.useQuery({limit: 20, skip: 0}, {
         onSuccess: data => client.setQueryData(['assignment'], data)
     })
     const [open, setOpen] = useState(false)
