@@ -1,8 +1,8 @@
 import React from 'react';
 import type {Assignment, User} from "@prisma/client";
 import type {NextPage} from "next";
-import {TimerTwoTone} from "@mui/icons-material";
 import Image from "next/image";
+import {TimerTwoTone} from "@mui/icons-material";
 
 
 interface Props {

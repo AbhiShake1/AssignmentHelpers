@@ -3,7 +3,7 @@ import {Button} from "@mui/material";
 import {api} from "~/utils/api";
 import AssignmentPost from "~/components/AssignmentPost";
 import AppDialog from "~/components/AppDialog";
-import PostAssignmentModal from "~/pages/findWork/@modal/PostAssignmentModal";
+import PostAssignmentModal from "~/components/PostAssignmentModal";
 import {toast} from "react-hot-toast";
 import {useQueryClient} from "@tanstack/react-query";
 import type {Assignment, User} from "@prisma/client";
