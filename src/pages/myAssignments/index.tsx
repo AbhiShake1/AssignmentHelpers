@@ -6,6 +6,7 @@ import PostAssignmentModal from "~/components/PostAssignmentModal";
 import {toast} from "react-hot-toast";
 import {useQueryClient} from "@tanstack/react-query";
 import type {Assignment, User} from "@prisma/client";
+import {Button} from "@mui/material";
 
 type AssignmentWithUser = Assignment & { postedBy: User }
 
@@ -18,6 +19,7 @@ export default function Index() {
 
     return (
         <div className="flex flex-col items-center justify-between py-6 px-12">
+            <Button variant='contained' onClick={() => setOpen(true)}>Post an assignment</Button>
             <div className="m-8 p-8 grid w-full grid-rows-2 grid-flow-col gap-4 auto-cols-auto">
                 {
                     client.getQueryData<AssignmentWithUser[]>(['assignment'])?.map((assignment, index) => (
