@@ -25,7 +25,6 @@ const AssignmentPost: NextPage<Props> = ({assignment}) => {
                 <div className='flex flex-col space-y-4'>
                     <h1 className='text-gray-500'>Attachments:</h1>
                     {
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                         assignment.files.split(',').map((url, index) => (
                             <div className='shadow-2xl rounded-lg flex flex-row justify-center' key={index}>
                                 <Image src={url} alt={`${index} file`} width={64} height={64}/>

@@ -36,6 +36,7 @@
     "next-images": "^1.8.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-hot-toast": "^2.4.1",
     "styled-components": "6.0.0-rc.3",
     "superjson": "1.12.2",
