@@ -11,7 +11,7 @@ import {type CreateNextContextOptions} from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import {ZodError} from "zod";
 import {prisma} from "~/server/db";
-import {EventEmitter} from "events"
+import {EventEmitter} from "node:events"
 import {getAuth, type SignedInAuthObject, type SignedOutAuthObject} from "@clerk/nextjs/server";
 import {type NodeHTTPCreateContextFnOptions} from "@trpc/server/src/adapters/node-http";
 import {type NextIncomingMessage} from "next/dist/server/request-meta";
@@ -19,8 +19,7 @@ import type ws from "ws";
 import {type NextApiRequest} from "next";
 
 
-const emitter = new EventEmitter()
-
+export const emitter = new EventEmitter()
 
 /**
  * 1. CONTEXT

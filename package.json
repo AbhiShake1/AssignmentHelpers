@@ -5,8 +5,9 @@
   "packageManager": "pnpm@8.4.0",
   "scripts": {
     "build": "next build",
+    "dev:wss": "cross-env NODE_ENV=development PORT=3001 tsx watch src/server/wsServer.ts --tsconfig tsconfig.server.json",
     "dev:next": "next dev",
-    "dev": "pnpm dev:next",
+    "dev": "run-p dev:*",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start & pnpm dev:wss"
@@ -34,6 +35,7 @@
     "mui-chips-input": "^2.0.2",
     "next": "^13.4.2",
     "next-images": "^1.8.5",
+    "npm-run-all": "^4.1.5",
     "react": "18.3.0-canary-e1ad4aa36-20230601",
     "react-dom": "18.3.0-canary-e1ad4aa36-20230601",
     "react-hot-toast": "^2.4.1",
