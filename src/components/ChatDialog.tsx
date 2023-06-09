@@ -14,7 +14,9 @@ function ChatDialog() {
 
     api.chat.listen.useSubscription(undefined, {
         onStarted: () => console.log('ws started'),
-        onData: toast.success,
+        onData(d) {
+            toast.success(d)
+        },
         onError: e => toast.error(e.message),
     })
 

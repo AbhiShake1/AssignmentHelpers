@@ -11,15 +11,20 @@ import {type CreateNextContextOptions} from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import {ZodError} from "zod";
 import {prisma} from "~/server/db";
-import {EventEmitter} from "node:events"
 import {getAuth, type SignedInAuthObject, type SignedOutAuthObject} from "@clerk/nextjs/server";
 import {type NodeHTTPCreateContextFnOptions} from "@trpc/server/src/adapters/node-http";
 import {type NextIncomingMessage} from "next/dist/server/request-meta";
 import type ws from "ws";
 import {type NextApiRequest} from "next";
+import Pusher from "pusher";
 
 
-export const emitter = new EventEmitter()
+const pusher = new Pusher({
+    appId: process.env.PUSHER_APP_ID!,
+    key: process.env.PUSHER_KEY!,
+    secret: process.env.PUSHER_SECRET!,
+    cluster: process.env.PUSHER_CLUSTER!,
+});
 
 /**
  * 1. CONTEXT
@@ -45,7 +50,7 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
     const auth = _opts.auth
     return {
         prisma,
-        emitter,
+        pusher,
         auth,
     };
 };

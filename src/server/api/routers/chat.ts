@@ -2,24 +2,27 @@ import {createTRPCRouter, protectedProcedure, publicProcedure} from "~/server/ap
 import {observable} from "@trpc/server/observable";
 import {Events} from "~/server/constants/events";
 import {z} from "zod";
+import {EventEmitter} from "node:events";
 
+const ee = new EventEmitter()
 
 export const chatRouter = createTRPCRouter({
     listen: publicProcedure
         .subscription(({ctx}) => {
             return observable<string, string>((emit) => {
                 const onMsg = (data: string) => emit.next(data)
-                ctx.emitter.on(Events.SEND_MESSAGE, onMsg)
+                ee.on(Events.SEND_MESSAGE, onMsg)
+                console.log(ee.eventNames())
 
-                return () => {
-                    ctx.emitter.off(Events.SEND_MESSAGE, emit.next)
-                };
-            });
+                return () => ee.off(Events.SEND_MESSAGE, onMsg)
+            })
         }),
     send: protectedProcedure
         .input(z.object({msg: z.string().nonempty()}))
-        .mutation(({ctx, input}) => {
-            ctx.emitter.emit(Events.SEND_MESSAGE, input.msg);
+        .mutation(async ({ctx, input}) => {
+            await ctx.pusher.trigger("my-channel", Events.SEND_MESSAGE, input.msg);
+            ee.emit(Events.SEND_MESSAGE, input.msg);
+            console.log(ee.eventNames())
             return input.msg;
         }),
 });
