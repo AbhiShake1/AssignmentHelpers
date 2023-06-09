@@ -32,8 +32,9 @@ model User {
   assignments       Assignment[]
   biddedAssignments Bid[]
   payments          Payment[]
-  chats             Chat[]
-  Message           Message[]
+  message           Message[]
+  initiatedChats    Chat[]       @relation("ChatFromUser")
+  receivedChats     Chat[]       @relation("ChatToUser")
 
   @@index([referredById])
 }
@@ -52,7 +53,6 @@ model Assignment {
   chats       Chat[]
   isLocked    Boolean   @default(true)
   postedById  String
-  Message     Message[]
 
   @@index([postedById])
 }
@@ -95,28 +95,32 @@ model Payment {
 
 // Chat model for storing chat messages between users
 model Chat {
-  id           Int        @id @default(autoincrement())
-  messages     Message[]
-  assignment   Assignment @relation(fields: [assignmentId], references: [id])
-  participants User[]
-  assignmentId Int
+  id         Int         @id @default(autoincrement())
+  messages   Message[]
+  assignment Assignment? @relation(fields: [assignmentId], references: [id])
+  fromUser   User        @relation("ChatFromUser", fields: [fromUserId], references: [id])
+  toUser     User        @relation("ChatToUser", fields: [toUserId], references: [id])
+
+  fromUserId   String
+  toUserId     String
+  assignmentId Int?
 
   @@index([assignmentId])
+  @@index([fromUserId, toUserId])
+  @@index([fromUserId])
+  @@index([toUserId])
 }
 
 // Message model for storing individual chat messages
 model Message {
-  id           Int         @id @default(autoincrement())
-  text         String
-  sender       User        @relation(fields: [senderId], references: [id])
-  createdAt    DateTime    @default(now())
-  chat         Chat        @relation(fields: [chatId], references: [id])
-  chatId       Int
-  assignment   Assignment? @relation(fields: [assignmentId], references: [id])
-  assignmentId Int?
-  senderId     String
+  id        Int      @id @default(autoincrement())
+  text      String
+  sender    User     @relation(fields: [senderId], references: [id])
+  createdAt DateTime @default(now())
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    Int
+  senderId  String
 
   @@index([senderId])
   @@index([chatId])
-  @@index([assignmentId])
 }

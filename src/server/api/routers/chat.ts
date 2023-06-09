@@ -1,28 +1,49 @@
-import {createTRPCRouter, protectedProcedure, publicProcedure} from "~/server/api/trpc";
-import {observable} from "@trpc/server/observable";
-import {Events} from "~/server/constants/events";
+import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
+import {Events} from "~/const/events";
 import {z} from "zod";
-import {EventEmitter} from "node:events";
-
-const ee = new EventEmitter()
+import {Channels} from "~/const/channels";
 
 export const chatRouter = createTRPCRouter({
-    listen: publicProcedure
-        .subscription(({ctx}) => {
-            return observable<string, string>((emit) => {
-                const onMsg = (data: string) => emit.next(data)
-                ee.on(Events.SEND_MESSAGE, onMsg)
-                console.log(ee.eventNames())
-
-                return () => ee.off(Events.SEND_MESSAGE, onMsg)
-            })
-        }),
     send: protectedProcedure
         .input(z.object({msg: z.string().nonempty()}))
         .mutation(async ({ctx, input}) => {
-            await ctx.pusher.trigger("my-channel", Events.SEND_MESSAGE, input.msg);
-            ee.emit(Events.SEND_MESSAGE, input.msg);
-            console.log(ee.eventNames())
+            const msg = await ctx.prisma.chat.upsert({
+                where: {
+                    id: 0,
+                },
+                create: {
+                    participants: {
+                        connect: [{
+                            id: ctx.auth!.userId!,
+                        }],
+                    },
+                    messages: {
+                        create: {
+                            senderId: ctx.auth!.userId!,
+                            assignmentId: null,
+                            text: input.msg,
+                        },
+                    },
+                    assignmentId: 0,
+                },
+                update: {
+                    messages: {
+                        create: {
+                            senderId: ctx.auth!.userId!,
+                            assignmentId: null,
+                            text: input.msg,
+                        },
+                    },
+                    participants: {
+                        connect: [{
+                            id: ctx.auth!.userId!,
+                        }],
+                    },
+                },
+            })
+            await ctx.pusher.trigger(Channels.DEFAULT_CHAT_CHANNEL, Events.SEND_MESSAGE, {
+                message: input.msg
+            });
             return input.msg;
         }),
 });

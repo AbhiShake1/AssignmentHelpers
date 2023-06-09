@@ -1,9 +1,12 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import {CancelTwoTone, ChatTwoTone, SendTwoTone} from "@mui/icons-material";
 import {Input} from "@mui/joy";
 import {api} from "~/utils/api";
 import {toast} from "react-hot-toast";
+import pusher from "~/stores/pusher";
+import {Events} from "~/const/events";
+import {Channels} from "~/const/channels";
 
 function ChatDialog() {
     const [open, setOpen] = useState(false)
@@ -12,12 +15,10 @@ function ChatDialog() {
     const [animate] = useAutoAnimate({duration: 200, easing: 'linear'})
     const sendMutation = api.chat.send.useMutation()
 
-    api.chat.listen.useSubscription(undefined, {
-        onStarted: () => console.log('ws started'),
-        onData(d) {
-            toast.success(d)
-        },
-        onError: e => toast.error(e.message),
+    const channel = useMemo(() => pusher.subscribe(Channels.DEFAULT_CHAT_CHANNEL), [])
+
+    channel.bind(Events.SEND_MESSAGE, (data: any) => {
+        toast.success(JSON.stringify(data))
     })
 
     function sendMsg() {
