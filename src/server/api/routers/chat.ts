@@ -1,7 +1,7 @@
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 import {Events} from "~/const/events";
 import {z} from "zod";
-import {Message} from "@prisma/client"
+import type {Message} from "@prisma/client"
 
 export const chatRouter = createTRPCRouter({
     sendAdmin: protectedProcedure
@@ -51,7 +51,7 @@ export const chatRouter = createTRPCRouter({
             },
             include: {
                 messages: {
-                    orderBy: {createdAt: 'asc'}
+                    orderBy: {createdAt: 'desc'}
                 },
             },
         })

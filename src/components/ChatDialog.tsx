@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import {CancelTwoTone, ChatTwoTone, SendTwoTone} from "@mui/icons-material";
 import {Input} from "@mui/joy";
@@ -12,9 +12,9 @@ import {useQueryClient} from "@tanstack/react-query";
 function ChatDialog() {
     const [open, setOpen] = useState(false)
     const [msg, setMsg] = useState('')
-    const [msgs, setMsgs] = useState<string[]>([])
     const user = useAuth()
     const [animate] = useAutoAnimate({duration: 200, easing: 'linear'})
+    const messagesContainerRef = useRef<HTMLDivElement>(null);
     const sendMutation = api.chat.sendAdmin.useMutation()
 
     const client = useQueryClient()
@@ -33,7 +33,9 @@ function ChatDialog() {
             pusher.unsubscribe(id)
             pusher.unbind(id)
             pusher.subscribe(id).bind(Events.SEND_MESSAGE, (message: Message) => {
-                client.setQueryData<Message[]>(['chat'], d => !d ? d : [...d, message])
+                client.setQueryData<Message[]>(['chat'], d => [...d!, message])
+                const messagesContainer = messagesContainerRef.current!;
+                messagesContainer.scrollTop = messagesContainer.scrollHeight!;
             })
         }
     }, [user.userId])
@@ -43,7 +45,6 @@ function ChatDialog() {
 
         sendMutation.mutate({msg})
 
-        setMsgs(msgs => [msg, ...msgs])
         setMsg('')
     }
 
@@ -62,7 +63,8 @@ function ChatDialog() {
                             <CancelTwoTone className='hover:text-blue-900'/>
                         </button>
                     </div>
-                    <div className='h-full flex flex-col overflow-y-scroll [&::-webkit-scrollbar]:hidden'>
+                    <div className='h-full flex flex-col-reverse overflow-y-scroll [&::-webkit-scrollbar]:hidden'
+                         ref={messagesContainerRef}>
                         {client.getQueryData<Message[]>(['chat'])?.map(msg => (
                             msg.senderId == user.userId ? <div key={msg.id} className='w-full items-start flex flex-col'>
                                 <div className='bg-white my-1 px-2 py-1 left-0 w-3/4 rounded-b-xl rounded-tr-xl'>
