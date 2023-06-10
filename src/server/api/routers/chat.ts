@@ -1,50 +1,58 @@
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 import {Events} from "~/const/events";
 import {z} from "zod";
-import {Channels} from "~/const/channels";
+import {Message} from "@prisma/client"
 
 export const chatRouter = createTRPCRouter({
-    send: protectedProcedure
+    sendAdmin: protectedProcedure
         .input(z.object({msg: z.string().nonempty()}))
         .mutation(async ({ctx, input}) => {
-            const msg = await ctx.prisma.chat.upsert({
+            const chat = await ctx.prisma.chat.upsert({
                 where: {
-                    id: 0,
+                    fromUserId_toUserId: {
+                        fromUserId: ctx.auth!.userId!,
+                        toUserId: '',
+                    }
                 },
                 create: {
-                    participants: {
-                        connect: [{
-                            id: ctx.auth!.userId!,
-                        }],
-                    },
+                    fromUserId: ctx.auth!.userId!,
+                    toUserId: '',
                     messages: {
                         create: {
                             senderId: ctx.auth!.userId!,
-                            assignmentId: null,
                             text: input.msg,
                         },
                     },
-                    assignmentId: 0,
                 },
                 update: {
                     messages: {
                         create: {
                             senderId: ctx.auth!.userId!,
-                            assignmentId: null,
                             text: input.msg,
                         },
                     },
-                    participants: {
-                        connect: [{
-                            id: ctx.auth!.userId!,
-                        }],
+                },
+                include: {
+                    messages: {
+                        orderBy: {createdAt: 'desc'},
+                        take: 1,
                     },
                 },
             })
-            await ctx.pusher.trigger(Channels.DEFAULT_CHAT_CHANNEL, Events.SEND_MESSAGE, {
-                message: input.msg
-            });
+            const message = (chat.messages as Message[]).at(0)!
+            await ctx.pusher.trigger(ctx.auth!.userId!, Events.SEND_MESSAGE, message);
             return input.msg;
         }),
+    getWithAdmin: protectedProcedure.query(({ctx})=>{
+        return ctx.prisma.chat.findFirst({
+            where: {
+                fromUserId: ctx.auth!.userId!,
+                toUserId: '',
+            },
+            include: {
+                messages: true,
+            }
+        })
+    })
 });
 

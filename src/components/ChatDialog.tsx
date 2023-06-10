@@ -1,25 +1,42 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import {CancelTwoTone, ChatTwoTone, SendTwoTone} from "@mui/icons-material";
 import {Input} from "@mui/joy";
 import {api} from "~/utils/api";
-import {toast} from "react-hot-toast";
 import pusher from "~/stores/pusher";
 import {Events} from "~/const/events";
-import {Channels} from "~/const/channels";
+import {useAuth} from "@clerk/nextjs";
+import {Message} from "@prisma/client";
+import {useQueryClient} from "@tanstack/react-query";
 
 function ChatDialog() {
     const [open, setOpen] = useState(false)
     const [msg, setMsg] = useState('')
     const [msgs, setMsgs] = useState<string[]>([])
+    const user = useAuth()
     const [animate] = useAutoAnimate({duration: 200, easing: 'linear'})
-    const sendMutation = api.chat.send.useMutation()
+    const sendMutation = api.chat.sendAdmin.useMutation()
 
-    const channel = useMemo(() => pusher.subscribe(Channels.DEFAULT_CHAT_CHANNEL), [])
+    const client = useQueryClient()
+    const chatData = api.chat.getWithAdmin.useQuery()
 
-    channel.bind(Events.SEND_MESSAGE, (data: any) => {
-        toast.success(JSON.stringify(data))
-    })
+    useEffect(() => {
+        if (chatData.isSuccess) {
+            client.setQueryData<Message[]>(['chat'], chatData.data!.messages as Message[])
+        }
+    }, [chatData.isSuccess])
+
+    useEffect(() => {
+        const id = user.userId
+        // reset before new subscription
+        if (id) {
+            pusher.unsubscribe(id)
+            pusher.unbind(id)
+            pusher.subscribe(id).bind(Events.SEND_MESSAGE, (message: Message) => {
+                client.setQueryData<Message[]>(['chat'], d => !d ? d : [...d, message])
+            })
+        }
+    }, [user.userId])
 
     function sendMsg() {
         if (!msg || msg.length == 0) return
@@ -46,33 +63,17 @@ function ChatDialog() {
                         </button>
                     </div>
                     <div className='h-full flex flex-col-reverse overflow-y-scroll [&::-webkit-scrollbar]:hidden'>
-                        {/*from user*/}
-                        {
-                            msgs.map((msg, idx) => (
-                                <div className='w-full items-end flex flex-col' key={idx}>
-                                    <div className='bg-white my-1 px-2 py-1 w-3/4 rounded-t-xl rounded-bl-xl'>
-                                        <h1>{msg}</h1>
-                                    </div>
+                        {client.getQueryData<Message[]>(['chat'])?.map(msg => (
+                            msg.senderId == user.userId ? <div key={msg.id} className='w-full items-start flex flex-col'>
+                                <div className='bg-white my-1 px-2 py-1 left-0 w-3/4 rounded-b-xl rounded-tr-xl'>
+                                    <h1>{msg.text}</h1>
                                 </div>
-                            ))
-                        }
-                        <div className='w-full items-end flex flex-col'>
-                            <div className='bg-white my-1 px-2 py-1 w-3/4 rounded-t-xl rounded-bl-xl'>
-                                <h1>test3 from user</h1>
+                            </div> : <div key={msg.id} className='w-full items-start flex flex-col'>
+                                <div className='bg-white my-1 px-2 py-1 left-0 w-3/4 rounded-b-xl rounded-tr-xl'>
+                                    <h1>{msg.text}</h1>
+                                </div>
                             </div>
-                        </div>
-                        {/*from admin*/}
-                        <div className='w-full items-start flex flex-col'>
-                            <div className='bg-white my-1 px-2 py-1 left-0 w-3/4 rounded-b-xl rounded-tr-xl'>
-                                <h1>test from admin</h1>
-                            </div>
-                        </div>
-                        {/*from user*/}
-                        <div className='w-full items-end flex flex-col'>
-                            <div className='bg-white my-1 px-2 py-1 w-3/4 rounded-t-xl rounded-bl-xl'>
-                                <h1>test from user</h1>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                     <Input placeholder='Ask admin..' value={msg} onChange={(e) => setMsg(e.target.value)}
                            endDecorator={<button className='bg-transparent' onClick={sendMsg}>

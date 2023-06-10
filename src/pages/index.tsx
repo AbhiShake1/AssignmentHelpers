@@ -22,8 +22,6 @@ function Index() {
             <Head>
                 <title>AssignmentHelpers</title>
                 <meta name="description" content="Assignment Helpers"/>
-                {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-                <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
             <div className='xl:p-32'>

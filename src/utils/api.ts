@@ -4,7 +4,7 @@
  *
  * We also create a few inference helpers for input and output types.
  */
-import {createWSClient, httpBatchLink, loggerLink, splitLink, wsLink} from "@trpc/client";
+import {httpBatchLink, loggerLink} from "@trpc/client";
 import {createTRPCNext} from "@trpc/next";
 import type {inferRouterInputs, inferRouterOutputs} from "@trpc/server";
 import superjson from "superjson";
@@ -16,10 +16,10 @@ export const getBaseUrl = () => {
     return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 
-const getBaseWSUrl = () => {
-    if (process.env.VERCEL_URL) return `ws://${process.env.VERCEL_URL}`; // SSR should use vercel url
-    return `ws://localhost:${process.env.WS_PORT ?? 3001}`; // dev SSR should use localhost
-};
+// const getBaseWSUrl = () => {
+//     if (process.env.VERCEL_URL) return `ws://${process.env.VERCEL_URL}`; // SSR should use vercel url
+//     return `ws://localhost:${process.env.WS_PORT ?? 3001}`; // dev SSR should use localhost
+// };
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCNext<AppRouter>({
@@ -42,15 +42,18 @@ export const api = createTRPCNext<AppRouter>({
                         process.env.NODE_ENV === "development" ||
                         (opts.direction === "down" && opts.result instanceof Error),
                 }),
-                splitLink({
-                    condition: op => op.type == "subscription",
-                    true: wsLink<AppRouter>({
-                        client: createWSClient({url: `${getBaseWSUrl()}/api/trpc`}),
-                    }),
-                    false: httpBatchLink({
-                        url: `${getBaseUrl()}/api/trpc`,
-                    }),
+                httpBatchLink({
+                    url: `${getBaseUrl()}/api/trpc`,
                 }),
+                // splitLink({
+                //     condition: op => op.type == "subscription",
+                //     true: wsLink<AppRouter>({
+                //         client: createWSClient({url: `${getBaseWSUrl()}/api/trpc`}),
+                //     }),
+                //     false: httpBatchLink({
+                //         url: `${getBaseUrl()}/api/trpc`,
+                //     }),
+                // }),
             ],
         };
     },
