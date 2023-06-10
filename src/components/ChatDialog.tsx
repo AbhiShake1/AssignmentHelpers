@@ -8,6 +8,7 @@ import {Events} from "~/const/events";
 import {useAuth} from "@clerk/nextjs";
 import type {Message} from "@prisma/client";
 import {useQueryClient} from "@tanstack/react-query";
+import {toast} from "react-hot-toast";
 
 function ChatDialog() {
     const [open, setOpen] = useState(false)
@@ -15,7 +16,9 @@ function ChatDialog() {
     const user = useAuth()
     const [animate] = useAutoAnimate({duration: 200, easing: 'linear'})
     const messagesContainerRef = useRef<HTMLDivElement>(null);
-    const sendMutation = api.chat.sendAdmin.useMutation()
+    const sendMutation = api.chat.sendAdmin.useMutation({
+        onError: err => toast.error(err.message)
+    })
 
     const client = useQueryClient()
     const chatData = api.chat.getWithAdmin.useQuery()
