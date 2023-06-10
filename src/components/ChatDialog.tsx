@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import {CancelTwoTone, ChatTwoTone, SendTwoTone} from "@mui/icons-material";
-import {Button, Input} from "@mui/joy";
+import {Button, CircularProgress, Input} from "@mui/joy";
 import {api} from "~/utils/api";
 import pusher from "~/stores/pusher";
 import {Events} from "~/const/events";
@@ -67,21 +67,28 @@ function ChatDialog() {
                     </div>
                     <div className='h-full flex flex-col-reverse overflow-y-scroll [&::-webkit-scrollbar]:hidden'
                          ref={messagesContainerRef}>
-                        {client.getQueryData<Message[]>(['chat'])?.map(msg => (
-                            msg.senderId == user.userId ? <div key={msg.id} className='w-full items-start flex flex-col'>
-                                <div className='bg-white my-1 px-2 py-1 left-0 w-3/4 rounded-b-xl rounded-tr-xl'>
-                                    <h1>{msg.text}</h1>
-                                </div>
-                            </div> : <div key={msg.id} className='w-full items-start flex flex-col'>
-                                <div className='bg-white my-1 px-2 py-1 left-0 w-3/4 rounded-b-xl rounded-tr-xl'>
-                                    <h1>{msg.text}</h1>
-                                </div>
-                            </div>
-                        ))}
+                        {
+                            chatData.isLoading ? <center>
+                                <CircularProgress/>
+                            </center> : client.getQueryData<Message[]>(['chat'])?.map(msg => (
+                                msg.senderId == user.userId ?
+                                    <div key={msg.id} className='w-full items-start flex flex-col'>
+                                        <div className='bg-white my-1 px-2 py-1 left-0 w-3/4 rounded-b-xl rounded-tr-xl'>
+                                            <h1>{msg.text}</h1>
+                                        </div>
+                                    </div> : <div key={msg.id} className='w-full items-start flex flex-col'>
+                                        <div className='bg-white my-1 px-2 py-1 left-0 w-3/4 rounded-b-xl rounded-tr-xl'>
+                                            <h1>{msg.text}</h1>
+                                        </div>
+                                    </div>
+                            ))
+                        }
                     </div>
                     <Input placeholder='Ask admin..' value={msg} onChange={(e) => setMsg(e.target.value)}
-                           endDecorator={<Button className='bg-transparent' onClick={sendMsg} loading={sendMutation.isLoading}>
-                               <SendTwoTone className='bg-transparent'/>
+                           onKeyDown={sendMsg}
+                           endDecorator={<Button onClick={sendMsg} loading={sendMutation.isLoading}
+                                                 disabled={msg?.length == 0}>
+                               <SendTwoTone/>
                            </Button>}/>
                 </div>
             }
