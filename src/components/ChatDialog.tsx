@@ -85,7 +85,11 @@ function ChatDialog() {
                         }
                     </div>
                     <Input placeholder='Ask admin..' value={msg} onChange={(e) => setMsg(e.target.value)}
-                           onKeyDown={sendMsg}
+                           onKeyDown={e => {
+                               if (e.key == 'Enter') {
+                                   sendMsg()
+                               }
+                           }}
                            endDecorator={<Button onClick={sendMsg} loading={sendMutation.isLoading}
                                                  disabled={msg?.length == 0}>
                                <SendTwoTone/>
