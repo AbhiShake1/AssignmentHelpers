@@ -7,19 +7,20 @@ export const chatRouter = createTRPCRouter({
     sendAdmin: protectedProcedure
         .input(z.object({msg: z.string().nonempty()}))
         .mutation(async ({ctx, input}) => {
+            const uid = ctx.auth!.userId!
             const chat = await ctx.prisma.chat.upsert({
                 where: {
                     fromUserId_toUserId: {
-                        fromUserId: ctx.auth!.userId!,
+                        fromUserId: uid,
                         toUserId: '',
                     }
                 },
                 create: {
-                    fromUserId: ctx.auth!.userId!,
+                    fromUserId: uid,
                     toUserId: '',
                     messages: {
                         create: {
-                            senderId: ctx.auth!.userId!,
+                            senderId: uid,
                             text: input.msg,
                         },
                     },
@@ -27,7 +28,7 @@ export const chatRouter = createTRPCRouter({
                 update: {
                     messages: {
                         create: {
-                            senderId: ctx.auth!.userId!,
+                            senderId: uid,
                             text: input.msg,
                         },
                     },

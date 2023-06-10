@@ -6,7 +6,7 @@ import {api} from "~/utils/api";
 import pusher from "~/stores/pusher";
 import {Events} from "~/const/events";
 import {useAuth} from "@clerk/nextjs";
-import {Message} from "@prisma/client";
+import type {Message} from "@prisma/client";
 import {useQueryClient} from "@tanstack/react-query";
 
 function ChatDialog() {
@@ -34,8 +34,7 @@ function ChatDialog() {
             pusher.unbind(id)
             pusher.subscribe(id).bind(Events.SEND_MESSAGE, (message: Message) => {
                 client.setQueryData<Message[]>(['chat'], d => [message, ...d!])
-                const messagesContainer = messagesContainerRef.current!;
-                messagesContainer.scrollTop = messagesContainer.scrollHeight!;
+                messagesContainerRef.current?.scroll({behavior: "smooth", top: 0})
             })
         }
     }, [user.userId])
