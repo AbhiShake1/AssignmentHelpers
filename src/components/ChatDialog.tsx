@@ -33,7 +33,7 @@ function ChatDialog() {
             pusher.unsubscribe(id)
             pusher.unbind(id)
             pusher.subscribe(id).bind(Events.SEND_MESSAGE, (message: Message) => {
-                client.setQueryData<Message[]>(['chat'], d => [...d!, message])
+                client.setQueryData<Message[]>(['chat'], d => [message, ...d!])
                 const messagesContainer = messagesContainerRef.current!;
                 messagesContainer.scrollTop = messagesContainer.scrollHeight!;
             })
