@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import {CancelTwoTone, ChatTwoTone, SendTwoTone} from "@mui/icons-material";
-import {Input} from "@mui/joy";
+import {Button, Input} from "@mui/joy";
 import {api} from "~/utils/api";
 import pusher from "~/stores/pusher";
 import {Events} from "~/const/events";
@@ -80,9 +80,9 @@ function ChatDialog() {
                         ))}
                     </div>
                     <Input placeholder='Ask admin..' value={msg} onChange={(e) => setMsg(e.target.value)}
-                           endDecorator={<button className='bg-transparent' onClick={sendMsg}>
+                           endDecorator={<Button className='bg-transparent' onClick={sendMsg}>
                                <SendTwoTone className='bg-transparent'/>
-                           </button>}/>
+                           </Button>}/>
                 </div>
             }
         </div>
