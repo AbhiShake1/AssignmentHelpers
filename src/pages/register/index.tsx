@@ -62,6 +62,7 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
                     'education': education,
                     'phone': phone,
                     'accountType': accountType,
+                    'about': desc,
                     'referredBy': referral,
                 }
             })

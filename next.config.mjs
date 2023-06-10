@@ -19,7 +19,7 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    domains: ['media.istockphoto.com', 'uploadthing.com']
+    domains: ['media.istockphoto.com', 'uploadthing.com', 'images.clerk.dev', 'img.clerk.com']
   },
   experimental: {
     esmExternals: false,

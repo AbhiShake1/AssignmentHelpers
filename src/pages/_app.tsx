@@ -47,7 +47,7 @@ function DesktopNavbar() {
 
     return <div
         className='border-blue-500 border-opacity-25 border m-12 p-4 rounded-2xl shadow-2xl flex flex-row bg-white'>
-        <Link href={`profile/${user.user?.id}`} scroll={true} className='p-4 bg-transparent'>
+        <Link href={`profile/${user.user?.id||''}`} scroll={true} className='p-4 bg-transparent'>
             <span className='text-blue-500 text-3xl'>Assignment</span>
             <span className='text-gray-500 text-3xl'>Helpers</span>
         </Link>
@@ -58,15 +58,15 @@ function DesktopNavbar() {
                   className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post an
                 assignment</Link>
             {user.isSignedIn && isFreelancer && <Link href='findWork' scroll={true}
-                                                      className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Find
+                                                      className={`hover:text-blue-500 p-4 ${path?.includes('findWork') ? 'text-blue-700' : ''}`}>Find
                 Work</Link>}
             {user.isSignedIn && !isFreelancer && <Link href='myAssignments' scroll={true}
-                                                       className={`hover:text-blue-500 p-4 ${path.includes('myAssignments') ? 'text-blue-700' : ''}`}>My
+                                                       className={`hover:text-blue-500 p-4 ${path?.includes('myAssignments') ? 'text-blue-700' : ''}`}>My
                 Assignments</Link>}
             <Link href='/' scroll={true}
                   className={`hover:text-blue-500 p-4 ${path == '/' ? 'text-blue-700' : ''}`}>Home</Link>
             {!user.isSignedIn && <Link href='login'
-                                       className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Log
+                                       className={`hover:text-blue-500 p-4 ${path?.includes('findWork') ? 'text-blue-700' : ''}`}>Log
                 in</Link>}
         </div>
     </div>
@@ -83,17 +83,17 @@ function MobileNavbar() {
         <Link href='/' scroll={true}
               className={`hover:text-blue-500 p-4 ${path == '/' ? 'text-blue-700' : ''}`}>Home</Link>
         <Link href='myAssignments' scroll={true}
-              className={`hover:text-blue-500 p-4 ${path.includes('myAssignments') ? 'text-blue-700' : ''}`}>My
+              className={`hover:text-blue-500 p-4 ${path?.includes('myAssignments') ? 'text-blue-700' : ''}`}>My
             Assignments</Link>
         {user.isSignedIn && isFreelancer && <Link href='findWork' scroll={true}
-                                                  className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Find
+                                                  className={`hover:text-blue-500 p-4 ${path?.includes('findWork') ? 'text-blue-700' : ''}`}>Find
             Work</Link>}
         {user.isSignedIn && !isFreelancer && <Link href='' scroll={true}
                                                    className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post
             an
             assignment</Link>}
         {!user.isSignedIn && <Link href='login'
-                                   className={`hover:text-blue-500 p-4 ${path.includes('findWork') ? 'text-blue-700' : ''}`}>Log
+                                   className={`hover:text-blue-500 p-4 ${path?.includes('findWork') ? 'text-blue-700' : ''}`}>Log
             in</Link>}
     </Hamburger>
 }
@@ -125,7 +125,7 @@ const RegisterHandler = () => {
     const auth = useUser()
 
     useEffect(() => {
-        if (router.pathname == '/' || router.pathname.includes('register')) return
+        if (router.pathname == '/' || router.pathname?.includes('register')) return
 
         // use any mandatory field
         const registered = auth.user?.unsafeMetadata['phone']
@@ -137,7 +137,7 @@ const RegisterHandler = () => {
 
 const MyApp: AppType = ({Component, pageProps}) => {
     return (
-        <ClerkProvider {...pageProps}>
+        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <ThemeProvider theme={{}}>
                     <Toaster toastOptions={{position: 'bottom-center'}}/>

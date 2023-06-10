@@ -1,5 +1,9 @@
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 import {z} from "zod";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import {clerkClient, type User} from "@clerk/clerk-sdk-node";
+
 
 type AccountType = 'personal' | 'professional'
 
@@ -17,9 +21,17 @@ interface CreateUserArgs {
 }
 
 export const userRouter = createTRPCRouter({
-    getUser: protectedProcedure.query(({ctx}) => {
-        return ctx.auth
-    }),
+    getUser: protectedProcedure
+        .query(({ctx}) => {
+            return ctx.auth
+        }),
+    getClerkUser: protectedProcedure
+        .input(z.object({userId: z.string()}))
+        .output(z.custom<User>())
+        .query(({input}) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
+            return clerkClient.users.getUser(input.userId)
+        }),
     create: protectedProcedure
         .input(z.custom<CreateUserArgs>())
         .mutation(async ({ctx, input}) => {
