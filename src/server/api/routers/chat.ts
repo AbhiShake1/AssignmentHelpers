@@ -43,15 +43,17 @@ export const chatRouter = createTRPCRouter({
             await ctx.pusher.trigger(ctx.auth!.userId!, Events.SEND_MESSAGE, message);
             return input.msg;
         }),
-    getWithAdmin: protectedProcedure.query(({ctx})=>{
+    getWithAdmin: protectedProcedure.query(({ctx}) => {
         return ctx.prisma.chat.findFirst({
             where: {
                 fromUserId: ctx.auth!.userId!,
                 toUserId: '',
             },
             include: {
-                messages: true,
-            }
+                messages: {
+                    orderBy: {createdAt: 'asc'}
+                },
+            },
         })
     })
 });

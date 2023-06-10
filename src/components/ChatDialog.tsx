@@ -62,7 +62,7 @@ function ChatDialog() {
                             <CancelTwoTone className='hover:text-blue-900'/>
                         </button>
                     </div>
-                    <div className='h-full flex flex-col-reverse overflow-y-scroll [&::-webkit-scrollbar]:hidden'>
+                    <div className='h-full flex flex-col overflow-y-scroll [&::-webkit-scrollbar]:hidden'>
                         {client.getQueryData<Message[]>(['chat'])?.map(msg => (
                             msg.senderId == user.userId ? <div key={msg.id} className='w-full items-start flex flex-col'>
                                 <div className='bg-white my-1 px-2 py-1 left-0 w-3/4 rounded-b-xl rounded-tr-xl'>
