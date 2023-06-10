@@ -80,7 +80,7 @@ function ChatDialog() {
                         ))}
                     </div>
                     <Input placeholder='Ask admin..' value={msg} onChange={(e) => setMsg(e.target.value)}
-                           endDecorator={<Button className='bg-transparent' onClick={sendMsg}>
+                           endDecorator={<Button className='bg-transparent' onClick={sendMsg} loading={sendMutation.isLoading}>
                                <SendTwoTone className='bg-transparent'/>
                            </Button>}/>
                 </div>
