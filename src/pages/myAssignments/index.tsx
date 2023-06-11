@@ -6,6 +6,7 @@ import PostAssignmentModal from "~/components/PostAssignmentModal";
 import {toast} from "react-hot-toast";
 import {useQueryClient} from "@tanstack/react-query";
 import type {Assignment, User} from "@prisma/client";
+import {Button,} from '@mantine/core';
 
 type AssignmentWithUser = Assignment & { postedBy: User }
 
