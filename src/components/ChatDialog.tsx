@@ -25,7 +25,7 @@ function ChatDialog() {
 
     useEffect(() => {
         if (chatData.isSuccess) {
-            client.setQueryData<Message[]>(['chat'], chatData.data!.messages as Message[])
+            client.setQueryData<Message[]>(['chat'], chatData.data?.messages || [])
         }
     }, [chatData.isSuccess])
 
