@@ -9,7 +9,7 @@ import {api} from "~/utils/api";
 import {type User} from "@clerk/clerk-sdk-node";
 import {Rating} from "@mui/material";
 import {InfoTwoTone} from "@mui/icons-material";
-import {UseTRPCQueryResult} from "@trpc/react-query/shared";
+import {type UseTRPCQueryResult} from "@trpc/react-query/shared";
 
 const Index = () => {
     const router = useRouter()
@@ -34,8 +34,8 @@ const Index = () => {
             <Image src={imageUrl} alt='' width={128} height={128} className='rounded-full'/>
         </div>
         <div className='flex flex-col space-y-2 w-4/5'>
-            <h2 className='text-3xl font-medium'>{`${firstName} ${lastName}`}</h2>
-            <h3>{unsafeMetadata.specialization}</h3>
+            <h2 className='text-3xl font-medium'>{`${firstName || ''} ${lastName || ''}`}</h2>
+            <h3>{unsafeMetadata.specialization?.toString() || ''}</h3>
             <h3>
                 <Rating readOnly defaultValue={2.3} size="large" precision={.1}/>
             </h3>
@@ -50,7 +50,7 @@ const Index = () => {
                         <InfoTwoTone/>
                         <h2>About</h2>
                     </div>
-                    <div className='text-center'>{unsafeMetadata.about || 'abnc'}</div>
+                    <div className='text-center'>{unsafeMetadata.about?.toString() || ''}</div>
                 </div>
             </h3>
         </div>
