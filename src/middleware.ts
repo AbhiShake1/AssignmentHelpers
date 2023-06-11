@@ -7,8 +7,10 @@ export default authMiddleware({
     afterAuth: async (auth, req, evt) => {
         const user = await clerkClient.users.getUser(auth.userId!)
         const phone = user.unsafeMetadata.phone
-        if(phone)
+        if (!phone)
             return NextResponse.rewrite(new URL('/register', req.url))
+        else if (req.url.includes('register'))
+            return NextResponse.redirect(new URL('/', req.url))
     },
 });
 
