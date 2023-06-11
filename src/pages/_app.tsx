@@ -15,6 +15,7 @@ import {toast, Toaster} from "react-hot-toast";
 import AppDialog from "~/components/AppDialog";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {MantineProvider} from "@mantine/core";
 
 function Share() {
     const [showDialog, setShowDialog] = useState(false)
@@ -115,14 +116,14 @@ function NavBar() {
 const MyApp: AppType = ({Component, pageProps}) => {
     return (
         <ClerkProvider experimental_enableClerkImages={true} touchSession={true} publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <MantineProvider withGlobalStyles withNormalizeCSS>
                 <ThemeProvider theme={{}}>
                     <Toaster toastOptions={{position: 'bottom-center'}}/>
                     <NavBar/>
                     <ChatDialog/>
                     <Component {...pageProps} />
                 </ThemeProvider>
-            </LocalizationProvider>
+            </MantineProvider>
         </ClerkProvider>
     );
 };

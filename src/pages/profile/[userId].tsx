@@ -1,14 +1,11 @@
 import React from 'react';
 import {useRouter} from "next/router";
 import Image from "next/image";
-import {Chip, CircularProgress} from "@mui/joy";
 import {NotFound} from "next/dist/client/components/error";
 import {api} from "~/utils/api";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import {type User} from "@clerk/clerk-sdk-node";
-import {Rating} from "@mui/material";
-import {InfoTwoTone} from "@mui/icons-material";
 import {type UseTRPCQueryResult} from "@trpc/react-query/shared";
 
 const Index = () => {

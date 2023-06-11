@@ -6,11 +6,6 @@ import PostAssignmentModal from "~/components/PostAssignmentModal";
 import {toast} from "react-hot-toast";
 import {useQueryClient} from "@tanstack/react-query";
 import type {Assignment, User} from "@prisma/client";
-import {Button} from "@mui/material";
-import Sheet from "@mui/joy/Sheet";
-import ModalClose from "@mui/joy/ModalClose";
-import Typography from "@mui/joy/Typography";
-import Modal from "@mui/joy/Modal";
 
 type AssignmentWithUser = Assignment & { postedBy: User }
 

@@ -1,17 +1,10 @@
 import React, {type FC, useEffect, useState} from 'react';
 import MultiStepForm from "~/components/MultiStepForm";
-import {Button, FormControlLabel, TextField} from "@mui/material";
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import Typography from "@mui/joy/Typography";
 import {toast} from "react-hot-toast";
 import TagsInput from "~/components/TagsInput";
 import {useRouter} from "next/router";
 import {api} from "~/utils/api";
 import {useUser} from "@clerk/nextjs";
-import {Textarea} from "@mui/joy";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 
 const numberRegex = /^\d*$/
