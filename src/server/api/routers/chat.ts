@@ -40,7 +40,7 @@ export const chatRouter = createTRPCRouter({
                     },
                 },
             })
-            const message = (chat.messages as Message[]).at(0)!
+            const message = chat.messages.at(0)!
             await ctx.pusher.trigger(ctx.auth!.userId!, Events.SEND_MESSAGE, message);
             return input.msg;
         }),
