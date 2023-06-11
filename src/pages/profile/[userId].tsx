@@ -45,13 +45,13 @@ const Index = () => {
                 }
             </h3>
             <h3 className='pt-16 w-3/4'>
-                <div className='flex flex-col items-center space-y-4 shadow-2xl bg-white p-4 rounded-lg'>
+                {unsafeMetadata.about ? <div className='flex flex-col items-center space-y-4 shadow-2xl bg-white p-4 rounded-lg'>
                     <div className='flex flex-row space-x-2'>
                         <InfoTwoTone/>
                         <h2>About</h2>
                     </div>
                     <div className='text-center'>{unsafeMetadata.about?.toString() || ''}</div>
-                </div>
+                </div> : <></>}
             </h3>
         </div>
     </div>
