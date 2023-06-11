@@ -3,10 +3,13 @@ import {useRouter} from "next/router";
 import Image from "next/image";
 import {NotFound} from "next/dist/client/components/error";
 import {api} from "~/utils/api";
+import {Rating, RingProgress} from '@mantine/core';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import {type User} from "@clerk/clerk-sdk-node";
 import {type UseTRPCQueryResult} from "@trpc/react-query/shared";
+import { Chip } from '@mantine/core';
+import {IconInfoHexagon} from "@tabler/icons-react";
 
 const Index = () => {
     const router = useRouter()
@@ -18,7 +21,11 @@ const Index = () => {
     const user: UseTRPCQueryResult<User, any> = api.user.getClerkUser.useQuery({userId})
 
     if (user.isLoading) return <div className='flex flex-row justify-center items-center h-screen'>
-        <CircularProgress size='lg'/>
+        <RingProgress size={140} sections={[
+            { value: 40, color: 'cyan' },
+            { value: 15, color: 'orange' },
+            { value: 15, color: 'grape' },
+        ]} roundCaps/>
     </div>
 
     if (!user.isSuccess) return <NotFound/>
@@ -34,7 +41,7 @@ const Index = () => {
             <h2 className='text-3xl font-medium'>{`${firstName || ''} ${lastName || ''}`}</h2>
             <h3>{unsafeMetadata.specialization?.toString() || ''}</h3>
             <h3>
-                <Rating readOnly defaultValue={2.3} size="large" precision={.1}/>
+                <Rating readOnly defaultValue={2.3} size="large" fractions={2}/>
             </h3>
             <h3 className='pt-8'>
                 {
@@ -44,7 +51,7 @@ const Index = () => {
             <h3 className='pt-16 w-3/4'>
                 {unsafeMetadata.about ? <div className='flex flex-col items-center space-y-4 shadow-2xl bg-white p-4 rounded-lg'>
                     <div className='flex flex-row space-x-2'>
-                        <InfoTwoTone/>
+                        <IconInfoHexagon/>
                         <h2>About</h2>
                     </div>
                     <div className='text-center'>{unsafeMetadata.about?.toString() || ''}</div>

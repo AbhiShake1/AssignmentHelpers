@@ -40,6 +40,9 @@ dependencies:
   '@t3-oss/env-nextjs':
     specifier: ^0.3.1
     version: 0.3.1(typescript@5.0.4)(zod@3.21.4)
+  '@tabler/icons-react':
+    specifier: ^2.22.0
+    version: 2.22.0(react@18.3.0-canary-e1ad4aa36-20230601)
   '@tanstack/react-query':
     specifier: ^4.29.7
     version: 4.29.7(react-dom@18.3.0-canary-e1ad4aa36-20230601)(react@18.3.0-canary-e1ad4aa36-20230601)
@@ -2736,6 +2739,20 @@ packages:
       '@t3-oss/env-core': 0.3.1(typescript@5.0.4)(zod@3.21.4)
       typescript: 5.0.4
       zod: 3.21.4
+    dev: false
+
+  /@tabler/icons-react@2.22.0(react@18.3.0-canary-e1ad4aa36-20230601):
+    resolution: {integrity: sha512-9udRxrbsbWzUETur4jmbZQIZkH7jVA2GU7YnKYS7ZCUjdOHZZEhmsfJ/Gdbzz0gSRC3mU7SDMsKejun/IBjvpQ==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tabler/icons': 2.22.0
+      prop-types: 15.8.1
+      react: 18.3.0-canary-e1ad4aa36-20230601
+    dev: false
+
+  /@tabler/icons@2.22.0:
+    resolution: {integrity: sha512-lOsGHqRPIKNARMWHHFkUUJH78C8ptQmUcDnumFBUI4YLRKFouKa7uAZL3ZfuH0HjDpOhsnWqUYZ7FhMCLcGpAQ==}
     dev: false
 
   /@tanstack/query-core@4.29.7:
