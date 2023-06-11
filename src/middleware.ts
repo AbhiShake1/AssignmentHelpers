@@ -4,7 +4,7 @@ import {NextResponse} from "next/server";
 
 export default authMiddleware({
     publicRoutes: ["/"],
-    afterAuth: async (auth, req, evt) => {
+    afterAuth: async (auth, req) => {
         const user = await clerkClient.users.getUser(auth.userId!)
         const phone = user.unsafeMetadata.phone
         if (!phone)
