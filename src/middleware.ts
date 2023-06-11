@@ -9,7 +9,7 @@ export default authMiddleware({
         const phone = user.unsafeMetadata.phone
         if (!phone)
             return NextResponse.rewrite(new URL('/register', req.url))
-        else if (req.url.includes('register'))
+        if (req.url.includes('register'))
             return NextResponse.redirect(new URL('/', req.url))
     },
 });
