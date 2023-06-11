@@ -53,9 +53,6 @@ function DesktopNavbar() {
         <div className='flex flex-row-reverse space-x-4 w-full bg-transparent'>
             {user.isSignedIn && <div className='mx-4 p-4'><UserButton afterSignOutUrl='/'/></div>}
             <Share/>
-            <Link href='' scroll={true}
-                  className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post an
-                assignment</Link>
             {user.isSignedIn && isFreelancer && <Link href='/findWork' scroll={true}
                                                       className={`hover:text-blue-500 p-4 ${path?.includes('findWork') ? 'text-blue-700' : ''}`}>Find
                 Work</Link>}
@@ -87,10 +84,6 @@ function MobileNavbar() {
         {user.isSignedIn && isFreelancer && <Link href='/findWork' scroll={true}
                                                   className={`hover:text-blue-500 p-4 ${path?.includes('findWork') ? 'text-blue-700' : ''}`}>Find
             Work</Link>}
-        {user.isSignedIn && !isFreelancer && <Link href='' scroll={true}
-                                                   className='mx-4 rounded-3xl bg-blue-500 py-4 px-8 hover:bg-blue-900 text-white mb-4'>Post
-            an
-            assignment</Link>}
         {!user.isSignedIn && <Link href='/login'
                                    className={`hover:text-blue-500 p-4 ${path?.includes('findWork') ? 'text-blue-700' : ''}`}>Log
             in</Link>}
