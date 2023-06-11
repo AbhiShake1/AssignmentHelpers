@@ -1,12 +1,17 @@
 import {authMiddleware} from "@clerk/nextjs";
+import {clerkClient} from "@clerk/clerk-sdk-node";
+import {NextResponse} from "next/server";
 
 export default authMiddleware({
     publicRoutes: ["/"],
-    afterAuth: (auth, req, evt) => {
-        console.log(evt.sourcePage)
+    afterAuth: async (auth, req, evt) => {
+        const user = await clerkClient.users.getUser(auth.userId!)
+        const phone = user.unsafeMetadata.phone
+        if(phone)
+            return NextResponse.rewrite(new URL('/register', req.url))
     },
 });
 
 export const config = {
-    matcher: ["/((?!.*\\..*|_next).*)", "/(api|trpc)(.*)"],
+    matcher: ["/((?!.*\\..*|_next).*)", "/(api|trpc)(.*)", "/register((?!.*\\..*|_next).*)"],
 };

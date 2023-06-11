@@ -47,11 +47,6 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
         }
     })
 
-    useEffect(() => {
-        const referrer = localStorage.getItem('referrer')
-        if (referrer) setReferral(referrer)
-    }, [auth, router])
-
     async function updateUser() {
         try {
             toast.loading('signing up...')
@@ -166,13 +161,6 @@ const ChoiceForm: FC<ChoiceFormProps> = ({onSubmit}) => {
 function Register() {
     const [choice, setChoice] = useState<AccountType | undefined>()
     const [animation] = useAutoAnimate()
-    const router = useRouter()
-    const auth = useUser()
-
-    useEffect(() => {
-        const registered = auth.user?.unsafeMetadata['phone']
-        if (registered) return void router.replace('/')
-    }, [auth, router])
 
     return <div className='flex flex-col items-center justify-center' ref={animation}>
         {choice ? <RegisterForm accountType={choice}/> : <ChoiceForm onSubmit={setChoice}/>}
