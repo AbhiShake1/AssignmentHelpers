@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {api} from "~/utils/api";
-import {Code, createStyles, getStylesRef, Group, Loader, Navbar, rem} from '@mantine/core';
+import {Code, createStyles, getStylesRef, Group, Input, Loader, Navbar, rem} from '@mantine/core';
 import {
     Icon2fa,
     IconBellRinging,
@@ -101,11 +101,16 @@ function Index() {
     ));
 
     return (
-        <Navbar height={700} width={{sm: 300}} p="md">
-            <Navbar.Section grow>
-                {links}
-            </Navbar.Section>
-        </Navbar>
+        <div className='flex flex-row'>
+            <Navbar width={{sm: 300}} p="md">
+                <Navbar.Section grow>
+                    {links}
+                </Navbar.Section>
+            </Navbar>
+            <div className='w-full bg-red-900 flex flex-col space-y-4'>
+                <Input placeholder='Write something..' size='lg'></Input>
+            </div>
+        </div>
     );
 }
 
