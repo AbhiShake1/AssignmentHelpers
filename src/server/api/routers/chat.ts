@@ -4,7 +4,7 @@ import {z} from "zod";
 
 export const chatRouter = createTRPCRouter({
     send: protectedProcedure
-        .input(z.object({msg: z.string().nonempty(), to: z.string().optional()}))
+        .input(z.object({msg: z.string().nonempty(), to: z.string().optional(), senderId: z.string().optional()}))
         .mutation(async ({ctx, input}) => {
             const uid = ctx.auth!.userId!
             const chat = await ctx.prisma.chat.upsert({
@@ -19,7 +19,7 @@ export const chatRouter = createTRPCRouter({
                     toUserId: input.to || '',
                     messages: {
                         create: {
-                            senderId: uid,
+                            senderId: input.senderId || uid,
                             text: input.msg,
                         },
                     },
@@ -27,7 +27,7 @@ export const chatRouter = createTRPCRouter({
                 update: {
                     messages: {
                         create: {
-                            senderId: uid,
+                            senderId: input.senderId || uid,
                             text: input.msg,
                         },
                     },
@@ -41,7 +41,7 @@ export const chatRouter = createTRPCRouter({
             })
             const message = chat.messages.at(0)!
             await ctx.pusher.trigger(`${chat.fromUserId}-${chat.toUserId || ''}`, Events.SEND_MESSAGE, message);
-            return input.msg;
+            return message;
         }),
     supportChats: protectedProcedure.query(({ctx}) => {
         return ctx.prisma.chat.findMany({

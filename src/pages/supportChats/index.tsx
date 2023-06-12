@@ -1,18 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {api} from "~/utils/api";
 import {Button, createStyles, getStylesRef, Input, Loader, Navbar, rem} from '@mantine/core';
-import {
-    Icon2fa,
-    IconBellRinging,
-    IconDatabaseImport,
-    IconFingerprint,
-    IconKey,
-    IconReceipt2,
-    IconSend,
-    IconSettings,
-    IconUser,
-} from '@tabler/icons-react';
-
+import {IconSend, IconUser,} from '@tabler/icons-react';
+import type {Message} from '@prisma/client'
+import {toast} from "react-hot-toast";
+import pusher from "~/stores/pusher";
+import {Events} from "~/const/events";
+import {useAuth} from "@clerk/nextjs";
 
 const useStyles = createStyles((theme) => ({
     header: {
@@ -69,22 +63,45 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const data = [
-    {link: '', label: 'Notifications', icon: IconBellRinging},
-    {link: '', label: 'Billing', icon: IconReceipt2},
-    {link: '', label: 'Security', icon: IconFingerprint},
-    {link: '', label: 'SSH Keys', icon: IconKey},
-    {link: '', label: 'Databases', icon: IconDatabaseImport},
-    {link: '', label: 'Authentication', icon: Icon2fa},
-    {link: '', label: 'Other Settings', icon: IconSettings},
-];
-
 function Index() {
+    const [msgs, setMsgs] = useState<Message[]>([])
     const chats = api.chat.supportChats.useQuery()
     const {classes, cx} = useStyles();
     const [active, setActive] = useState('')
     const [text, setText] = useState('')
-    const sendMutation = api.chat.send.useMutation()
+    const user = useAuth()
+
+    const chat = chats.data?.find(c => c.fromUserId == active)
+
+    useEffect(() => {
+        if (chat) {
+            setMsgs(chat.messages)
+        }
+    }, [active, chat])
+
+    useEffect(() => {
+        if (!chat) return
+
+        const id = chat.fromUserId
+        // reset before new subscription
+        if (id) {
+            pusher.unsubscribe(id)
+            pusher.unbind(id)
+            pusher.subscribe(id).bind(Events.SEND_MESSAGE, (message: Message) => {
+                setMsgs(msgs => [...msgs, message])
+                // messagesContainerRef.current?.scroll({behavior: "smooth", top: 0})
+            })
+        }
+        return () => pusher.unsubscribe(chat.fromUserId)
+    }, [user.userId, chat])
+
+    const sendMutation = api.chat.send.useMutation({
+        onSuccess: data => {
+            setText('')
+            setMsgs(msgs => [...msgs, data])
+        },
+        onError: err => toast.error(err.message),
+    })
 
     if (!chats.isSuccess) return <center><Loader/></center>
 
@@ -102,28 +119,28 @@ function Index() {
         </a>
     ))
 
-    const chat = chats.data.find(c => c.fromUserId == active)
-
     return (
         <div className='flex flex-row h-[80vh]'>
             <Navbar className='w-2/12 h-full' p="md">
                 {links}
             </Navbar>
             {
-                chat && <div className='flex flex-col space-y-4 w-9/12 overflow-y-auto mb-[5vh] mt-4 mx-2'>
+                chat && msgs.length > 0 &&
+                <div className='flex flex-col space-y-4 w-9/12 overflow-y-auto mb-[5vh] mt-4 mx-2'>
                     {
-                        chat.messages?.map(message => (
+                        msgs?.map(message => (
                             <div key={message.id} className='flex flex-col space-y-2'>
                                 {
                                     message.senderId == '' ? <div className='flex flex-row'>
                                             <div
-                                                className='py-2 px-4 bg-blue-300 max-w-xl rounded-b-3xl rounded-tr-3xl'>{chat.fromUserId}</div>
+                                                className='py-2 px-4 bg-blue-300 max-w-xl rounded-b-3xl rounded-tr-3xl'>{message.text}</div>
                                             <div className='w-full'/>
                                         </div> :
                                         <div className='flex flex-row'>
                                             <div className='w-full'/>
                                             <div
-                                                className='py-2 px-4 bg-blue-300 max-w-xl rounded-t-3xl rounded-bl-3xl'>jdfios
+                                                className='py-2 px-4 bg-blue-300 max-w-xl rounded-t-3xl rounded-bl-3xl'>
+                                                {message.text}
                                             </div>
                                         </div>
                                 }
@@ -132,10 +149,12 @@ function Index() {
                     }
                     <Input value={text} onChange={e => setText(e.target.value)} placeholder='Write something..'
                            size='lg' className='m-4 absolute bottom-4 w-8/12'
-                           rightSection={<Button variant='subtle' disabled={!text} onClick={() => sendMutation.mutate({
-                               msg: text,
-                               to: ''
-                           })}><IconSend/></Button>}/>
+                           rightSection={<Button variant='subtle' disabled={!text} loading={sendMutation.isLoading}
+                                                 onClick={() => sendMutation.mutate({
+                                                     msg: text,
+                                                     to: chat.fromUserId,
+                                                     senderId: '',
+                                                 })}><IconSend/></Button>}/>
                 </div>
             }
         </div>

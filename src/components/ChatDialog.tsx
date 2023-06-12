@@ -31,6 +31,9 @@ function ChatDialog() {
 
     useEffect(() => {
         const id = user.userId
+
+        if (!id) return
+
         // reset before new subscription
         if (id) {
             pusher.unsubscribe(id)
@@ -40,6 +43,7 @@ function ChatDialog() {
                 messagesContainerRef.current?.scroll({behavior: "smooth", top: 0})
             })
         }
+        return () => pusher.unsubscribe(user.userId)
     }, [user.userId])
 
     function sendMsg() {
