@@ -16,7 +16,8 @@ export default function Index() {
         onSuccess: data => {
             client.setQueryData(['assignment'], data)
             modals.closeAll()
-        }
+        },
+        onError: err => toast.error(err.message)
     })
 
     const showDialog = () => modals.open({
