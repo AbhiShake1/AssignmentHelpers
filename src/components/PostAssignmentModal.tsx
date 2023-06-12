@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {api} from "~/utils/api";
 import type {Assignment} from "@prisma/client";
 import {Button, Input} from "@mantine/core";
-import {DatePicker} from "@mantine/dates";
+import {DateInput, DatePicker} from "@mantine/dates";
 import {User} from "@prisma/client";
 
 interface Props {
@@ -56,7 +56,7 @@ const PostAssignmentModal: React.FC<Props> = ({onPost}) => {
                         <Input placeholder='Budget' onChange={e => setBudget(e.target.value)}/>
                     </Input.Wrapper>
                     <Input.Wrapper label='Deadline'>
-                        <DatePicker onChange={setDeadline} minDate={new Date()}/>
+                        <DateInput onChange={setDeadline} minDate={new Date()}/>
                     </Input.Wrapper>
                     <div className='pb-8'>
                         {
