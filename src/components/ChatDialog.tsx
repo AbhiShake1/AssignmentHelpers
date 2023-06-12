@@ -8,7 +8,7 @@ import type {Message} from "@prisma/client";
 import {useQueryClient} from "@tanstack/react-query";
 import {toast} from "react-hot-toast";
 import {IconChevronsDownRight, IconMessageChatbot, IconSend} from "@tabler/icons-react";
-import {Input} from "@mantine/core";
+import {Input, Loader} from "@mantine/core";
 
 function ChatDialog() {
     const [open, setOpen] = useState(false)
@@ -16,7 +16,7 @@ function ChatDialog() {
     const user = useAuth()
     const [animate] = useAutoAnimate({duration: 200, easing: 'linear'})
     const messagesContainerRef = useRef<HTMLDivElement>(null);
-    const sendMutation = api.chat.sendAdmin.useMutation({
+    const sendMutation = api.chat.send.useMutation({
         onError: err => toast.error(err.message)
     })
 
@@ -69,7 +69,7 @@ function ChatDialog() {
                          ref={messagesContainerRef}>
                         {
                             chatData.isLoading ? <center>
-                                {/*<CircularProgress/>*/}
+                                <Loader/>
                             </center> : client.getQueryData<Message[]>(['chat'])?.map(msg => (
                                 msg.senderId == user.userId ?
                                     <div key={msg.id} className='w-full items-start flex flex-col'>

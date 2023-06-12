@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import {api} from "~/utils/api";
-import {Code, createStyles, getStylesRef, Group, Input, Loader, Navbar, rem} from '@mantine/core';
+import {Button, createStyles, getStylesRef, Input, Loader, Navbar, rem} from '@mantine/core';
 import {
     Icon2fa,
     IconBellRinging,
     IconDatabaseImport,
     IconFingerprint,
     IconKey,
-    IconLogout,
     IconReceipt2,
+    IconSend,
     IconSettings,
-    IconSwitchHorizontal, IconUser,
+    IconUser,
 } from '@tabler/icons-react';
 
 
@@ -32,7 +32,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     link: {
-        ...theme.fn.focusStyles(),
+        // ...theme.fn.focusStyles(),
         display: 'flex',
         alignItems: 'center',
         textDecoration: 'none',
@@ -82,11 +82,13 @@ const data = [
 function Index() {
     const chats = api.chat.supportChats.useQuery()
     const {classes, cx} = useStyles();
-    const [active, setActive] = useState('Billing');
+    const [active, setActive] = useState('')
+    const [text, setText] = useState('')
+    const sendMutation = api.chat.send.useMutation()
 
-    if(!chats.isSuccess) return <center><Loader/></center>
+    if (!chats.isSuccess) return <center><Loader/></center>
 
-    const links = chats.data?.map((item) => (
+    const links = chats.data.map((item) => (
         <a
             className={cx(classes.link, {[classes.linkActive]: item.fromUserId === active})}
             key={item.fromUserId}
@@ -98,18 +100,44 @@ function Index() {
             <IconUser className={classes.linkIcon} stroke={1.5}/>
             <span>{item.fromUser.name}</span>
         </a>
-    ));
+    ))
+
+    const chat = chats.data.find(c => c.fromUserId == active)
 
     return (
-        <div className='flex flex-row'>
-            <Navbar width={{sm: 300}} p="md">
-                <Navbar.Section grow>
-                    {links}
-                </Navbar.Section>
+        <div className='flex flex-row h-[80vh]'>
+            <Navbar className='w-2/12 h-full' p="md">
+                {links}
             </Navbar>
-            <div className='w-full bg-red-900 flex flex-col space-y-4'>
-                <Input placeholder='Write something..' size='lg'></Input>
-            </div>
+            {
+                chat && <div className='flex flex-col space-y-4 w-9/12 overflow-y-auto mb-[5vh] mt-4 mx-2'>
+                    {
+                        chat.messages?.map(message => (
+                            <div key={message.id} className='flex flex-col space-y-2'>
+                                {
+                                    message.senderId == '' ? <div className='flex flex-row'>
+                                            <div
+                                                className='py-2 px-4 bg-blue-300 max-w-xl rounded-b-3xl rounded-tr-3xl'>{chat.fromUserId}</div>
+                                            <div className='w-full'/>
+                                        </div> :
+                                        <div className='flex flex-row'>
+                                            <div className='w-full'/>
+                                            <div
+                                                className='py-2 px-4 bg-blue-300 max-w-xl rounded-t-3xl rounded-bl-3xl'>jdfios
+                                            </div>
+                                        </div>
+                                }
+                            </div>
+                        ))
+                    }
+                    <Input value={text} onChange={e => setText(e.target.value)} placeholder='Write something..'
+                           size='lg' className='m-4 absolute bottom-4 w-8/12'
+                           rightSection={<Button variant='subtle' disabled={!text} onClick={() => sendMutation.mutate({
+                               msg: text,
+                               to: ''
+                           })}><IconSend/></Button>}/>
+                </div>
+            }
         </div>
     );
 }

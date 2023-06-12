@@ -1,23 +1,22 @@
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 import {Events} from "~/const/events";
 import {z} from "zod";
-import type {Message} from "@prisma/client"
 
 export const chatRouter = createTRPCRouter({
-    sendAdmin: protectedProcedure
-        .input(z.object({msg: z.string().nonempty()}))
+    send: protectedProcedure
+        .input(z.object({msg: z.string().nonempty(), to: z.string().optional()}))
         .mutation(async ({ctx, input}) => {
             const uid = ctx.auth!.userId!
             const chat = await ctx.prisma.chat.upsert({
                 where: {
                     fromUserId_toUserId: {
                         fromUserId: uid,
-                        toUserId: '',
+                        toUserId: input.to || '',
                     }
                 },
                 create: {
                     fromUserId: uid,
-                    toUserId: '',
+                    toUserId: input.to || '',
                     messages: {
                         create: {
                             senderId: uid,
@@ -41,16 +40,17 @@ export const chatRouter = createTRPCRouter({
                 },
             })
             const message = chat.messages.at(0)!
-            await ctx.pusher.trigger(ctx.auth!.userId!, Events.SEND_MESSAGE, message);
+            await ctx.pusher.trigger(`${chat.fromUserId}-${chat.toUserId || ''}`, Events.SEND_MESSAGE, message);
             return input.msg;
         }),
-    supportChats: protectedProcedure.query(({ctx})=>{
+    supportChats: protectedProcedure.query(({ctx}) => {
         return ctx.prisma.chat.findMany({
             where: {
                 toUserId: '',
             },
             include: {
                 fromUser: true,
+                messages: true,
             }
         })
     }),
