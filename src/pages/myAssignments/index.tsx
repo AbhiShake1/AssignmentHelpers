@@ -13,7 +13,10 @@ type AssignmentWithUser = Assignment & { postedBy: User }
 export default function Index() {
     const client = useQueryClient()
     api.assignment.getMy.useQuery({limit: 20, skip: 0}, {
-        onSuccess: data => client.setQueryData(['assignment'], data)
+        onSuccess: data => {
+            client.setQueryData(['assignment'], data)
+            modals.closeAll()
+        }
     })
 
     const showDialog = () => modals.open({
