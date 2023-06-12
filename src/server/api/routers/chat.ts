@@ -48,6 +48,9 @@ export const chatRouter = createTRPCRouter({
         return ctx.prisma.chat.findMany({
             where: {
                 toUserId: '',
+            },
+            include: {
+                fromUser: true,
             }
         })
     }),
