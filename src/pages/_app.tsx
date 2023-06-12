@@ -75,6 +75,8 @@ function DesktopNavbar() {
             {user.isSignedIn && !isFreelancer && <Link href='/myAssignments' scroll={true}
                                                        className={`hover:text-blue-500 p-4 ${path?.includes('myAssignments') ? 'text-blue-700' : ''}`}>My
                 Assignments</Link>}
+            {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/supportChats' scroll={true}
+                                                                                     className={`hover:text-blue-500 p-4 ${path?.includes('supportChats') ? 'text-blue-700' : ''}`}>Support chats</Link>}
             <Link href='/' scroll={true}
                   className={`hover:text-blue-500 p-4 ${path == '/' ? 'text-blue-700' : ''}`}>Home</Link>
             {!user.isSignedIn && <Link href='/login'
@@ -97,6 +99,8 @@ function MobileNavbar() {
         <Link href='/myAssignments' scroll={true}
               className={`hover:text-blue-500 p-4 ${path?.includes('myAssignments') ? 'text-blue-700' : ''}`}>My
             Assignments</Link>
+        {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/supportChats' scroll={true}
+                                                                                 className={`hover:text-blue-500 p-4 ${path?.includes('supportChats') ? 'text-blue-700' : ''}`}>Support chats</Link>}
         {user.isSignedIn && isFreelancer && <Link href='/findWork' scroll={true}
                                                   className={`hover:text-blue-500 p-4 ${path?.includes('findWork') ? 'text-blue-700' : ''}`}>Find
             Work</Link>}
