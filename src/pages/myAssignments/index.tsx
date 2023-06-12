@@ -13,11 +13,7 @@ type AssignmentWithUser = Assignment & { postedBy: User }
 export default function Index() {
     const client = useQueryClient()
     api.assignment.getMy.useQuery({limit: 20, skip: 0}, {
-        onSuccess: data => {
-            client.setQueryData(['assignment'], data)
-            modals.closeAll()
-        },
-        onError: err => toast.error(err.message)
+        onSuccess: data => client.setQueryData(['assignment'], data),
     })
 
     const showDialog = () => modals.open({
@@ -27,6 +23,7 @@ export default function Index() {
             <PostAssignmentModal onPost={(assignment) => {
                 toast.success('New assignment posted')
                 client.setQueryData<Assignment[]>(['assignment'], d => !d ? d : [...d, assignment])
+                modals.closeAll()
             }}/>
         ),
     })
