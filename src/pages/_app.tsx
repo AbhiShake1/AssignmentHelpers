@@ -66,7 +66,9 @@ function DesktopNavbar() {
         </Link>
         <div className='flex flex-row-reverse space-x-4 w-full bg-transparent'>
             {user.isSignedIn && <div className='mx-4 p-4'><UserButton afterSignOutUrl='/'/></div>}
-            <Share/>
+            <div className='flex items-center justify-center pb-4'>
+                <Share/>
+            </div>
             {user.isSignedIn && isFreelancer && <Link href='/findWork' scroll={true}
                                                       className={`hover:text-blue-500 p-4 ${path?.includes('findWork') ? 'text-blue-700' : ''}`}>Find
                 Work</Link>}
