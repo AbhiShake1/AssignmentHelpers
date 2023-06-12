@@ -56,6 +56,9 @@ export const assignmentRouter = createTRPCRouter({
                             id: ctx.auth!.userId!,
                         },
                     }
+                },
+                include: {
+                    postedBy: true,
                 }
             })
         })

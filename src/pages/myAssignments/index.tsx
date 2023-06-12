@@ -1,9 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import {api} from "~/utils/api";
 import AssignmentPost from "~/components/AssignmentPost";
 import PostAssignmentModal from "~/components/PostAssignmentModal";
 import {toast} from "react-hot-toast";
-import {useQueryClient} from "@tanstack/react-query";
 import type {Assignment, User} from "@prisma/client";
 import {Button,} from '@mantine/core';
 import {modals} from "@mantine/modals";
@@ -11,9 +10,9 @@ import {modals} from "@mantine/modals";
 type AssignmentWithUser = Assignment & { postedBy: User }
 
 export default function Index() {
-    const client = useQueryClient()
+    const [assignments, setAssignments] = useState<AssignmentWithUser[]>([])
     api.assignment.getMy.useQuery({limit: 20, skip: 0}, {
-        onSuccess: data => client.setQueryData(['assignment'], data),
+        onSuccess: setAssignments,
     })
 
     const showDialog = () => modals.open({
@@ -22,7 +21,7 @@ export default function Index() {
         children: (
             <PostAssignmentModal onPost={(assignment) => {
                 toast.success('New assignment posted')
-                client.setQueryData<Assignment[]>(['assignment'], d => !d ? d : [...d, assignment])
+                setAssignments(d => [...d, assignment])
                 modals.closeAll()
             }}/>
         ),
@@ -33,7 +32,7 @@ export default function Index() {
             <Button variant='outline' size='xl' onClick={showDialog}>Post an assignment</Button>
             <div className="m-8 p-8 grid w-full grid-rows-2 grid-flow-col gap-4 auto-cols-auto">
                 {
-                    client.getQueryData<AssignmentWithUser[]>(['assignment'])?.map((assignment, index) => (
+                    assignments.map((assignment, index) => (
                         <div key={index}>
                             <AssignmentPost assignment={assignment}/>
                         </div>

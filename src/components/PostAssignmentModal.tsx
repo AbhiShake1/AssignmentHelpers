@@ -4,9 +4,10 @@ import {api} from "~/utils/api";
 import type {Assignment} from "@prisma/client";
 import {Button, Input} from "@mantine/core";
 import {DatePicker} from "@mantine/dates";
+import {User} from "@prisma/client";
 
 interface Props {
-    onPost: (assignment: Assignment) => void
+    onPost: (assignment: Assignment & { postedBy: User }) => void
 }
 
 const PostAssignmentModal: React.FC<Props> = ({onPost}) => {
