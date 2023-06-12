@@ -1,7 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useAutoAnimate} from "@formkit/auto-animate/react";
-import {CancelTwoTone, ChatTwoTone, SendTwoTone} from "@mui/icons-material";
-import {Button, CircularProgress, Input} from "@mui/joy";
 import {api} from "~/utils/api";
 import pusher from "~/stores/pusher";
 import {Events} from "~/const/events";
@@ -9,6 +7,8 @@ import {useAuth} from "@clerk/nextjs";
 import type {Message} from "@prisma/client";
 import {useQueryClient} from "@tanstack/react-query";
 import {toast} from "react-hot-toast";
+import {IconChevronsDownRight, IconMessageChatbot, IconSend} from "@tabler/icons-react";
+import {Input} from "@mantine/core";
 
 function ChatDialog() {
     const [open, setOpen] = useState(false)
@@ -43,7 +43,7 @@ function ChatDialog() {
     }, [user.userId])
 
     function sendMsg() {
-        if (!msg || msg.length == 0) return
+        if (!msg || msg.length == 0 || sendMutation.isLoading) return
 
         sendMutation.mutate({msg})
 
@@ -55,21 +55,21 @@ function ChatDialog() {
             {
                 !open && <button onClick={() => setOpen(true)}
                                  className='w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center shadow-2xl hover:bg-blue-900 absolute bottom-2 right-2'>
-                    <ChatTwoTone className='scale-150 text-white'/>
+                    <IconMessageChatbot className='scale-150 text-white'/>
                 </button>
             }
             {
                 open && <div className='w-full h-full bg-blue-300 p-4 rounded-xl flex flex-col space-y-2'>
                     <div className='w-full bg-white px-4 py-2 rounded-lg flex flex-row space-x-2'>
                         <button onClick={() => setOpen(false)}>
-                            <CancelTwoTone className='hover:text-blue-900'/>
+                            <IconChevronsDownRight className='hover:text-blue-900'/>
                         </button>
                     </div>
                     <div className='h-full flex flex-col-reverse overflow-y-scroll [&::-webkit-scrollbar]:hidden'
                          ref={messagesContainerRef}>
                         {
                             chatData.isLoading ? <center>
-                                <CircularProgress/>
+                                {/*<CircularProgress/>*/}
                             </center> : client.getQueryData<Message[]>(['chat'])?.map(msg => (
                                 msg.senderId == user.userId ?
                                     <div key={msg.id} className='w-full items-start flex flex-col'>
@@ -90,10 +90,12 @@ function ChatDialog() {
                                    sendMsg()
                                }
                            }}
-                           endDecorator={<Button onClick={sendMsg} loading={sendMutation.isLoading}
-                                                 disabled={msg?.length == 0}>
-                               <SendTwoTone/>
-                           </Button>}/>
+                           rightSection={
+                               <button onClick={sendMsg}>
+                                   <IconSend
+                                       className={`text-${msg?.length == 0 || sendMutation.isLoading ? 'black' : 'blue-600'}`}/>
+                               </button>
+                           }/>
                 </div>
             }
         </div>

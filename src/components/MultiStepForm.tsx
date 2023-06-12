@@ -1,17 +1,7 @@
 import React, {useState} from 'react';
-import {
-    Button,
-    Step,
-    StepConnector,
-    stepConnectorClasses,
-    type StepIconProps,
-    StepLabel,
-    Stepper,
-} from '@mui/material';
-import {styled} from "@mui/joy";
-import {Check} from "@mui/icons-material";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import {toast} from "react-hot-toast";
+import {Button, Stepper} from "@mantine/core";
 
 
 interface Props {
@@ -20,66 +10,6 @@ interface Props {
         onPrevious?: (count: number) => void,
     }[]
     onSubmit?: React.FormEventHandler<HTMLFormElement>
-}
-
-const QontoConnector = styled(StepConnector)(({theme}) => ({
-    [`&.${stepConnectorClasses.alternativeLabel}`]: {
-        top: 10,
-        left: 'calc(-50% + 16px)',
-        right: 'calc(50% + 16px)',
-    },
-    [`&.${stepConnectorClasses.active}`]: {
-        [`& .${stepConnectorClasses.line}`]: {
-            borderColor: '#784af4',
-        },
-    },
-    [`&.${stepConnectorClasses.completed}`]: {
-        [`& .${stepConnectorClasses.line}`]: {
-            borderColor: '#784af4',
-        },
-    },
-    [`& .${stepConnectorClasses.line}`]: {
-        borderColor: theme.palette.mode === 'dark' ? 'gray' : '#eaeaf0',
-        borderTopWidth: 3,
-        borderRadius: 1,
-    },
-}))
-
-const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
-    ({theme, ownerState}) => ({
-        color: theme.palette.mode === 'dark' ? 'gray' : '#eaeaf0',
-        display: 'flex',
-        height: 22,
-        alignItems: 'center',
-        ...(ownerState.active && {
-            color: '#784af4',
-        }),
-        '& .QontoStepIcon-completedIcon': {
-            color: '#784af4',
-            zIndex: 1,
-            fontSize: 18,
-        },
-        '& .QontoStepIcon-circle': {
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            backgroundColor: 'currentColor',
-        },
-    }),
-);
-
-function QontoStepIcon(props: StepIconProps) {
-    const {active, completed, className} = props;
-
-    return (
-        <QontoStepIconRoot ownerState={{active}} className={className}>
-            {completed ? (
-                <Check className="QontoStepIcon-completedIcon"/>
-            ) : (
-                <div className="QontoStepIcon-circle"/>
-            )}
-        </QontoStepIconRoot>
-    );
 }
 
 const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
@@ -112,13 +42,13 @@ const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
     }
 
     return (
-        <div className="w-96 mx-auto mb-8">
-            <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector/>}>
+        <div className="mx-auto mb-8">
+            <Stepper active={activeStep}>
                 {
-                    steps.map((e) => (
-                        <Step key={e.step}>
-                            <StepLabel StepIconComponent={QontoStepIcon}>{e.step}</StepLabel>
-                        </Step>
+                    steps.map((e, i) => (
+                        <Stepper.Step label={e.step} key={i} ref={animation}>
+                            {e.child}
+                        </Stepper.Step>
                     ))
                 }
             </Stepper>
@@ -127,12 +57,11 @@ const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
                 e.preventDefault()
                 if (onSubmit) onSubmit(e)
             }}>
-                {steps[activeStep]?.child}
                 <div className="flex flex-row space-x-6" ref={animation}>
-                    {activeStep > 0 && <Button onClick={handleBack} variant='outlined'>back</Button>}
-                    <Button onClick={handleNext} variant='contained'
+                    {activeStep > 0 && <Button onClick={handleBack} variant='subtle'>Back</Button>}
+                    <Button onClick={handleNext} variant='outline'
                             type={activeStep == steps.length + 1 ? 'submit' : 'button'}
-                            style={{backgroundColor: 'blue'}}>{activeStep >= steps.length ? 'finish' : 'next'}</Button>
+                    >{activeStep >= steps.length ? 'Finish' : 'Next'}</Button>
                 </div>
             </form>
         </div>

@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import Image from "next/image";
 import {ONBOARDING_ILLUSTRATION_URL} from "~/const/imageurls";
-import {FindInPageTwoTone, LockOpenTwoTone, SaveTwoTone, SearchRounded} from "@mui/icons-material";
 import {responsiveButtonText, responsiveSubtitle, responsiveTitle} from "~/const/responsive";
 import Head from "next/head";
 import {useUser} from "@clerk/nextjs";
 import {useRouter} from "next/router";
+import {IconDeviceFloppy, IconLockOpen, IconSearch} from "@tabler/icons-react";
 
 function Index() {
     const user = useUser()
@@ -41,7 +41,7 @@ function Index() {
                                     className='flex flex-row items-center border border-gray-500 rounded-2xl px-4 hover:border-blue-700 focus:border-blue-600'>
                                 <input placeholder='search freelance work'
                                        className={`outline-none border-none ${responsiveButtonText}`}/>
-                                <SearchRounded className='scale-150 md:scale-100 bg-transparent' color='primary'/>
+                                <IconSearch className='scale-150 md:scale-100 bg-transparent' color='primary'/>
                             </button>
                         </div>
                     </div>
@@ -58,19 +58,19 @@ function Index() {
                 xl:space-y-0 lg:flex-row items-center justify-between bg-white p-12 rounded-2xl shadow-2xl w-5/4 my-32
                 xl:mx-0 md:mx-6'>
                     <div className='flex flex-col items-center space-y-2 bg-transparent'>
-                        <LockOpenTwoTone className='scale-150 bg-transparent' color='primary'/>
+                        <IconLockOpen className='scale-150 bg-transparent' color='primary'/>
                         <h2 className='text-2xl font-bold text-center'>Create Account</h2>
                         <h2 className='text-lg font-semibold text-gray-500 text-center xs:hidden lg:block'>First
                             you have to create a account here</h2>
                     </div>
                     <div className='flex flex-col items-center space-y-2 bg-transparent'>
-                        <FindInPageTwoTone className='scale-150 bg-transparent' color='primary'/>
+                        <IconSearch className='scale-150 bg-transparent' color='primary'/>
                         <h2 className='text-2xl font-bold bg-transparent'>Search work</h2>
                         <h2 className='text-lg font-semibold text-gray-500 xs:hidden lg:block'>Search the
                             best freelance work here</h2>
                     </div>
                     <div className='flex flex-col items-center space-y-2 bg-transparent'>
-                        <SaveTwoTone className='scale-150 bg-transparent' color='primary'/>
+                        <IconDeviceFloppy className='scale-150 bg-transparent' color='primary'/>
                         <h2 className='text-2xl font-bold bg-transparent'>Save and apply</h2>
                         <h2 className='text-lg font-semibold text-gray-500 xs:hidden lg:block'>Apply or save
                             and start your work</h2>

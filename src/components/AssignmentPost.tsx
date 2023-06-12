@@ -2,8 +2,7 @@ import React from 'react';
 import type {Assignment, User} from "@prisma/client";
 import type {NextPage} from "next";
 import Image from "next/image";
-import {TimerTwoTone} from "@mui/icons-material";
-
+import {IconClock} from "@tabler/icons-react";
 
 interface Props {
     assignment: Assignment & { postedBy: User },
@@ -15,7 +14,7 @@ const AssignmentPost: NextPage<Props> = ({assignment}) => {
             <h1 className='text-2xl'>{assignment.title} for {assignment.budget}</h1>
             <div className='py-4 px-6 w-full flex flex-col space-y-4 items-center'>
                 <div className='flex flex-row space-x-2'>
-                    <TimerTwoTone className='text-blue-600'/>
+                    <IconClock className='text-blue-600'/>
                     <div className='text-gray-500'>Deadline:</div>
                     <div>{assignment.deadline.toDateString()}</div>
                 </div>

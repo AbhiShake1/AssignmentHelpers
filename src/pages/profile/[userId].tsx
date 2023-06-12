@@ -3,7 +3,7 @@ import {useRouter} from "next/router";
 import Image from "next/image";
 import {NotFound} from "next/dist/client/components/error";
 import {api} from "~/utils/api";
-import {Rating, RingProgress} from '@mantine/core';
+import {Loader, Rating} from '@mantine/core';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import {type User} from "@clerk/clerk-sdk-node";
@@ -21,11 +21,7 @@ const Index = () => {
     const user: UseTRPCQueryResult<User, any> = api.user.getClerkUser.useQuery({userId})
 
     if (user.isLoading) return <div className='flex flex-row justify-center items-center h-screen'>
-        <RingProgress size={140} sections={[
-            { value: 40, color: 'cyan' },
-            { value: 15, color: 'orange' },
-            { value: 15, color: 'grape' },
-        ]} roundCaps/>
+        <Loader/>
     </div>
 
     if (!user.isSuccess) return <NotFound/>

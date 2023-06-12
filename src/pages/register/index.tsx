@@ -1,13 +1,11 @@
-import React, {type FC, useEffect, useState} from 'react';
+import React, {type FC, useState} from 'react';
 import MultiStepForm from "~/components/MultiStepForm";
 import {toast} from "react-hot-toast";
-import TagsInput from "~/components/TagsInput";
 import {useRouter} from "next/router";
 import {api} from "~/utils/api";
 import {useUser} from "@clerk/nextjs";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
-
-const numberRegex = /^\d*$/
+import {Button, Input, MultiSelect, PinInput, Radio, Text, Textarea} from "@mantine/core";
 
 type AccountType = 'personal' | 'professional'
 
@@ -19,6 +17,16 @@ interface ChoiceFormProps {
     onSubmit: (choice: AccountType) => void
 }
 
+const data = [
+    { value: 'react', label: 'React' },
+    { value: 'ng', label: 'Angular' },
+    { value: 'svelte', label: 'Svelte' },
+    { value: 'vue', label: 'Vue' },
+    { value: 'riot', label: 'Riot' },
+    { value: 'next', label: 'Next.js' },
+    { value: 'blitz', label: 'Blitz.js' },
+];
+
 const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
     const router = useRouter()
     const auth = useUser()
@@ -28,6 +36,7 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
     const [skills, setSkills] = useState<string[]>([])
     const [specialization, setSpecialization] = useState('')
     const [referral, setReferral] = useState('')
+    const [skillsData, setSkillsData] = useState(data)
     const signupMutation = api.user.create.useMutation({
         onSuccess: () => {
             toast.remove()
@@ -66,8 +75,8 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
                 referredBy: referral,
             })
         } catch (e) {
-            if (e) toast.error(e.toString())
             toast.remove()
+            if (e) toast.error(e.toString())
         }
     }
 
@@ -80,26 +89,24 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
                         if (phone == '') throw new Error('Phone number is required')
                         if (phone.length != 10) throw new Error('Phone number must be exactly 10 digits')
                     },
-                    child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
-                        <TextField label="Phone" type='tel' inputMode='numeric' variant="outlined" fullWidth
-                                   value={phone}
-                                   onChange={(e) => {
-                                       const val = e.target.value
-                                       if (val.length > 0 && !numberRegex.test(val)) return
-                                       setPhone(val)
-                                   }} required/>
-                        <Textarea required placeholder="About you.." minRows={5} value={desc} onChange={(e) => {
-                            if (e.target.value.length <= 150) {
-                                setDesc(e.target.value)
-                            } else {
-                                toast.remove()
-                                toast.error('Description can only be upto 150 characters long')
-                            }
-                        }} endDecorator={
-                            <Typography level="body3" sx={{ml: 'auto'}}>
-                                {desc.length}/150
-                            </Typography>
-                        }/>
+                    child: <div className='p-8 mx-8 white shadow-2xl rounded-lg flex flex-col space-y-4'>
+                        <Input.Wrapper label='Phone number' required>
+                            <PinInput length={10} type='number' onChange={setPhone} value={phone} required/>
+                        </Input.Wrapper>
+                        <Input.Wrapper label='About'>
+                            <Textarea required placeholder="About you.." minRows={5} value={desc} onChange={(e) => {
+                                if (e.target.value.length <= 150) {
+                                    setDesc(e.target.value)
+                                } else {
+                                    toast.remove()
+                                    toast.error('Description can only be upto 150 characters long')
+                                }
+                            }} rightSection={
+                                <Text size='sm' sx={{ml: 'auto'}}>
+                                    {desc.length}/150
+                                </Text>
+                            }/>
+                        </Input.Wrapper>
                     </div>,
                 },
                 ...(accountType != 'professional' ? [] : [
@@ -109,20 +116,45 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
                             if (skills.length == 0) throw new Error('Skills is required')
                             if (specialization.length == 0) throw new Error('Specialization is required')
                         },
-                        child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
-                            <TextField label="Education" variant="outlined" fullWidth value={education}
+                        child: <div className='p-8 mx-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
+                            <Input.Wrapper label='Education'>
+                                <Input placeholder="Education" value={education}
                                        onChange={e => setEduction(e.target.value)}/>
-                            <TagsInput onChange={setSkills} value={skills} label='Skills' limit={5} required/>
-                            <TextField label="Specialization" variant="outlined" value={specialization}
-                                       onChange={e => setSpecialization(e.target.value)} fullWidth required/>
+                            </Input.Wrapper>
+                            <MultiSelect
+                                data={skillsData}
+                                value={skills}
+                                onChange={setSkills}
+                                maxSelectedValues={5}
+                                searchable
+                                clearable
+                                creatable
+                                required
+                                getCreateLabel={(query) => `+ Create ${query}`}
+                                maxDropdownHeight={160}
+                                onCreate={(query) => {
+                                    const item = { value: query, label: query };
+                                    setSkillsData((current) => [...current, item]);
+                                    return item;
+                                }}
+                                nothingFound="Nothing found"
+                                clearButtonProps={{ 'aria-label': 'Clear selection' }}
+                                label="Skills"
+                                placeholder="Pick upto 5 skills"
+                            />
+                            <Input.Wrapper label='Specialization' required>
+                                <Input placeholder="Specialization" value={specialization}
+                                       onChange={e => setSpecialization(e.target.value)} required/>
+                            </Input.Wrapper>
                         </div>
                     }
                 ]),
                 {
                     step: 'Link Account',
-                    child: <div className='p-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
-                        <TextField label="Referral Code" value={referral} onChange={e => setReferral(e.target.value)}
-                                   variant="outlined" fullWidth/>
+                    child: <div className='p-8 mx-8 white shadow-2xl rounded-lg flex flex-col space-y-2'>
+                        <Input.Wrapper label='Referral Code'>
+                            <Input placeholder="Referral Code" value={referral} onChange={e => setReferral(e.target.value)}/>
+                        </Input.Wrapper>
                     </div>
                 }
             ]}/>
@@ -132,22 +164,18 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
 
 const ChoiceForm: FC<ChoiceFormProps> = ({onSubmit}) => {
     const [value, setValue] = useState<AccountType | undefined>()
+
     return <form>
-        <FormControl sx={{m: 3}} variant="standard">
-            <FormLabel>Why are you here?</FormLabel>
-            <RadioGroup
-                value={value}
-                onChange={e => setValue(e.target.value == 'personal' ? 'personal' : 'professional')}
-            >
-                <FormControlLabel value="personal" control={<Radio/>} label="I want to find freelancers"/>
-                <FormControlLabel value="professional" control={<Radio/>} label="I want to find work"/>
-            </RadioGroup>
-            <Button className={`m-1 ${value ? 'bg-blue-600 hover:bg-blue-900' : ''}`} type="button" variant="contained"
+        <Radio.Group label='Why are you here?' value={value} className='flex flex-col space-y-4'
+                     onChange={v => setValue(v == 'personal' ? 'personal' : 'professional')}>
+            <Radio value="personal" label="I want to find freelancers"/>
+            <Radio value="professional" label="I want to find work"/>
+            <Button className={`m-1`} variant="outline"
                     disabled={!value}
                     onClick={() => onSubmit(value!)}>
                 Proceed
             </Button>
-        </FormControl>
+        </Radio.Group>
     </form>
 }
 

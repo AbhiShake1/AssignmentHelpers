@@ -3,40 +3,53 @@ import {api} from "~/utils/api";
 import "~/styles/globals.css";
 import "@uploadthing/react/styles.css";
 import {ClerkProvider, UserButton, useUser} from '@clerk/nextjs'
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
-import {Button, ThemeProvider} from "@mui/material";
 import ChatDialog from "~/components/ChatDialog";
 import Hamburger from "~/components/Hamburger";
-import {IconButton, Input} from "@mui/joy";
-import {ShareTwoTone} from "@mui/icons-material";
 import {toast, Toaster} from "react-hot-toast";
-import AppDialog from "~/components/AppDialog";
-import {LocalizationProvider} from "@mui/x-date-pickers";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {MantineProvider} from "@mantine/core";
+import {ActionIcon, CopyButton, MantineProvider, TextInput} from "@mantine/core";
+import {IconCopy, IconShare} from "@tabler/icons-react";
+import {modals, ModalsProvider} from "@mantine/modals";
 
 function Share() {
-    const [showDialog, setShowDialog] = useState(false)
     const referralLinkQuery = api.referral.link.useQuery()
     const {user} = useUser()
 
     if (!user) return null
 
-    const onCopy = () => {
-        void navigator.clipboard.writeText(referralLinkQuery.data!)
-        toast.success('Copied to clipboard')
-    }
+    const openShareModal = () =>
+        modals.open({
+            title: 'Refer and earn',
+            centered: true,
+            children: (
+                <div className='flex flex-col space-y-4'>
+                    <h3 className='text-gray-600 text-xs'>
+                        Share this link, and get 2% commission off their transaction for lifetime
+                    </h3>
+                    <TextInput readOnly className='mt-4' value={referralLinkQuery.data || ''}
+                               disabled={!referralLinkQuery.isSuccess}
+                               rightSection={
+                                   <CopyButton value={referralLinkQuery.data!}>
+                                       {({copied, copy}) => (
+                                           <button onClick={() => {
+                                               copy()
+                                               toast.success('Copied to clipboard')
+                                           }}>
+                                               <IconCopy
+                                                   className={`text-${copied ? 'green-400' : 'black'}`}></IconCopy>
+                                           </button>
+                                       )}
+                                   </CopyButton>
+                               }
+                    />
+                </div>
+            ),
+        });
 
     return <>
-        <IconButton className='rounded-full' onClick={() => setShowDialog(true)}><ShareTwoTone/></IconButton>
-        <AppDialog open={showDialog} setOpen={setShowDialog} title='Refer and earn'
-                   description='Share this link, and get 2% commission off their transaction for lifetime'>
-            <Input className='mt-4' value={referralLinkQuery.data || ''} disabled={!referralLinkQuery.isSuccess}
-                   endDecorator={<Button onClick={onCopy} disabled={!referralLinkQuery.isSuccess}>Copy</Button>}
-            />
-        </AppDialog>
+        <ActionIcon variant="light" onClick={openShareModal}><IconShare/></ActionIcon>
     </>
 }
 
@@ -115,14 +128,16 @@ function NavBar() {
 
 const MyApp: AppType = ({Component, pageProps}) => {
     return (
-        <ClerkProvider experimental_enableClerkImages={true} touchSession={true} publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
-            <MantineProvider withGlobalStyles withNormalizeCSS>
-                <ThemeProvider theme={{}}>
+        <ClerkProvider experimental_enableClerkImages={true} touchSession={true}
+                       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+            <MantineProvider withGlobalStyles withNormalizeCSS
+                             theme={{loader: 'bars', defaultRadius: 'sm', fontFamily: 'sans-serif'}}>
+                <ModalsProvider>
                     <Toaster toastOptions={{position: 'bottom-center'}}/>
                     <NavBar/>
                     <ChatDialog/>
                     <Component {...pageProps} />
-                </ThemeProvider>
+                </ModalsProvider>
             </MantineProvider>
         </ClerkProvider>
     );
