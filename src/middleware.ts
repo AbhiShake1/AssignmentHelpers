@@ -5,7 +5,10 @@ import {NextResponse} from "next/server";
 export default authMiddleware({
     publicRoutes: ["/"],
     afterAuth: async (auth, req) => {
-        const user = await clerkClient.users.getUser(auth.userId!)
+        const uid = auth.userId
+        if(!uid) return NextResponse.redirect(new URL('/', req.url))
+
+        const user = await clerkClient.users.getUser(uid)
         const phone = user.unsafeMetadata.phone
         if (!phone)
             return NextResponse.rewrite(new URL('/register', req.url))
