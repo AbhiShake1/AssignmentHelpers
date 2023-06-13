@@ -126,7 +126,7 @@ function Index() {
             </Navbar>
             {
                 chat && msgs.length > 0 &&
-                <div className='flex flex-col space-y-4 w-9/12 overflow-y-auto mb-[5vh] mt-4 mx-2'>
+                <div className='flex flex-col space-y-4 w-9/12 overflow-y-auto mb-[5vh] mt-4 mx-2 [&::-webkit-scrollbar]:hidden'>
                     {
                         msgs?.map(message => (
                             <div key={message.id} className='flex flex-col space-y-2'>
