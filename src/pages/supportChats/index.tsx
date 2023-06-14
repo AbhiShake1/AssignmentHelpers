@@ -99,9 +99,8 @@ function Index() {
     }, [user.userId, chat])
 
     const sendMutation = api.chat.send.useMutation({
-        onSuccess: data => {
+        onSuccess: () => {
             setText('')
-            setMsgs(msgs => [data, ...msgs])
         },
         onError: err => toast.error(err.message),
     })
