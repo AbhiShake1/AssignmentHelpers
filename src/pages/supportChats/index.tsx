@@ -85,14 +85,16 @@ function Index() {
 
         const id = chat.fromUserId
         // reset before new subscription
-        if (id) {
-            pusher.unsubscribe(id)
-            pusher.unbind(id)
-            pusher.subscribe(id).bind(Events.SEND_MESSAGE, (message: Message) => {
-                setMsgs(msgs => [...msgs, message])
-                // messagesContainerRef.current?.scroll({behavior: "smooth", top: 0})
-            })
-        }
+        if (!id) return
+
+        const idStr = `${id}-`
+        pusher.unsubscribe(idStr)
+        pusher.unbind(idStr)
+        pusher.subscribe(idStr).bind(Events.SEND_MESSAGE, (message: Message) => {
+            setMsgs(msgs => [...msgs, message])
+            messagesContainerRef.current?.scroll({behavior: "smooth", top: 0})
+        })
+
         return () => pusher.unsubscribe(chat.fromUserId)
     }, [user.userId, chat])
 
@@ -161,6 +163,7 @@ function Index() {
                                                      msg: text,
                                                      to: chat.fromUserId,
                                                      senderId: '',
+                                                     fromAdmin: true,
                                                  })}><IconSend/></Button>}/>
                 </div>
             }
