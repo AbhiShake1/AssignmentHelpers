@@ -6,7 +6,7 @@ export default authMiddleware({
     publicRoutes: ["/"],
     afterAuth: async (auth, req) => {
         const uid = auth.userId
-        if(!uid) return NextResponse.redirect(new URL('/', req.url))
+        if(!uid) return
 
         const user = await clerkClient.users.getUser(uid)
         const phone = user.unsafeMetadata.phone
