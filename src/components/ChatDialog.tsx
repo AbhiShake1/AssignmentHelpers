@@ -55,7 +55,7 @@ function ChatDialog() {
     }
 
     return (
-        <div ref={animate} className='fixed bottom-8 right-8 bg-transparent z-10 md:w-1/2 h-2/3 sm:w-3/4 xs:w-3/4'>
+        <div ref={animate} className='fixed bottom-8 right-8 bg-transparent z-10'>
             {
                 !open && <button onClick={() => setOpen(true)}
                                  className='w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center shadow-2xl hover:bg-blue-900 absolute bottom-2 right-2'>
@@ -63,7 +63,7 @@ function ChatDialog() {
                 </button>
             }
             {
-                open && <div className='w-full h-full bg-blue-300 p-4 rounded-xl flex flex-col space-y-2'>
+                open && <div className='w-[40vw] bg-blue-300 p-4 rounded-xl flex flex-col space-y-2 h-[50vh]'>
                     <div className='w-full bg-white px-4 py-2 rounded-lg flex flex-row space-x-2'>
                         <button onClick={() => setOpen(false)}>
                             <IconChevronsDownRight className='hover:text-blue-900'/>

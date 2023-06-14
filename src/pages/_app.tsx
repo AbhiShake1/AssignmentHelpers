@@ -134,8 +134,7 @@ function NavBar() {
 
 const MyApp: AppType = ({Component, pageProps}) => {
     return (
-        <ClerkProvider experimental_enableClerkImages={true} touchSession={true}
-                       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+        <ClerkProvider experimental_enableClerkImages={true}>
             <MantineProvider withGlobalStyles withNormalizeCSS
                              theme={{loader: 'bars', defaultRadius: 'sm', fontFamily: 'sans-serif'}}>
                 <ModalsProvider>
