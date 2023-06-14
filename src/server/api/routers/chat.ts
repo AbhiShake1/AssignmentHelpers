@@ -1,6 +1,6 @@
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
-import {Events} from "~/const/events";
 import {z} from "zod";
+import {Events} from "~/const/events";
 
 export const chatRouter = createTRPCRouter({
     send: protectedProcedure
@@ -40,7 +40,8 @@ export const chatRouter = createTRPCRouter({
                 },
             })
             const message = chat.messages.at(0)!
-            await ctx.pusher.trigger(`${chat.fromUserId}-${chat.toUserId || ''}`, Events.SEND_MESSAGE, message);
+            console.log(`${chat.fromUserId}-${chat.toUserId || ''}`)
+            // await ctx.pusher.trigger(`${chat.fromUserId}-${chat.toUserId || ''}`, Events.SEND_MESSAGE, message);
             return message;
         }),
     supportChats: protectedProcedure.query(({ctx}) => {
@@ -50,8 +51,10 @@ export const chatRouter = createTRPCRouter({
             },
             include: {
                 fromUser: true,
-                messages: true,
-            }
+                messages: {
+                    orderBy: {createdAt: 'desc'}
+                },
+            },
         })
     }),
     getWithAdmin: protectedProcedure.query(({ctx}) => {

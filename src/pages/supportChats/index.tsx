@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {api} from "~/utils/api";
 import {Button, createStyles, getStylesRef, Input, Loader, Navbar, rem} from '@mantine/core';
 import {IconSend, IconUser,} from '@tabler/icons-react';
@@ -69,6 +69,7 @@ function Index() {
     const {classes, cx} = useStyles();
     const [active, setActive] = useState('')
     const [text, setText] = useState('')
+    const messagesContainerRef = useRef<HTMLDivElement>(null);
     const user = useAuth()
 
     const chat = chats.data?.find(c => c.fromUserId == active)
@@ -98,10 +99,14 @@ function Index() {
     const sendMutation = api.chat.send.useMutation({
         onSuccess: data => {
             setText('')
-            setMsgs(msgs => [...msgs, data])
+            setMsgs(msgs => [data, ...msgs])
         },
         onError: err => toast.error(err.message),
     })
+
+    useEffect(() => {
+        messagesContainerRef.current?.scroll({behavior: "smooth", top: 0})
+    }, [msgs])
 
     if (!chats.isSuccess) return <center><Loader/></center>
 
@@ -126,7 +131,9 @@ function Index() {
             </Navbar>
             {
                 chat && msgs.length > 0 &&
-                <div className='flex flex-col space-y-4 w-9/12 overflow-y-auto mb-[5vh] mt-4 mx-2 [&::-webkit-scrollbar]:hidden'>
+                <div
+                    className='flex flex-col-reverse space-y-4 w-9/12 overflow-y-auto mb-[5vh] mt-4 mx-2 [&::-webkit-scrollbar]:hidden'
+                    ref={messagesContainerRef}>
                     {
                         msgs?.map(message => (
                             <div key={message.id} className='flex flex-col space-y-2'>
