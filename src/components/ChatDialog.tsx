@@ -14,7 +14,7 @@ function ChatDialog() {
     const [open, setOpen] = useState(false)
     const [msg, setMsg] = useState('')
     const user = useAuth()
-    const [animate] = useAutoAnimate({duration: 200, easing: 'linear'})
+    const [animate] = useAutoAnimate({duration: 200, easing: 'ease-in-out'})
     const messagesContainerRef = useRef<HTMLDivElement>(null);
     const sendMutation = api.chat.send.useMutation({
         onError: err => toast.error(err.message)
