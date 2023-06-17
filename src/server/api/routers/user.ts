@@ -1,8 +1,7 @@
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 import {z} from "zod";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import {clerkClient, type User} from "@clerk/clerk-sdk-node";
+import {clerkClient, type User as ClerkUser} from "@clerk/clerk-sdk-node";
+import type {Prisma} from '@prisma/client'
 
 
 type AccountType = 'personal' | 'professional'
@@ -25,12 +24,26 @@ export const userRouter = createTRPCRouter({
         .query(({ctx}) => {
             return ctx.auth
         }),
-    getAll: protectedProcedure.query(({ctx})=>{
-        return ctx.prisma.user.findMany();
+    getAll: protectedProcedure.query(async ({ctx}) => {
+        const users = await ctx.prisma.user.findMany()
+        const clerkUsers = await clerkClient.users.getUserList()
+        return users.map(user=>{
+            const clerkUser = clerkUsers.find(u=>u.id==user.id)
+            return {
+                ...user,
+                imageUrl: clerkUser?.profileImageUrl || clerkUser?.imageUrl,
+                isAdmin: clerkUser?.unsafeMetadata?.isAdmin ? 'Yes' : 'No',
+            }
+        })
     }),
+    update: protectedProcedure
+        .input(z.custom<Prisma.UserUpdateInput>())
+        .mutation(({ctx, input}) => {
+            return input
+        }),
     getClerkUser: protectedProcedure
         .input(z.object({userId: z.string()}))
-        .output(z.custom<User>())
+        .output(z.custom<ClerkUser>())
         .query(({input}) => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
             return clerkClient.users.getUser(input.userId)
