@@ -1,21 +1,32 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {api} from "~/utils/api";
 import {Anchor, Avatar, Badge, Button, Group, Loader, LoadingOverlay, Table, Text} from "@mantine/core";
 import type {NextPage} from "next";
 import {IconCircleArrowUpFilled} from "@tabler/icons-react";
 import {modals} from "@mantine/modals";
 import {toast} from "react-hot-toast";
+import type {UserType} from "~/modals/UserType";
 
 const Index: NextPage = () => {
+    const [users, setUsers] = useState<UserType[]>()
     const usersQuery = api.user.getAll.useQuery()
     const promoteMutation = api.user.promoteToAdmin.useMutation({
         onError: err => toast.error(err.message),
-        onSuccess: () => toast.success('Promoted to admin')
+        onSuccess: uid => {
+            setUsers(u => u?.map(user => user.id == uid ? {...user, isAdmin: 'Yes'} : user))
+            toast.success('Promoted to admin')
+        },
     })
+
+    useEffect(() => {
+        if (usersQuery.isSuccess) {
+            setUsers(usersQuery.data)
+        }
+    }, [usersQuery])
 
     if (!usersQuery.isSuccess) return <center><Loader/></center>
 
-    const handlePromoteClick = (user: typeof usersQuery.data[0]) => modals.openConfirmModal({
+    const handlePromoteClick = (user: UserType) => modals.openConfirmModal({
         title: `Are you sure you want to promote ${user.name} to Admin?`,
         labels: {cancel: 'Cancel', confirm: 'Yes'},
         confirmProps: {variant: 'subtle'},
@@ -40,7 +51,7 @@ const Index: NextPage = () => {
             </thead>
             <tbody>
             {
-                usersQuery.data.map(user => (
+                users?.map(user => (
                     <tr key={user.id}>
                         <td>
                             <Group spacing="sm">

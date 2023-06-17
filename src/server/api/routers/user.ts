@@ -1,6 +1,7 @@
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 import {z} from "zod";
 import {clerkClient, type User as ClerkUser} from "@clerk/clerk-sdk-node";
+import {UserType} from "~/modals/UserType";
 
 
 type AccountType = 'personal' | 'professional'
@@ -24,18 +25,20 @@ export const userRouter = createTRPCRouter({
         .query(({ctx}) => {
             return ctx.auth
         }),
-    getAll: protectedProcedure.query(async ({ctx}) => {
-        const users = await ctx.prisma.user.findMany()
-        const clerkUsers = await clerkClient.users.getUserList()
-        return users.map(user => {
-            const clerkUser = clerkUsers.find(u => u.id == user.id)
-            return {
-                ...user,
-                imageUrl: clerkUser?.profileImageUrl || clerkUser?.imageUrl,
-                isAdmin: clerkUser?.unsafeMetadata?.isAdmin ? 'Yes' : 'No',
-            }
-        })
-    }),
+    getAll: protectedProcedure
+        .output(z.custom<UserType[]>())
+        .query(async ({ctx}) => {
+            const users = await ctx.prisma.user.findMany()
+            const clerkUsers = await clerkClient.users.getUserList()
+            return users.map(user => {
+                const clerkUser = clerkUsers.find(u => u.id == user.id)
+                return {
+                    ...user,
+                    imageUrl: clerkUser?.profileImageUrl || clerkUser?.imageUrl,
+                    isAdmin: clerkUser?.unsafeMetadata?.isAdmin ? 'Yes' : 'No',
+                }
+            })
+        }),
     promoteToAdmin: protectedProcedure
         .input(z.string())
         .mutation(async ({ctx, input}) => {
@@ -53,7 +56,7 @@ export const userRouter = createTRPCRouter({
                     isAdmin: true,
                 }
             })
-            return 'Promoted'
+            return input
         }),
     getClerkUser: protectedProcedure
         .input(z.object({userId: z.string()}))
