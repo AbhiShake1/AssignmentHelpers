@@ -1,13 +1,12 @@
 import {toast} from "react-hot-toast";
 import React, {useState} from "react";
 import {api} from "~/utils/api";
-import type {Assignment} from "@prisma/client";
 import {Button, Input} from "@mantine/core";
-import {DateInput, DatePicker} from "@mantine/dates";
-import {User} from "@prisma/client";
+import {DateInput} from "@mantine/dates";
+import type {AssignmentWithUser} from "~/components/AssignmentPost";
 
 interface Props {
-    onPost: (assignment: Assignment & { postedBy: User }) => void
+    onPost: (assignment: AssignmentWithUser) => void
 }
 
 const PostAssignmentModal: React.FC<Props> = ({onPost}) => {

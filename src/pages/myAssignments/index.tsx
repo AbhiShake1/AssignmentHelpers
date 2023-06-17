@@ -1,13 +1,11 @@
 import React, {useState} from "react";
 import {api} from "~/utils/api";
-import AssignmentPost from "~/components/AssignmentPost";
+import AssignmentPost, {type AssignmentWithUser} from "~/components/AssignmentPost";
 import PostAssignmentModal from "~/components/PostAssignmentModal";
 import {toast} from "react-hot-toast";
-import type {Assignment, User} from "@prisma/client";
 import {Button,} from '@mantine/core';
 import {modals} from "@mantine/modals";
 
-type AssignmentWithUser = Assignment & { postedBy: User }
 
 export default function Index() {
     const [assignments, setAssignments] = useState<AssignmentWithUser[]>([])

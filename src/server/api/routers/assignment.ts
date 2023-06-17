@@ -1,5 +1,6 @@
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 import {z} from "zod";
+import {clerkClient} from "@clerk/clerk-sdk-node";
 
 interface AssignmentCreateArgs {
     title: string
@@ -18,11 +19,16 @@ export const assignmentRouter = createTRPCRouter({
         .query(async ({ctx, input}) => {
             const {limit, skip} = input;
 
-            return await ctx.prisma.assignment.findMany({
+            const id = ctx.auth!.userId!
+
+            const user = await clerkClient.users.getUser(id)
+
+            const res = await ctx.prisma.assignment.findMany({
                 where: {
                     deadline: {
                         gt: new Date(),
-                    }
+                    },
+                    postedById: id,
                 },
                 include: {
                     postedBy: true,
@@ -30,21 +36,28 @@ export const assignmentRouter = createTRPCRouter({
                 take: limit + 1,
                 skip: skip,
             })
+
+            return res.map(r => ({
+                ...r,
+                postedBy: {...user},
+            }))
         }),
     getMy: protectedProcedure
         .input(z.object({
             limit: z.number().min(1).max(100),
             skip: z.number().optional(),
         }))
-        .query(async ({ctx, input}) => {
+        .query(({ctx, input}) => {
             const {limit, skip} = input;
 
-            return await ctx.prisma.assignment.findMany({
+            const id = ctx.auth!.userId!
+
+            return ctx.prisma.assignment.findMany({
                 where: {
-                    postedById: ctx.auth!.userId!,
+                    postedById: id,
                 },
                 include: {
-                    postedBy: true,
+                    postedBy: false,
                 },
                 take: limit + 1,
                 skip: skip,
@@ -61,9 +74,6 @@ export const assignmentRouter = createTRPCRouter({
                             id: ctx.auth!.userId!,
                         },
                     }
-                },
-                include: {
-                    postedBy: true,
                 }
             })
         })
