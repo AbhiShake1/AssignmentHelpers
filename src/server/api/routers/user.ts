@@ -1,7 +1,6 @@
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 import {z} from "zod";
 import {clerkClient, type User as ClerkUser} from "@clerk/clerk-sdk-node";
-import type {Prisma} from '@prisma/client'
 
 
 type AccountType = 'personal' | 'professional'
@@ -17,6 +16,7 @@ interface CreateUserArgs {
     specialization: string
     education?: string
     accountType: AccountType
+    about: string
 }
 
 export const userRouter = createTRPCRouter({
@@ -27,8 +27,8 @@ export const userRouter = createTRPCRouter({
     getAll: protectedProcedure.query(async ({ctx}) => {
         const users = await ctx.prisma.user.findMany()
         const clerkUsers = await clerkClient.users.getUserList()
-        return users.map(user=>{
-            const clerkUser = clerkUsers.find(u=>u.id==user.id)
+        return users.map(user => {
+            const clerkUser = clerkUsers.find(u => u.id == user.id)
             return {
                 ...user,
                 imageUrl: clerkUser?.profileImageUrl || clerkUser?.imageUrl,
@@ -36,10 +36,24 @@ export const userRouter = createTRPCRouter({
             }
         })
     }),
-    update: protectedProcedure
-        .input(z.custom<Prisma.UserUpdateInput>())
-        .mutation(({ctx, input}) => {
-            return input
+    promoteToAdmin: protectedProcedure
+        .input(z.string())
+        .mutation(async ({ctx, input}) => {
+            const uid = input
+            await clerkClient.users.updateUserMetadata(uid, {
+                unsafeMetadata: {
+                    'isAdmin': true,
+                }
+            })
+            await ctx.prisma.user.update({
+                where: {
+                    id: uid,
+                },
+                data: {
+                    isAdmin: true,
+                }
+            })
+            return 'Promoted'
         }),
     getClerkUser: protectedProcedure
         .input(z.object({userId: z.string()}))
@@ -51,6 +65,17 @@ export const userRouter = createTRPCRouter({
     create: protectedProcedure
         .input(z.custom<CreateUserArgs>())
         .mutation(async ({ctx, input}) => {
+            await clerkClient.users.updateUserMetadata(input.id, {
+                unsafeMetadata: {
+                    'skills': input.skills,
+                    'specialization': input.specialization,
+                    'education': input.education,
+                    'phone': input.phone,
+                    'accountType': input.accountType,
+                    'about': input.about,
+                    'referredBy': input.referredBy,
+                }
+            })
             const referrer = !input.referredBy ? undefined : await ctx.prisma.user.findFirst({
                 where: {
                     id: input.referredBy,

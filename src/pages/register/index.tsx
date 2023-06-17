@@ -49,20 +49,9 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
         }
     })
 
-    async function updateUser() {
+    function updateUser() {
         try {
             toast.loading('signing up...')
-            await auth.user?.update({
-                unsafeMetadata: {
-                    'skills': skills,
-                    'specialization': specialization,
-                    'education': education,
-                    'phone': phone,
-                    'accountType': accountType,
-                    'about': desc,
-                    'referredBy': referral,
-                }
-            })
             signupMutation.mutate({
                 id: auth.user!.id,
                 email: auth.user?.emailAddresses[0]?.emailAddress || '',
@@ -73,7 +62,9 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
                 phone,
                 accountType: accountType,
                 referredBy: referral,
+                about: desc,
             })
+            toast.remove()
         } catch (e) {
             toast.remove()
             if (e) toast.error(e.toString())
@@ -82,7 +73,7 @@ const RegisterForm: FC<RegisterFormProps> = ({accountType}) => {
 
     return (
         <div>
-            <MultiStepForm onSubmit={() => void updateUser()} steps={[
+            <MultiStepForm onSubmit={updateUser} steps={[
                 {
                     step: 'Personal',
                     onNext: () => {

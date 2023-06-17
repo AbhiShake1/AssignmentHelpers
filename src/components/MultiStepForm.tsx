@@ -9,7 +9,7 @@ interface Props {
         step: string, child: React.ReactNode, onNext?: (count: number) => void
         onPrevious?: (count: number) => void,
     }[]
-    onSubmit?: React.FormEventHandler<HTMLFormElement>
+    onSubmit?: () => any
 }
 
 const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
@@ -55,7 +55,7 @@ const MultiStepForm: React.FC<Props> = ({steps, onSubmit}) => {
 
             <form className="mt-8 space-y-4" ref={animation} onSubmit={(e) => {
                 e.preventDefault()
-                if (onSubmit) onSubmit(e)
+                if (onSubmit) onSubmit()
             }}>
                 <div className="flex flex-row space-x-6" ref={animation}>
                     {activeStep > 0 && <Button onClick={handleBack} variant='subtle'>Back</Button>}

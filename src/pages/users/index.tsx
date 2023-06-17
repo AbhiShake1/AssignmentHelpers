@@ -1,16 +1,33 @@
 import React from 'react';
 import {api} from "~/utils/api";
-import {Anchor, Avatar, Badge, Group, Loader, LoadingOverlay, Table, Text} from "@mantine/core";
+import {Anchor, Avatar, Badge, Button, Group, Loader, LoadingOverlay, Table, Text} from "@mantine/core";
 import type {NextPage} from "next";
+import {IconCircleArrowUpFilled} from "@tabler/icons-react";
+import {modals} from "@mantine/modals";
+import {toast} from "react-hot-toast";
 
 const Index: NextPage = () => {
     const usersQuery = api.user.getAll.useQuery()
-    const updateMutation = api.user.update.useMutation()
+    const promoteMutation = api.user.promoteToAdmin.useMutation({
+        onError: err => toast.error(err.message),
+        onSuccess: () => toast.success('Promoted to admin')
+    })
 
     if (!usersQuery.isSuccess) return <center><Loader/></center>
 
+    const handlePromoteClick = (user: typeof usersQuery.data[0]) => modals.openConfirmModal({
+        title: `Are you sure you want to promote ${user.name} to Admin?`,
+        labels: {cancel: 'Cancel', confirm: 'Yes'},
+        confirmProps: {variant: 'subtle'},
+        centered: true,
+        onConfirm() {
+            promoteMutation.mutate(user.id)
+            modals.closeAll()
+        }
+    })
+
     return <div className='mx-16'>
-        <LoadingOverlay visible={updateMutation.isLoading} overlayBlur={2}/>
+        <LoadingOverlay visible={promoteMutation.isLoading} overlayBlur={2}/>
         <Table sx={{minWidth: 800}} verticalSpacing="sm">
             <thead>
             <tr>
@@ -60,6 +77,19 @@ const Index: NextPage = () => {
                             >
                                 {user.accountType}
                             </Badge>
+                        </td>
+                        <td>
+                            {
+                                user.isAdmin == 'No' &&
+                                <Button
+                                    className='py-3 px-4'
+                                    size='xl'
+                                    variant='subtle'
+                                    onClick={() => handlePromoteClick(user)}
+                                >
+                                    <IconCircleArrowUpFilled/>
+                                </Button>
+                            }
                         </td>
                     </tr>
                 ))
