@@ -14,7 +14,7 @@ export default function Index() {
 
     return (
         <div className="flex flex-col items-center justify-between py-6 px-12">
-            <div className="m-8 p-8 grid w-full grid-rows-2 grid-flow-col gap-4 auto-cols-auto">
+            <div className="m-8 p-8 grid w-full grid-rows-6 grid-flow-col gap-4 auto-cols-auto">
                 {
                     client.getQueryData<AssignmentWithUser[]>(['assignment'])?.map((assignment, index) => (
                         <div key={index}>
