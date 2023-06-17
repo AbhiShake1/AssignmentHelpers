@@ -1,4 +1,4 @@
-type AccountType = 'personal' | 'professional'
+type AccountType = 'user' | 'freelancer'
 
 export type UserType = {
     id: string
@@ -10,6 +10,6 @@ export type UserType = {
     education: string | null
     phone: string
     isAdmin: string
-    accountType: string
+    accountType: AccountType
     imageUrl: string | undefined
 }
