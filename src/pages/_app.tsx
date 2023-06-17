@@ -77,6 +77,8 @@ function DesktopNavbar() {
                 Assignments</Link>}
             {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/supportChats' scroll={true}
                                                                                      className={`hover:text-blue-500 p-4 ${path?.includes('supportChats') ? 'text-blue-700' : ''}`}>Support chats</Link>}
+            {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/users' scroll={true}
+                                                                                     className={`hover:text-blue-500 p-4 ${path?.includes('users') ? 'text-blue-700' : ''}`}>Users</Link>}
             <Link href='/' scroll={true}
                   className={`hover:text-blue-500 p-4 ${path == '/' ? 'text-blue-700' : ''}`}>Home</Link>
             {!user.isSignedIn && <Link href='/login'
@@ -101,6 +103,8 @@ function MobileNavbar() {
             Assignments</Link>
         {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/supportChats' scroll={true}
                                                                                  className={`hover:text-blue-500 p-4 ${path?.includes('supportChats') ? 'text-blue-700' : ''}`}>Support chats</Link>}
+        {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/users' scroll={true}
+                                                                                 className={`hover:text-blue-500 p-4 ${path?.includes('users') ? 'text-blue-700' : ''}`}>Users</Link>}
         {user.isSignedIn && isFreelancer && <Link href='/findWork' scroll={true}
                                                   className={`hover:text-blue-500 p-4 ${path?.includes('findWork') ? 'text-blue-700' : ''}`}>Find
             Work</Link>}

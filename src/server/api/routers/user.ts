@@ -25,6 +25,9 @@ export const userRouter = createTRPCRouter({
         .query(({ctx}) => {
             return ctx.auth
         }),
+    getAll: protectedProcedure.query(({ctx})=>{
+        return ctx.prisma.user.findMany();
+    }),
     getClerkUser: protectedProcedure
         .input(z.object({userId: z.string()}))
         .output(z.custom<User>())
