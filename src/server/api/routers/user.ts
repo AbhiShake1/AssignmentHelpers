@@ -36,6 +36,7 @@ export const userRouter = createTRPCRouter({
                     ...user,
                     imageUrl: clerkUser?.profileImageUrl || clerkUser?.imageUrl,
                     isAdmin: clerkUser?.unsafeMetadata?.isAdmin ? 'Yes' : 'No',
+                    accountType: clerkUser?.unsafeMetadata?.accountType == 'personal' ? 'user' : 'freelancer',
                 }
             })
         }),

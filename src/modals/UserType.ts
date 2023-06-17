@@ -1,5 +1,3 @@
-import {type User} from "@prisma/client";
-
 type AccountType = 'personal' | 'professional'
 
 export type UserType = {
@@ -12,6 +10,6 @@ export type UserType = {
     education: string | null
     phone: string
     isAdmin: string
-    accountType: AccountType
+    accountType: string
     imageUrl: string | undefined
 }
