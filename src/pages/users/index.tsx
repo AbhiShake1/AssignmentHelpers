@@ -1,6 +1,6 @@
 import React from 'react';
 import {api} from "~/utils/api";
-import {Loader} from "@mantine/core";
+import {Loader, LoadingOverlay} from "@mantine/core";
 import type {NextPage} from "next";
 
 const Index: NextPage = () => {
@@ -8,7 +8,9 @@ const Index: NextPage = () => {
 
     if (!users.isSuccess) return <center><Loader/></center>
 
-    return <></>
+    return <div>
+        <LoadingOverlay visible={true} overlayBlur={2} />
+    </div>
 }
 
 export default Index;

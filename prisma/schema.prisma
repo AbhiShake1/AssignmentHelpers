@@ -27,6 +27,7 @@ model User {
   specialization    String
   education         String?
   phone             String
+  isAdmin           Boolean      @default(false)
   accountType       AccountType  @default(personal)
   referredUsers     User[]       @relation("ReferredBy")
   assignments       Assignment[]
