@@ -19,6 +19,11 @@ export const assignmentRouter = createTRPCRouter({
             const {limit, skip} = input;
 
             return await ctx.prisma.assignment.findMany({
+                where: {
+                    deadline: {
+                        gt: new Date(),
+                    }
+                },
                 include: {
                     postedBy: true,
                 },
