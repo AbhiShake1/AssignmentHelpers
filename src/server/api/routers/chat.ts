@@ -48,6 +48,36 @@ export const chatRouter = createTRPCRouter({
             await ctx.pusher.trigger(`${chat.fromUserId}-${chat.toUserId || ''}`, Events.SEND_MESSAGE, message);
             return message;
         }),
+    chat: protectedProcedure
+        .input(z.object({assignmentId: z.number().positive(), from: z.string().optional()}))
+        .query(async ({ctx, input}) => {
+            const assignment = await ctx.prisma.assignment.findFirstOrThrow({
+                where: {id: input.assignmentId},
+                include: {postedBy: true}
+            })
+            const fromUserId = input.from || ctx.auth!.userId!
+            const toUserId = assignment.postedById
+            return ctx.prisma.chat.upsert({
+                create: {
+                    fromUserId: fromUserId,
+                    toUserId: toUserId,
+                    assignmentId: input.assignmentId,
+                },
+                update: {},
+                include: {
+                    assignment: true,
+                    messages: {
+                        orderBy: {createdAt: 'desc'}
+                    },
+                },
+                where: {
+                    fromUserId_toUserId: {
+                        fromUserId: fromUserId,
+                        toUserId: toUserId,
+                    },
+                }
+            })
+        }),
     supportChats: protectedProcedure.query(({ctx}) => {
         return ctx.prisma.chat.findMany({
             where: {
