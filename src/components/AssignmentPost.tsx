@@ -2,8 +2,8 @@ import React from 'react';
 import type {Assignment} from "@prisma/client";
 import type {NextPage} from "next";
 import Image from "next/image";
-import {IconClock} from "@tabler/icons-react";
-import {Avatar, Group, Text} from "@mantine/core";
+import {IconClock, IconMessage2} from "@tabler/icons-react";
+import {Avatar, Button, Group, Text} from "@mantine/core";
 import type {User} from "@clerk/clerk-sdk-node";
 
 export type AssignmentWithUser = Assignment & { postedBy?: User }
@@ -20,10 +20,13 @@ const AssignmentPost: NextPage<Props> = ({assignment}) => {
                 postedBy && <div className="relative">
                     <div className="absolute top-4 left-8">
                         <Group spacing="sm">
-                            <Avatar size={36} src={postedBy.imageUrl || postedBy.profileImageUrl || ''} radius={30} />
+                            <Avatar size={36} src={postedBy.imageUrl || postedBy.profileImageUrl || ''} radius={30}/>
                             <Text fz="lg" fw={500}>
                                 {`${postedBy?.firstName || ''} ${postedBy?.lastName || ''}`}
                             </Text>
+                            <Button variant='subtle'>
+                                <IconMessage2/>
+                            </Button>
                         </Group>
                     </div>
                 </div>
