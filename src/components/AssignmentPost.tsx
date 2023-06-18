@@ -5,6 +5,7 @@ import Image from "next/image";
 import {IconClock, IconMessage2} from "@tabler/icons-react";
 import {Avatar, Button, Group, Text} from "@mantine/core";
 import type {User} from "@clerk/clerk-sdk-node";
+import {useRouter} from "next/router";
 
 export type AssignmentWithUser = Assignment & { postedBy?: User }
 
@@ -14,6 +15,8 @@ interface Props {
 
 const AssignmentPost: NextPage<Props> = ({assignment}) => {
     const postedBy = assignment.postedBy
+    const router = useRouter()
+
     return (
         <div>
             {
@@ -24,7 +27,7 @@ const AssignmentPost: NextPage<Props> = ({assignment}) => {
                             <Text fz="lg" fw={500}>
                                 {`${postedBy?.firstName || ''} ${postedBy?.lastName || ''}`}
                             </Text>
-                            <Button variant='subtle'>
+                            <Button variant='subtle' onClick={() => void router.push(`chat/${assignment.id}`)}>
                                 <IconMessage2/>
                             </Button>
                         </Group>
