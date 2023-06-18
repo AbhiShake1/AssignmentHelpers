@@ -21,7 +21,7 @@ const AssignmentPost: NextPage<Props> = ({assignment}) => {
                     <div className="absolute top-4 left-8">
                         <Group spacing="sm">
                             <Avatar size={36} src={postedBy.imageUrl || postedBy.profileImageUrl || ''} radius={30} />
-                            <Text fz="sm" fw={500}>
+                            <Text fz="lg" fw={500}>
                                 {`${postedBy?.firstName || ''} ${postedBy?.lastName || ''}`}
                             </Text>
                         </Group>
