@@ -137,14 +137,14 @@ function Index() {
                     ref={messagesContainerRef}>
                     {
                         msgs?.map(message => (
-                            <div key={message.id} className='flex flex-col space-y-2'>
+                            <div key={message.id} className='flex flex-col'>
                                 {
-                                    message.senderId == '' ? <div className='flex flex-row'>
+                                    message.senderId == '' ? <div className='flex flex-row mb-1'>
                                             <div
                                                 className='py-2 px-4 bg-blue-300 max-w-xl rounded-b-3xl rounded-tr-3xl'>{message.text}</div>
                                             <div className='w-full'/>
                                         </div> :
-                                        <div className='flex flex-row'>
+                                        <div className='flex flex-row mb-1'>
                                             <div className='w-full'/>
                                             <div
                                                 className='py-2 px-4 bg-blue-300 max-w-xl rounded-t-3xl rounded-bl-3xl'>
@@ -157,13 +157,16 @@ function Index() {
                     }
                     <Input value={text} onChange={e => setText(e.target.value)} placeholder='Write something..'
                            size='lg' className='m-4 absolute bottom-4 w-8/12'
-                           rightSection={<Button variant='subtle' disabled={!text} loading={sendMutation.isLoading}
-                                                 onClick={() => sendMutation.mutate({
-                                                     msg: text,
-                                                     to: chat.fromUserId,
-                                                     senderId: '',
-                                                     fromAdmin: true,
-                                                 })}><IconSend/></Button>}/>
+                           rightSection={
+                               <Button variant='subtle' disabled={!text} loading={sendMutation.isLoading}
+                                       onClick={() => sendMutation.mutate({
+                                           msg: text,
+                                           to: chat.fromUserId,
+                                           senderId: '',
+                                           fromAdmin: true,
+                                       })}><IconSend/>
+                               </Button>
+                           }/>
                 </div>
             }
         </div>
