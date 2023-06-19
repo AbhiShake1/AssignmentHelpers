@@ -74,6 +74,13 @@ function Index() {
 
     const chat = chats.data?.find(c => c.fromUserId == active)
 
+    const sendMutation = api.chat.send.useMutation({
+        onSuccess: () => {
+            setText('')
+        },
+        onError: err => toast.error(err.message),
+    })
+
     useEffect(() => {
         if (chat) {
             setMsgs(chat.messages)
@@ -92,18 +99,10 @@ function Index() {
         pusher.unbind(idStr)
         pusher.subscribe(idStr).bind(Events.SEND_MESSAGE, (message: Message) => {
             setMsgs(msgs => [...msgs, message])
-            messagesContainerRef.current?.scroll({behavior: "smooth", top: 0})
         })
 
         return () => pusher.unsubscribe(chat.fromUserId)
     }, [user.userId, chat])
-
-    const sendMutation = api.chat.send.useMutation({
-        onSuccess: () => {
-            setText('')
-        },
-        onError: err => toast.error(err.message),
-    })
 
     useEffect(() => {
         messagesContainerRef.current?.scroll({behavior: "smooth", top: 0})
@@ -137,7 +136,7 @@ function Index() {
                     ref={messagesContainerRef}>
                     {
                         msgs?.map(message => (
-                            <div key={message.id} className='flex flex-col'>
+                            <div key={message.id} className='flex flex-col-reverse'>
                                 {
                                     message.senderId == '' ? <div className='flex flex-row mb-1'>
                                             <div
@@ -164,7 +163,8 @@ function Index() {
                                            to: chat.fromUserId,
                                            senderId: '',
                                            fromAdmin: true,
-                                       })}><IconSend/>
+                                       })}>
+                                   <IconSend/>
                                </Button>
                            }/>
                 </div>
