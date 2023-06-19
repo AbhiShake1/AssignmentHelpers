@@ -91,6 +91,21 @@ export const chatRouter = createTRPCRouter({
             },
         })
     }),
+    assignmentChats: protectedProcedure
+        .input(z.number().positive().int())
+        .query(({ctx, input}) => {
+            return ctx.prisma.chat.findMany({
+                where: {
+                    assignmentId: input,
+                },
+                include: {
+                    fromUser: true,
+                    messages: {
+                        orderBy: {createdAt: 'desc'}
+                    },
+                },
+            })
+        }),
     getWithAdmin: protectedProcedure.query(({ctx}) => {
         return ctx.prisma.chat.findFirst({
             where: {
