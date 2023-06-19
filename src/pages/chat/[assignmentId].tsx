@@ -34,7 +34,7 @@ function Index() {
         pusher.unsubscribe(idStr)
         pusher.unbind(idStr)
         pusher.subscribe(idStr).bind(Events.SEND_MESSAGE, (message: Message) => {
-            setMsgs(msgs => [...msgs, message])
+            setMsgs(msgs => [message, ...msgs])
             messagesContainerRef.current?.scroll({behavior: "smooth", top: 0})
         })
 
