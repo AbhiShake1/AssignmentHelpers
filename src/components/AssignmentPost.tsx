@@ -35,7 +35,14 @@ const AssignmentPost: NextPage<Props> = ({assignment}) => {
                 </div>
             }
             <div className='px-8 py-6 bg-white shadow-2xl rounded-lg border border-gray-200 flex flex-col items-center'>
-                <h1 className='text-2xl'>{assignment.title} for {assignment.budget}</h1>
+                <div className='flex flex-row space-x-2'>
+                    <h1 className='text-2xl'>{assignment.title} for {assignment.budget}</h1>
+                    {
+                        !postedBy && <Button variant='subtle' onClick={() => void router.push(`assignmentChats/${assignment.id}`)}>
+                            <IconMessage2/>
+                        </Button>
+                    }
+                </div>
                 <div className='py-4 px-6 w-full flex flex-col space-y-4 items-center'>
                     <div className='flex flex-row space-x-2'>
                         <IconClock className='text-blue-600'/>
