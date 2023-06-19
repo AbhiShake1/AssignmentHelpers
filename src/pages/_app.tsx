@@ -140,7 +140,7 @@ const MyApp: AppType = ({Component, pageProps}) => {
     return (
         <ClerkProvider experimental_enableClerkImages={true}>
             <MantineProvider withGlobalStyles withNormalizeCSS
-                             theme={{loader: 'bars', defaultRadius: 'sm', fontFamily: 'sans-serif'}}>
+                             theme={{loader: 'bars', defaultRadius: 'sm', fontFamily: 'sans-serif', colorScheme: 'light'}}>
                 <ModalsProvider>
                     <Toaster toastOptions={{position: 'bottom-center'}}/>
                     <NavBar/>

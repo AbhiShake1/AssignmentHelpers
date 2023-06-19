@@ -57,7 +57,7 @@ function Index() {
     return (
         <div className='flex flex-row h-[80vh]'>
             <div
-                className='flex flex-col-reverse space-y-4 w-9/12 overflow-y-auto mb-[5vh] mt-4 mx-2 [&::-webkit-scrollbar]:hidden'
+                className='flex flex-col-reverse space-y-4 w-9/12 overflow-y-auto mb-[5vh] mt-4 mx-2 h-[60vh] [&::-webkit-scrollbar]:hidden'
                 ref={messagesContainerRef}>
                 {
                     msgs?.map(message => (
