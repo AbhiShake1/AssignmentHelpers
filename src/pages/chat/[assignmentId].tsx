@@ -61,14 +61,14 @@ function Index() {
                 ref={messagesContainerRef}>
                 {
                     msgs?.map(message => (
-                        <div key={message.id} className='flex flex-col-reverse space-y-2'>
+                        <div key={message.id} className='flex flex-col-reverse'>
                             {
-                                message.senderId != user.userId ? <div className='flex flex-row'>
+                                message.senderId != user.userId ? <div className='flex flex-row mb-1'>
                                         <div
                                             className='py-2 px-4 bg-blue-300 max-w-xl rounded-b-3xl rounded-tr-3xl'>{message.text}</div>
                                         <div className='w-full'/>
                                     </div> :
-                                    <div className='flex flex-row'>
+                                    <div className='flex flex-row mb-1'>
                                         <div className='w-full'/>
                                         <div
                                             className='py-2 px-4 bg-blue-300 max-w-xl rounded-t-3xl rounded-bl-3xl'>
