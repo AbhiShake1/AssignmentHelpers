@@ -98,7 +98,7 @@ function Index() {
         pusher.unsubscribe(idStr)
         pusher.unbind(idStr)
         pusher.subscribe(idStr).bind(Events.SEND_MESSAGE, (message: Message) => {
-            setMsgs(msgs => [...msgs, message])
+            setMsgs(msgs => [message, ...msgs])
         })
 
         return () => pusher.unsubscribe(chat.fromUserId)
