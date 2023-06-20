@@ -5,11 +5,13 @@ import {responsiveButtonText, responsiveSubtitle, responsiveTitle} from "~/const
 import Head from "next/head";
 import {useUser} from "@clerk/nextjs";
 import {useRouter} from "next/router";
-import {IconArrowRight, IconDeviceFloppy, IconLockOpen, IconSearch} from "@tabler/icons-react";
-import {ActionIcon, Flex, Kbd, TextInput} from "@mantine/core";
+import {IconDeviceFloppy, IconLockOpen, IconSearch} from "@tabler/icons-react";
+import {Flex, Kbd, TextInput} from "@mantine/core";
 import {spotlight} from "@mantine/spotlight";
+import useGlobalSearch from "~/stores/globalSearch";
 
 function Index() {
+    const {text: searchText, set: setSearchText} = useGlobalSearch()
     const user = useUser()
     const router = useRouter()
 
@@ -54,8 +56,10 @@ function Index() {
                                 }
                                 placeholder="Search anything..."
                                 rightSectionWidth={168}
+                                value={searchText}
                                 onChange={(e) => {
                                     e.preventDefault()
+                                    setSearchText(e.target.value)
                                     spotlight.open()
                                 }}
                             />

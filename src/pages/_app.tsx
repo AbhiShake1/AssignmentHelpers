@@ -13,6 +13,7 @@ import {ActionIcon, CopyButton, MantineProvider, TextInput} from "@mantine/core"
 import {IconCopy, IconShare} from "@tabler/icons-react";
 import {modals, ModalsProvider} from "@mantine/modals";
 import {SpotlightProvider} from "@mantine/spotlight";
+import useGlobalSearch from "~/stores/globalSearch";
 
 function Share() {
     const referralLinkQuery = api.referral.link.useQuery()
@@ -140,6 +141,8 @@ function NavBar() {
 }
 
 const MyApp: AppType = ({Component, pageProps}) => {
+    const {text: searchText, set: setSearchText} = useGlobalSearch()
+
     return (
         <ClerkProvider experimental_enableClerkImages={true}>
             <MantineProvider withGlobalStyles withNormalizeCSS
@@ -153,6 +156,9 @@ const MyApp: AppType = ({Component, pageProps}) => {
                     <SpotlightProvider actions={[]} highlightQuery
                                        searchPlaceholder="Search..."
                                        shortcut="mod + shift + F"
+                                       defaultValue={searchText}
+                                       query={searchText}
+                                       onQueryChange={setSearchText}
                     >
                         <Toaster toastOptions={{position: 'bottom-center'}}/>
                         <NavBar/>
