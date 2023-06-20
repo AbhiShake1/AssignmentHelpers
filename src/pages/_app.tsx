@@ -12,6 +12,7 @@ import {toast, Toaster} from "react-hot-toast";
 import {ActionIcon, CopyButton, MantineProvider, TextInput} from "@mantine/core";
 import {IconCopy, IconShare} from "@tabler/icons-react";
 import {modals, ModalsProvider} from "@mantine/modals";
+import {SpotlightProvider} from "@mantine/spotlight";
 
 function Share() {
     const referralLinkQuery = api.referral.link.useQuery()
@@ -142,10 +143,12 @@ const MyApp: AppType = ({Component, pageProps}) => {
             <MantineProvider withGlobalStyles withNormalizeCSS
                              theme={{loader: 'bars', defaultRadius: 'sm', fontFamily: 'sans-serif', colorScheme: 'light'}}>
                 <ModalsProvider>
-                    <Toaster toastOptions={{position: 'bottom-center'}}/>
-                    <NavBar/>
-                    <ChatDialog/>
-                    <Component {...pageProps} />
+                    <SpotlightProvider actions={[]} highlightQuery>
+                        <Toaster toastOptions={{position: 'bottom-center'}}/>
+                        <NavBar/>
+                        <ChatDialog/>
+                        <Component {...pageProps} />
+                    </SpotlightProvider>
                 </ModalsProvider>
             </MantineProvider>
         </ClerkProvider>

@@ -47,7 +47,7 @@ function Index() {
                                         <IconArrowRight size="1.1rem" stroke={1.5} />
                                     </ActionIcon>
                                 }
-                                placeholder="Search questions"
+                                placeholder="Search anything..."
                                 rightSectionWidth={72}
                             />
                         </div>

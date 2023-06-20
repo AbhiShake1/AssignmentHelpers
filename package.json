@@ -23,6 +23,7 @@
     "@mantine/modals": "^6.0.13",
     "@mantine/notifications": "^6.0.13",
     "@mantine/nprogress": "^6.0.13",
+    "@mantine/spotlight": "^6.0.13",
     "@mantine/tag-picker": "^2.1.5",
     "@prisma/client": "^4.14.0",
     "@t3-oss/env-nextjs": "^0.3.1",
