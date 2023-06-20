@@ -12,7 +12,7 @@ import {useChatBarStyles} from "~/hooks/useChatBarStyles";
 
 function Index() {
     const router = useRouter()
-    const assignmentId = parseInt(router.query.assignmentId!.toString())
+    const assignmentId = parseInt(router.query.assignmentId?.toString() ?? '')
     const [msgs, setMsgs] = useState<Message[]>([])
     const chats = api.chat.assignmentChats.useQuery(assignmentId)
     const {classes, cx} = useChatBarStyles();
