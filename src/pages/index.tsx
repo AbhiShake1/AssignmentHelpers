@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import Image from "next/image";
 import {ONBOARDING_ILLUSTRATION_URL} from "~/const/imageurls";
-import {responsiveButtonText, responsiveSubtitle, responsiveTitle} from "~/const/responsive";
+import {responsiveSubtitle, responsiveTitle} from "~/const/responsive";
 import Head from "next/head";
 import {useUser} from "@clerk/nextjs";
 import {useRouter} from "next/router";
 import {IconDeviceFloppy, IconLockOpen, IconSearch} from "@tabler/icons-react";
-import {Flex, Kbd, TextInput} from "@mantine/core";
+import {Button, Flex, Kbd, TextInput} from "@mantine/core";
 import {spotlight} from "@mantine/spotlight";
 import useGlobalSearch from "~/stores/globalSearch";
 
@@ -37,10 +37,10 @@ function Index() {
                             Freelancers, Fast.
                             AssignmentHelpers helps you hire elite freelancers at a moment&apos;s notice</h3>
                         <div className='flex flex-row space-x-4'>
-                            <button
-                                className={`bg-blue-600 px-8 py-4 text-white rounded-2xl hover:bg-blue-900 focus:border-blue-600 md:px-4`}>
-                                <h1 className={`${responsiveButtonText} bg-transparent`}>Hire a freelancer</h1>
-                            </button>
+                            <Button leftIcon={<Image width={24} height={24} alt='' src='freelancer.svg'/>}
+                                    variant='outline' size='xl' radius='xl'>
+                                Hire Freelancers..
+                            </Button>
                             <TextInput
                                 icon={<IconSearch size="1.1rem" stroke={1.5}/>}
                                 radius="xl"
