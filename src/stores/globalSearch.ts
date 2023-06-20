@@ -5,7 +5,7 @@ interface GlobalSearchState {
     set: (text: string) => void,
 }
 
-const useGlobalSearch = create<GlobalSearchState>()((set, get) => ({
+const useGlobalSearch = create<GlobalSearchState>()((set) => ({
     text: '',
     set: (text) => set({text}),
 }))
