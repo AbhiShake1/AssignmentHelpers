@@ -6,7 +6,7 @@ import Head from "next/head";
 import {useUser} from "@clerk/nextjs";
 import {useRouter} from "next/router";
 import {IconArrowRight, IconDeviceFloppy, IconLockOpen, IconSearch} from "@tabler/icons-react";
-import {ActionIcon, TextInput} from "@mantine/core";
+import {ActionIcon, Flex, Kbd, TextInput} from "@mantine/core";
 import {spotlight} from "@mantine/spotlight";
 
 function Index() {
@@ -44,12 +44,16 @@ function Index() {
                                 radius="xl"
                                 size='xl'
                                 rightSection={
-                                    <ActionIcon size={46} radius="xl" variant="default">
-                                        <IconArrowRight size="1.1rem" stroke={1.5}/>
-                                    </ActionIcon>
+                                    <Flex align='center'>
+                                        <Kbd mr={5}>Ctrl</Kbd>
+                                        <span>+</span>
+                                        <Kbd mr={5}>Shift</Kbd>
+                                        <span>+</span>
+                                        <Kbd ml={5}>F</Kbd>
+                                    </Flex>
                                 }
                                 placeholder="Search anything..."
-                                rightSectionWidth={72}
+                                rightSectionWidth={168}
                                 onChange={(e) => {
                                     e.preventDefault()
                                     spotlight.open()

@@ -152,6 +152,7 @@ const MyApp: AppType = ({Component, pageProps}) => {
                 <ModalsProvider>
                     <SpotlightProvider actions={[]} highlightQuery
                                        searchPlaceholder="Search..."
+                                       shortcut="mod + shift + F"
                     >
                         <Toaster toastOptions={{position: 'bottom-center'}}/>
                         <NavBar/>
