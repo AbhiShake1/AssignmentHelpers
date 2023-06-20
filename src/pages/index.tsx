@@ -54,7 +54,7 @@ function Index() {
                                         <Kbd ml={5}>F</Kbd>
                                     </Flex>
                                 }
-                                placeholder="Search anything..."
+                                placeholder="Search..."
                                 rightSectionWidth={168}
                                 value={searchText}
                                 onChange={(e) => {
