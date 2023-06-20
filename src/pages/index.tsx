@@ -7,6 +7,7 @@ import {useUser} from "@clerk/nextjs";
 import {useRouter} from "next/router";
 import {IconArrowRight, IconDeviceFloppy, IconLockOpen, IconSearch} from "@tabler/icons-react";
 import {ActionIcon, TextInput} from "@mantine/core";
+import {spotlight} from "@mantine/spotlight";
 
 function Index() {
     const user = useUser()
@@ -39,16 +40,20 @@ function Index() {
                                 <h1 className={`${responsiveButtonText} bg-transparent`}>Hire a freelancer</h1>
                             </button>
                             <TextInput
-                                icon={<IconSearch size="1.1rem" stroke={1.5} />}
+                                icon={<IconSearch size="1.1rem" stroke={1.5}/>}
                                 radius="xl"
                                 size='xl'
                                 rightSection={
                                     <ActionIcon size={46} radius="xl" variant="default">
-                                        <IconArrowRight size="1.1rem" stroke={1.5} />
+                                        <IconArrowRight size="1.1rem" stroke={1.5}/>
                                     </ActionIcon>
                                 }
                                 placeholder="Search anything..."
                                 rightSectionWidth={72}
+                                onChange={(e) => {
+                                    e.preventDefault()
+                                    spotlight.open()
+                                }}
                             />
                         </div>
                     </div>

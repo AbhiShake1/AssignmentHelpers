@@ -77,7 +77,8 @@ function DesktopNavbar() {
                                                        className={`hover:text-blue-500 p-4 ${path?.includes('myAssignments') ? 'text-blue-700' : ''}`}>My
                 Assignments</Link>}
             {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/supportChats' scroll={true}
-                                                                                     className={`hover:text-blue-500 p-4 ${path?.includes('supportChats') ? 'text-blue-700' : ''}`}>Support chats</Link>}
+                                                                                     className={`hover:text-blue-500 p-4 ${path?.includes('supportChats') ? 'text-blue-700' : ''}`}>Support
+                chats</Link>}
             {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/users' scroll={true}
                                                                                      className={`hover:text-blue-500 p-4 ${path?.includes('users') ? 'text-blue-700' : ''}`}>Users</Link>}
             <Link href='/' scroll={true}
@@ -103,7 +104,8 @@ function MobileNavbar() {
               className={`hover:text-blue-500 p-4 ${path?.includes('myAssignments') ? 'text-blue-700' : ''}`}>My
             Assignments</Link>
         {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/supportChats' scroll={true}
-                                                                                 className={`hover:text-blue-500 p-4 ${path?.includes('supportChats') ? 'text-blue-700' : ''}`}>Support chats</Link>}
+                                                                                 className={`hover:text-blue-500 p-4 ${path?.includes('supportChats') ? 'text-blue-700' : ''}`}>Support
+            chats</Link>}
         {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/users' scroll={true}
                                                                                  className={`hover:text-blue-500 p-4 ${path?.includes('users') ? 'text-blue-700' : ''}`}>Users</Link>}
         {user.isSignedIn && isFreelancer && <Link href='/findWork' scroll={true}
@@ -141,9 +143,16 @@ const MyApp: AppType = ({Component, pageProps}) => {
     return (
         <ClerkProvider experimental_enableClerkImages={true}>
             <MantineProvider withGlobalStyles withNormalizeCSS
-                             theme={{loader: 'bars', defaultRadius: 'sm', fontFamily: 'sans-serif', colorScheme: 'light'}}>
+                             theme={{
+                                 loader: 'bars',
+                                 defaultRadius: 'sm',
+                                 fontFamily: 'sans-serif',
+                                 colorScheme: 'light'
+                             }}>
                 <ModalsProvider>
-                    <SpotlightProvider actions={[]} highlightQuery>
+                    <SpotlightProvider actions={[]} highlightQuery
+                                       searchPlaceholder="Search..."
+                    >
                         <Toaster toastOptions={{position: 'bottom-center'}}/>
                         <NavBar/>
                         <ChatDialog/>
