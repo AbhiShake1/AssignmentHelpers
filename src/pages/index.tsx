@@ -5,7 +5,8 @@ import {responsiveButtonText, responsiveSubtitle, responsiveTitle} from "~/const
 import Head from "next/head";
 import {useUser} from "@clerk/nextjs";
 import {useRouter} from "next/router";
-import {IconDeviceFloppy, IconLockOpen, IconSearch} from "@tabler/icons-react";
+import {IconArrowRight, IconDeviceFloppy, IconLockOpen, IconSearch} from "@tabler/icons-react";
+import {ActionIcon, TextInput} from "@mantine/core";
 
 function Index() {
     const user = useUser()
@@ -37,12 +38,18 @@ function Index() {
                                 className={`bg-blue-600 px-8 py-4 text-white rounded-2xl hover:bg-blue-900 focus:border-blue-600 md:px-4`}>
                                 <h1 className={`${responsiveButtonText} bg-transparent`}>Hire a freelancer</h1>
                             </button>
-                            <button type='button'
-                                    className='flex flex-row items-center border border-gray-500 rounded-2xl px-4 hover:border-blue-700 focus:border-blue-600'>
-                                <input placeholder='search freelance work'
-                                       className={`outline-none border-none ${responsiveButtonText}`}/>
-                                <IconSearch className='scale-150 md:scale-100 bg-transparent' color='primary'/>
-                            </button>
+                            <TextInput
+                                icon={<IconSearch size="1.1rem" stroke={1.5} />}
+                                radius="xl"
+                                size='xl'
+                                rightSection={
+                                    <ActionIcon size={46} radius="xl" variant="default">
+                                        <IconArrowRight size="1.1rem" stroke={1.5} />
+                                    </ActionIcon>
+                                }
+                                placeholder="Search questions"
+                                rightSectionWidth={72}
+                            />
                         </div>
                     </div>
                     <div className='h-full w-full flex justify-center sm:hidden md:block'>

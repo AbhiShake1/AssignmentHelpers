@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {api} from "~/utils/api";
-import {Button, createStyles, getStylesRef, Input, Loader, Navbar, rem} from '@mantine/core';
+import {Button, Input, Loader, Navbar} from '@mantine/core';
 import {IconSend, IconUser,} from '@tabler/icons-react';
 import type {Message} from '@prisma/client'
 import {toast} from "react-hot-toast";
