@@ -9,6 +9,7 @@ import { Events } from "~/const/events";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { modals } from '@mantine/modals';
+import { QuantityInput } from '~/components/QuantityInput';
 
 function Index(props) {
     const router = useRouter()
@@ -87,7 +88,7 @@ function Index(props) {
                             <Button variant='subtle'
                                 onClick={() => modals.open({
                                     title: 'Enter bidding amount',
-                                    children: <></>
+                                    children: <QuantityInput></QuantityInput>
                                 })}>
                                 Start Bidding
                             </Button>
