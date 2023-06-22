@@ -1,0 +1,11 @@
+2023-06-22T01:33:04.668Z: 
+
+--------------------------------------
+Extension started
+
+2023-06-22T01:33:04.668Z: Loading .env file.
+2023-06-22T01:33:04.668Z: Trying to get workspace folder.
+2023-06-22T01:33:04.669Z: Server endpoint: https://fastfastapi.fly.dev
+2023-06-22T01:33:07.201Z: 
+Extension version number: 0.0.27, asking for input.
+2023-06-22T01:33:09.448Z: User input is empty.

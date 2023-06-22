@@ -9,7 +9,7 @@ import {Events} from "~/const/events";
 import {useAuth} from "@clerk/nextjs";
 import {useRouter} from "next/router";
 
-function Index() {
+function Index(props) {
     const router = useRouter()
     const assignmentId = parseInt(router.query.assignmentId?.toString() ?? '')
     const [msgs, setMsgs] = useState<Message[]>([])
@@ -80,7 +80,7 @@ function Index() {
                     ))
                 }
                 <Input value={text} onChange={e => setText(e.target.value)} placeholder='Write something..'
-                       size='lg' className='m-4 absolute bottom-4 w-8/12'
+                       size='lg' className='m-4 absolute bottom-4 w-8/12' rightSectionWidth={96}
                        rightSection={
                            <Button variant='subtle' disabled={!text} loading={sendMutation.isLoading}
                                    onClick={() => sendMutation.mutate({
