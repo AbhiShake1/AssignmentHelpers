@@ -8,6 +8,7 @@ import pusher from "~/stores/pusher";
 import { Events } from "~/const/events";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/router";
+import { modals } from '@mantine/modals';
 
 function Index(props) {
     const router = useRouter()
@@ -83,11 +84,10 @@ function Index(props) {
                     size='lg' className='m-4 absolute bottom-4 w-8/12' rightSectionWidth={96 * 2 + 6}
                     rightSection={
                         <div className='flex flex-row space-x-2'>
-                            <Button variant='subtle' disabled={!text} loading={sendMutation.isLoading}
-                                onClick={() => sendMutation.mutate({
-                                    msg: text,
-                                    to: chat!.toUserId!,
-                                    senderId: user.userId!,
+                            <Button variant='subtle'
+                                onClick={() => modals.open({
+                                    title: 'Enter bidding amount',
+                                    children: <></>
                                 })}>
                                 Start Bidding
                             </Button>
