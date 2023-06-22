@@ -90,7 +90,17 @@ function Index() {
                             <Button variant='subtle'
                                 onClick={() => modals.open({
                                     title: 'Enter bidding amount',
-                                    children: <QuantityInput max={Number(assignment.budget.replace(/\D/g, ""))}/>
+                                    children: <div className='flex flex-col space-y-6'>
+                                        <QuantityInput max={Number(assignment.budget.replace(/\D/g, ""))} />
+                                        <Button variant='subtle' loading={sendMutation.isLoading}
+                                            onClick={() => sendMutation.mutate({
+                                                msg: text,
+                                                to: chat!.toUserId!,
+                                                senderId: user.userId!,
+                                            })}>
+                                            Start Bidding
+                                        </Button>
+                                    </div>
                                 })}>
                                 Start Bidding
                             </Button>
