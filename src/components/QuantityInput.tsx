@@ -15,7 +15,7 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.white,
 
     '&:focus-within': {
-      borderColor: theme.colors[theme.primaryColor][6],
+      borderColor: theme.colors[theme.primaryColor]![6],
     },
   },
 
