@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { modals } from '@mantine/modals';
 import { QuantityInput } from '~/components/QuantityInput';
 
-function Index() {
+function Index(props) {
     const router = useRouter()
     const assignmentId = parseInt(router.query.assignmentId?.toString() ?? '')
     const [msgs, setMsgs] = useState<Message[]>([])
@@ -58,6 +58,8 @@ function Index() {
 
     const assignment = chat!.assignment!
 
+    const max = Number(assignment.budget.replace(/\D/g, ""))
+
     return (
         <div className='flex flex-row h-[80vh]'>
             <div
@@ -91,7 +93,7 @@ function Index() {
                                 onClick={() => modals.open({
                                     title: 'Enter bidding amount',
                                     children: <div className='flex flex-col space-y-6'>
-                                        <QuantityInput max={Number(assignment.budget.replace(/\D/g, ""))} />
+                                        <QuantityInput max={max} defaultValue={max} />
                                         <Button variant='subtle' loading={sendMutation.isLoading}
                                             onClick={() => sendMutation.mutate({
                                                 msg: text,
