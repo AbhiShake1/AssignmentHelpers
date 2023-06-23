@@ -9,7 +9,7 @@ import {Events} from "~/const/events";
 import {useAuth} from "@clerk/nextjs";
 import {useChatBarStyles} from "~/hooks/useChatBarStyles";
 
-function Index(props) {
+function Index() {
     const [msgs, setMsgs] = useState<Message[]>([])
     const chats = api.chat.supportChats.useQuery()
     const {classes, cx} = useChatBarStyles();
