@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createStyles, NumberInput, NumberInputHandlers, ActionIcon, rem } from '@mantine/core';
 import { IconPlus, IconMinus } from '@tabler/icons-react';
 
@@ -45,12 +45,17 @@ interface QuantityInputProps {
   min?: number
   max?: number
   defaultValue?: number
+  onChange?: (value: number)=>void
 }
 
-export function QuantityInput({ min = 1, max = 100, defaultValue }: QuantityInputProps) {
+export function QuantityInput({ min = 1, max = 100, defaultValue, onChange }: QuantityInputProps) {
   const { classes } = useStyles();
   const handlers = useRef<NumberInputHandlers>(null);
-  const [value, setValue] = useState<number | ''>(defaultValue || 1);
+  const [value, setValue] = useState<number>(defaultValue || 1);
+
+  useEffect(()=>{
+    if(onChange) onChange(value)
+  }, [value])
 
   return (
     <div className={classes.wrapper}>
