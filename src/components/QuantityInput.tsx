@@ -9,9 +9,8 @@ const useStyles = createStyles((theme) => ({
     justifyContent: 'space-between',
     padding: `${rem(6)} ${theme.spacing.xs}`,
     borderRadius: theme.radius.sm,
-    border: `${rem(1)} solid ${
-      theme.colorScheme === 'dark' ? 'transparent' : theme.colors.gray[3]
-    }`,
+    border: `${rem(1)} solid ${theme.colorScheme === 'dark' ? 'transparent' : theme.colors.gray[3]
+      }`,
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.white,
 
     '&:focus-within': {
@@ -21,9 +20,8 @@ const useStyles = createStyles((theme) => ({
 
   control: {
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-    border: `${rem(1)} solid ${
-      theme.colorScheme === 'dark' ? 'transparent' : theme.colors.gray[3]
-    }`,
+    border: `${rem(1)} solid ${theme.colorScheme === 'dark' ? 'transparent' : theme.colors.gray[3]
+      }`,
 
     '&:disabled': {
       borderColor: theme.colorScheme === 'dark' ? 'transparent' : theme.colors.gray[3],
@@ -45,7 +43,7 @@ interface QuantityInputProps {
   min?: number
   max?: number
   defaultValue?: number
-  onChange?: (value: number)=>void
+  onChange?: (value: number) => void
 }
 
 export function QuantityInput({ min = 1, max = 100, defaultValue, onChange }: QuantityInputProps) {
@@ -53,8 +51,8 @@ export function QuantityInput({ min = 1, max = 100, defaultValue, onChange }: Qu
   const handlers = useRef<NumberInputHandlers>(null);
   const [value, setValue] = useState<number>(defaultValue || 1);
 
-  useEffect(()=>{
-    if(onChange) onChange(value)
+  useEffect(() => {
+    if (onChange) onChange(value)
   }, [value])
 
   return (
@@ -76,7 +74,9 @@ export function QuantityInput({ min = 1, max = 100, defaultValue, onChange }: Qu
         max={max}
         handlersRef={handlers}
         value={value}
-        onChange={setValue}
+        onChange={v => {
+          setValue(parseInt(value?.toString() ?? '0'))
+        }}
         classNames={{ input: classes.input }}
       />
 
