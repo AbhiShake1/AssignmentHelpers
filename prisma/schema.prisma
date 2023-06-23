@@ -96,11 +96,14 @@ model Payment {
 
 // Chat model for storing chat messages between users
 model Chat {
-  id         Int         @id @default(autoincrement())
-  messages   Message[]
-  assignment Assignment? @relation(fields: [assignmentId], references: [id])
-  fromUser   User?        @relation("ChatFromUser", fields: [fromUserId], references: [id])
-  toUser     User?       @relation("ChatToUser", fields: [toUserId], references: [id])
+  id            Int         @id @default(autoincrement())
+  messages      Message[]
+  assignment    Assignment? @relation(fields: [assignmentId], references: [id])
+  fromUser      User?       @relation("ChatFromUser", fields: [fromUserId], references: [id])
+  toUser        User?       @relation("ChatToUser", fields: [toUserId], references: [id])
+  isBid         Boolean     @default(false)
+  isBidAccepted Boolean     @default(false)
+  isBidRejected Boolean     @default(false)
 
   fromUserId   String
   toUserId     String?
