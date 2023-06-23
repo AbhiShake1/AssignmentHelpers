@@ -9,7 +9,7 @@ import {Events} from "~/const/events";
 import {useAuth} from "@clerk/nextjs";
 import {useChatBarStyles} from "~/hooks/useChatBarStyles";
 
-function Index() {
+function Index(props) {
     const [msgs, setMsgs] = useState<Message[]>([])
     const chats = api.chat.supportChats.useQuery()
     const {classes, cx} = useChatBarStyles();
@@ -66,7 +66,7 @@ function Index() {
             }}
         >
             <IconUser className={classes.linkIcon} stroke={1.5}/>
-            <span>{item.fromUser.name}</span>
+            <span>{item.fromUser?.name || 'Anonymous'}</span>
         </a>
     ))
 
