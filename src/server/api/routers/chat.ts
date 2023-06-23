@@ -12,6 +12,7 @@ export const chatRouter = createTRPCRouter({
             isBid: z.boolean().default(false),
             isBidAccepted: z.boolean().default(false),
             isBidRejected: z.boolean().default(false),
+            biddingPrice: z.number().nullish(),
         }))
         .mutation(async ({ ctx, input }) => {
             const uid = ctx.auth!.userId!
@@ -32,6 +33,7 @@ export const chatRouter = createTRPCRouter({
                             isBid: input.isBid,
                             isBidAccepted: input.isBidAccepted,
                             isBidRejected: input.isBidRejected,
+                            biddingPrice: input.biddingPrice,
                         },
                     },
                 },
@@ -43,6 +45,7 @@ export const chatRouter = createTRPCRouter({
                             isBid: input.isBid,
                             isBidAccepted: input.isBidAccepted,
                             isBidRejected: input.isBidRejected,
+                            biddingPrice: input.biddingPrice,
                         },
                     },
                 },
