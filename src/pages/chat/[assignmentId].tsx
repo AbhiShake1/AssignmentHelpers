@@ -104,6 +104,7 @@ function Index() {
                                                 to: chat!.toUserId!,
                                                 senderId: user.userId!,
                                                 isBid: true,
+                                                biddingPrice: biddingAmount,
                                             })}>
                                             Start Bidding
                                         </Button>
