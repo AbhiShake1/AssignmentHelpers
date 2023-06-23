@@ -1,18 +1,18 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {api} from "~/utils/api";
-import {Button, Input, Loader, Navbar} from '@mantine/core';
-import {IconSend, IconUser,} from '@tabler/icons-react';
-import type {Message} from '@prisma/client'
-import {toast} from "react-hot-toast";
+import React, { useEffect, useRef, useState } from 'react';
+import { api } from "~/utils/api";
+import { Button, Input, Loader, Navbar } from '@mantine/core';
+import { IconSend, IconUser, } from '@tabler/icons-react';
+import type { Message } from '@prisma/client'
+import { toast } from "react-hot-toast";
 import pusher from "~/stores/pusher";
-import {Events} from "~/const/events";
-import {useAuth} from "@clerk/nextjs";
-import {useChatBarStyles} from "~/hooks/useChatBarStyles";
+import { Events } from "~/const/events";
+import { useAuth } from "@clerk/nextjs";
+import { useChatBarStyles } from "~/hooks/useChatBarStyles";
 
 function Index() {
     const [msgs, setMsgs] = useState<Message[]>([])
     const chats = api.chat.supportChats.useQuery()
-    const {classes, cx} = useChatBarStyles();
+    const { classes, cx } = useChatBarStyles();
     const [active, setActive] = useState('')
     const [text, setText] = useState('')
     const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -47,25 +47,25 @@ function Index() {
             setMsgs(msgs => [message, ...msgs])
         })
 
-        return () => pusher.unsubscribe(chat.fromUserId)
+        return () => pusher.unsubscribe(id)
     }, [user.userId, chat])
 
     useEffect(() => {
-        messagesContainerRef.current?.scroll({behavior: "smooth", top: 0})
+        messagesContainerRef.current?.scroll({ behavior: "smooth", top: 0 })
     }, [msgs])
 
-    if (!chats.isSuccess) return <center><Loader/></center>
+    if (!chats.isSuccess) return <center><Loader /></center>
 
     const links = chats.data.map((item) => (
         <a
-            className={cx(classes.link, {[classes.linkActive]: item.fromUserId === active})}
+            className={cx(classes.link, { [classes.linkActive]: item.fromUserId === active })}
             key={item.fromUserId}
             onClick={(event) => {
                 event.preventDefault();
                 setActive(item.fromUserId);
             }}
         >
-            <IconUser className={classes.linkIcon} stroke={1.5}/>
+            <IconUser className={classes.linkIcon} stroke={1.5} />
             <span>{item.fromUser?.name || 'Anonymous'}</span>
         </a>
     ))
@@ -85,12 +85,12 @@ function Index() {
                             <div key={message.id} className='flex flex-col-reverse'>
                                 {
                                     message.senderId == '' ? <div className='flex flex-row mb-1'>
-                                            <div
-                                                className='py-2 px-4 bg-blue-300 max-w-xl rounded-b-3xl rounded-tr-3xl'>{message.text}</div>
-                                            <div className='w-full'/>
-                                        </div> :
+                                        <div
+                                            className='py-2 px-4 bg-blue-300 max-w-xl rounded-b-3xl rounded-tr-3xl'>{message.text}</div>
+                                        <div className='w-full' />
+                                    </div> :
                                         <div className='flex flex-row mb-1'>
-                                            <div className='w-full'/>
+                                            <div className='w-full' />
                                             <div
                                                 className='py-2 px-4 bg-blue-300 max-w-xl rounded-t-3xl rounded-bl-3xl'>
                                                 {message.text}
@@ -101,18 +101,18 @@ function Index() {
                         ))
                     }
                     <Input value={text} onChange={e => setText(e.target.value)} placeholder='Write something..'
-                           size='lg' className='m-4 absolute bottom-4 w-8/12'
-                           rightSection={
-                               <Button variant='subtle' disabled={!text} loading={sendMutation.isLoading}
-                                       onClick={() => sendMutation.mutate({
-                                           msg: text,
-                                           to: chat.fromUserId,
-                                           senderId: '',
-                                           fromAdmin: true,
-                                       })}>
-                                   <IconSend/>
-                               </Button>
-                           }/>
+                        size='lg' className='m-4 absolute bottom-4 w-8/12'
+                        rightSection={
+                            <Button variant='subtle' disabled={!text} loading={sendMutation.isLoading}
+                                onClick={() => sendMutation.mutate({
+                                    msg: text,
+                                    to: chat.fromUserId,
+                                    senderId: '',
+                                    fromAdmin: true,
+                                })}>
+                                <IconSend />
+                            </Button>
+                        } />
                 </div>
             }
         </div>
