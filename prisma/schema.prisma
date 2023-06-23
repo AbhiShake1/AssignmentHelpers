@@ -102,7 +102,7 @@ model Chat {
   fromUser   User?       @relation("ChatFromUser", fields: [fromUserId], references: [id])
   toUser     User?       @relation("ChatToUser", fields: [toUserId], references: [id])
 
-  fromUserId   String
+  fromUserId   String?
   toUserId     String?
   assignmentId Int?
 
