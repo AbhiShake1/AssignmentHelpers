@@ -125,6 +125,7 @@ model Message {
   isBid         Boolean  @default(false)
   isBidAccepted Boolean  @default(false)
   isBidRejected Boolean  @default(false)
+  biddingPrice  Float?
 
   @@index([senderId])
   @@index([chatId])
