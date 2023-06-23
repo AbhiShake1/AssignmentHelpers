@@ -6,7 +6,7 @@ import type { Message } from '@prisma/client'
 import { toast } from "react-hot-toast";
 import pusher from "~/stores/pusher";
 import { Events } from "~/const/events";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { modals } from '@mantine/modals';
 import { QuantityInput } from '~/components/QuantityInput';
@@ -21,6 +21,7 @@ function Index(props) {
     const [text, setText] = useState('')
     const messagesContainerRef = useRef<HTMLDivElement>(null);
     const user = useAuth()
+    const auth = useUser()
 
     const chat = chatQuery.data
 
@@ -96,9 +97,10 @@ function Index(props) {
                                         <QuantityInput max={max} defaultValue={max} />
                                         <Button variant='subtle' loading={sendMutation.isLoading}
                                             onClick={() => sendMutation.mutate({
-                                                msg: text,
+                                                msg: `New offer from ${auth.user?.firstName ?? ''}`,
                                                 to: chat!.toUserId!,
                                                 senderId: user.userId!,
+                                                isBid: true,
                                             })}>
                                             Start Bidding
                                         </Button>
