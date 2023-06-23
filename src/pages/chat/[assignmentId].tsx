@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { modals } from '@mantine/modals';
 import { QuantityInput } from '~/components/QuantityInput';
 
-function Index(props) {
+function Index() {
     const router = useRouter()
     const assignmentId = parseInt(router.query.assignmentId?.toString() ?? '')
     const [msgs, setMsgs] = useState<Message[]>([])
@@ -19,6 +19,7 @@ function Index(props) {
         onSuccess: data => setMsgs(data.messages)
     })
     const [text, setText] = useState('')
+    const [biddingAmount, setBiddingAmount] = useState<number>()
     const messagesContainerRef = useRef<HTMLDivElement>(null);
     const user = useAuth()
     const auth = useUser()
@@ -61,6 +62,7 @@ function Index(props) {
     const assignment = chat!.assignment!
 
     const max = Number(assignment.budget.replace(/\D/g, ""))
+    setBiddingAmount(amount => amount || max)
 
     return (
         <div className='flex flex-row h-[80vh]'>
@@ -95,7 +97,7 @@ function Index(props) {
                                 onClick={() => modals.open({
                                     title: 'Enter bidding amount',
                                     children: <div className='flex flex-col space-y-6'>
-                                        <QuantityInput max={max} defaultValue={max} />
+                                        <QuantityInput max={max} defaultValue={max} onChange={setBiddingAmount} />
                                         <Button variant='subtle' loading={sendMutation.isLoading}
                                             onClick={() => sendMutation.mutate({
                                                 msg: `New offer from ${auth.user?.firstName ?? ''}`,
