@@ -47,6 +47,7 @@ function Index(props) {
     const sendMutation = api.chat.send.useMutation({
         onSuccess: () => {
             setText('')
+            modals.closeAll()
         },
         onError: err => toast.error(err.message),
     })
