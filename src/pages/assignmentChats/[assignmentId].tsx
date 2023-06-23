@@ -110,7 +110,7 @@ function Index() {
                             <Button variant='subtle' disabled={!text} loading={sendMutation.isLoading}
                                 onClick={() => sendMutation.mutate({
                                     msg: text,
-                                    to: chat.fromUserId,
+                                    to: chat.fromUserId || undefined,
                                     senderId: '',
                                     fromAdmin: true,
                                 })}>
