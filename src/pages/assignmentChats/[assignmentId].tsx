@@ -50,7 +50,7 @@ function Index() {
             setMsgs(msgs => [message, ...msgs])
         })
 
-        return () => pusher.unsubscribe(chat.fromUserId)
+        return () => pusher.unsubscribe(chat.fromUserId!)
     }, [user.userId, chat])
 
     useEffect(() => {

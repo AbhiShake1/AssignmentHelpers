@@ -42,7 +42,7 @@ function Index() {
             messagesContainerRef.current?.scroll({ behavior: "smooth", top: 0 })
         })
 
-        return () => pusher.unsubscribe(chat.fromUserId)
+        return () => pusher.unsubscribe(chat.fromUserId!)
     }, [user.userId, chat])
 
     const sendMutation = api.chat.send.useMutation({
