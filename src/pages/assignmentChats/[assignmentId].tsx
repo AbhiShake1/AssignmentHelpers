@@ -65,7 +65,7 @@ function Index() {
             key={item.fromUserId}
             onClick={(event) => {
                 event.preventDefault();
-                setActive(item.fromUserId);
+                setActive(item.fromUserId!);
             }}
         >
             <IconUser className={classes.linkIcon} stroke={1.5} />
