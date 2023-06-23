@@ -96,14 +96,11 @@ model Payment {
 
 // Chat model for storing chat messages between users
 model Chat {
-  id            Int         @id @default(autoincrement())
-  messages      Message[]
-  assignment    Assignment? @relation(fields: [assignmentId], references: [id])
-  fromUser      User?       @relation("ChatFromUser", fields: [fromUserId], references: [id])
-  toUser        User?       @relation("ChatToUser", fields: [toUserId], references: [id])
-  isBid         Boolean     @default(false)
-  isBidAccepted Boolean     @default(false)
-  isBidRejected Boolean     @default(false)
+  id         Int         @id @default(autoincrement())
+  messages   Message[]
+  assignment Assignment? @relation(fields: [assignmentId], references: [id])
+  fromUser   User?       @relation("ChatFromUser", fields: [fromUserId], references: [id])
+  toUser     User?       @relation("ChatToUser", fields: [toUserId], references: [id])
 
   fromUserId   String
   toUserId     String?
@@ -118,13 +115,16 @@ model Chat {
 
 // Message model for storing individual chat messages
 model Message {
-  id        Int      @id @default(autoincrement())
-  text      String
-  sender    User     @relation(fields: [senderId], references: [id])
-  createdAt DateTime @default(now())
-  chat      Chat     @relation(fields: [chatId], references: [id])
-  chatId    Int
-  senderId  String
+  id            Int      @id @default(autoincrement())
+  text          String
+  sender        User     @relation(fields: [senderId], references: [id])
+  createdAt     DateTime @default(now())
+  chat          Chat     @relation(fields: [chatId], references: [id])
+  chatId        Int
+  senderId      String
+  isBid         Boolean  @default(false)
+  isBidAccepted Boolean  @default(false)
+  isBidRejected Boolean  @default(false)
 
   @@index([senderId])
   @@index([chatId])
