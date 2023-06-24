@@ -58,7 +58,7 @@ export const chatRouter = createTRPCRouter({
             })
             const message = chat.messages.at(0)!
             try {
-                await ctx.pusher.trigger(`${chat.fromUserId}-${chat.toUserId || ''}`, Events.SEND_MESSAGE, message);
+                await ctx.pusher.trigger(`${chat.fromUserId||''}-${chat.toUserId || ''}`, Events.SEND_MESSAGE, message);
             } catch (_) { }
             return message;
         }),
