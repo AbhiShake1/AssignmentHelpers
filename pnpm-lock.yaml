@@ -147,6 +147,9 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^5.59.6
     version: 5.59.6(eslint@8.40.0)(typescript@5.0.4)
+  '@wixc3/react-board':
+    specifier: ^2.2.1
+    version: 2.2.1(react-dom@18.3.0-canary-e1ad4aa36-20230601)(react@18.3.0-canary-e1ad4aa36-20230601)
   autoprefixer:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.21)
@@ -3313,6 +3316,21 @@ packages:
       '@xtuc/long': 4.2.2
     dev: false
 
+  /@wixc3/board-core@2.2.1:
+    resolution: {integrity: sha512-qgH27C0//bWq17FqdbudTTqBjd4Q7obuenC7fqtw/sEa6B39N9j6HzXeMPzEte3+W1v4dZnSGaPRn/BV/E0SYA==}
+    dev: true
+
+  /@wixc3/react-board@2.2.1(react-dom@18.3.0-canary-e1ad4aa36-20230601)(react@18.3.0-canary-e1ad4aa36-20230601):
+    resolution: {integrity: sha512-oIY/FTb3DrNALg2Zof8KqUAQaB9VTP/86DSWE72SPAye2Xvbaib6gcir1+ni+fmR/W2IAGN9e5iSx+qc0QJMIw==}
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@wixc3/board-core': 2.2.1
+      react: 18.3.0-canary-e1ad4aa36-20230601
+      react-dom: 18.3.0-canary-e1ad4aa36-20230601(react@18.3.0-canary-e1ad4aa36-20230601)
+    dev: true
+
   /@xtuc/ieee754@1.2.0:
     resolution: {integrity: sha512-DX8nKgqcGwsc0eJSqYt5lwP4DH5FlHnmuWWBRy7X0NcaGR0ZtuyeESgMwTYVEtxmsNGY+qit4QYT/MIYTOTPeA==}
     dev: false
@@ -6044,7 +6062,6 @@ packages:
       loose-envify: 1.4.0
       react: 18.3.0-canary-e1ad4aa36-20230601
       scheduler: 0.24.0-canary-e1ad4aa36-20230601
-    dev: false
 
   /react-dropzone@14.2.3(react@18.3.0-canary-e1ad4aa36-20230601):
     resolution: {integrity: sha512-O3om8I+PkFKbxCukfIR3QAGftYXDZfOE2N1mr/7qebQJHs7U+/RSL/9xomJNpRg9kM5h9soQSdf0Gc7OHF5Fug==}
@@ -6205,7 +6222,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /read-cache@1.0.0:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}
@@ -6339,7 +6355,6 @@ packages:
     resolution: {integrity: sha512-BlXjYuESCkIFi2E3t7vwKddAu4io2XPUNg9QcRiKnsM8T+0FH/PYfnlqGwYItaCJOMTznsKF5bIuJS5g/x5Ruw==}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /schema-utils@3.1.2:
     resolution: {integrity: sha512-pvjEHOgWc9OWA/f/DE3ohBWTD6EleVLf7iFUkoSwAxttdBhB9QUebQgxER2kWueOvRJXPHNnyrvvh9eZINB8Eg==}
