@@ -1,6 +1,6 @@
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { z } from "zod";
-import { Events } from "~/const/events";
+import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
+import {z} from "zod";
+import {Events} from "~/const/events";
 
 export const chatRouter = createTRPCRouter({
     send: protectedProcedure
@@ -14,7 +14,7 @@ export const chatRouter = createTRPCRouter({
             isBidRejected: z.boolean().default(false),
             biddingPrice: z.number().nullish(),
         }))
-        .mutation(async ({ ctx, input }) => {
+        .mutation(async ({ctx, input}) => {
             const uid = ctx.auth!.userId!
             const chat = await ctx.prisma.chat.upsert({
                 where: {
@@ -51,23 +51,24 @@ export const chatRouter = createTRPCRouter({
                 },
                 include: {
                     messages: {
-                        orderBy: { createdAt: 'desc' },
+                        orderBy: {createdAt: 'desc'},
                         take: 1,
                     },
                 },
             })
             const message = chat.messages.at(0)!
             try {
-                await ctx.pusher.trigger(`${chat.fromUserId||''}-${chat.toUserId || ''}`, Events.SEND_MESSAGE, message);
-            } catch (_) { }
+                await ctx.pusher.trigger(`${chat.fromUserId || ''}-${chat.toUserId || ''}`, Events.SEND_MESSAGE, message);
+            } catch (_) {
+            }
             return message;
         }),
     chat: protectedProcedure
-        .input(z.object({ assignmentId: z.number().positive(), from: z.string().optional() }))
-        .query(async ({ ctx, input }) => {
+        .input(z.object({assignmentId: z.number().positive(), from: z.string().optional()}))
+        .query(async ({ctx, input}) => {
             const assignment = await ctx.prisma.assignment.findFirstOrThrow({
-                where: { id: input.assignmentId },
-                include: { postedBy: true }
+                where: {id: input.assignmentId},
+                include: {postedBy: true}
             })
             const fromUserId = input.from || ctx.auth!.userId!
             const toUserId = assignment.postedById
@@ -81,7 +82,7 @@ export const chatRouter = createTRPCRouter({
                 include: {
                     assignment: true,
                     messages: {
-                        orderBy: { createdAt: 'desc' }
+                        orderBy: {createdAt: 'desc'}
                     },
                     fromUser: true,
                 },
@@ -93,7 +94,7 @@ export const chatRouter = createTRPCRouter({
                 }
             })
         }),
-    supportChats: protectedProcedure.query(({ ctx }) => {
+    supportChats: protectedProcedure.query(({ctx}) => {
         return ctx.prisma.chat.findMany({
             where: {
                 toUserId: '',
@@ -101,14 +102,14 @@ export const chatRouter = createTRPCRouter({
             include: {
                 fromUser: true,
                 messages: {
-                    orderBy: { createdAt: 'desc' }
+                    orderBy: {createdAt: 'desc'}
                 },
             },
         })
     }),
     assignmentChats: protectedProcedure
         .input(z.number().positive().int())
-        .query(({ ctx, input }) => {
+        .query(({ctx, input}) => {
             return ctx.prisma.chat.findMany({
                 where: {
                     assignmentId: input,
@@ -116,12 +117,12 @@ export const chatRouter = createTRPCRouter({
                 include: {
                     fromUser: true,
                     messages: {
-                        orderBy: { createdAt: 'desc' }
+                        orderBy: {createdAt: 'desc'}
                     },
                 },
             })
         }),
-    getWithAdmin: protectedProcedure.query(({ ctx }) => {
+    getWithAdmin: protectedProcedure.query(({ctx}) => {
         return ctx.prisma.chat.findFirst({
             where: {
                 fromUserId: ctx.auth!.userId!,
@@ -129,10 +130,24 @@ export const chatRouter = createTRPCRouter({
             },
             include: {
                 messages: {
-                    orderBy: { createdAt: 'desc' }
+                    orderBy: {createdAt: 'desc'}
                 },
             },
         })
-    })
+    }),
+    updateBid: protectedProcedure
+        .input(z.object({id: z.number().positive(), isBidAccepted: z.boolean().default(false), isBidRejected: z.boolean().default(false)}))
+        .mutation(async ({ctx, input}) => {
+            const {isBidAccepted, isBidRejected} = input
+            await ctx.prisma.message.update({
+                where: {
+                    id: 0,
+                },
+                data: {
+                    isBidAccepted,
+                    isBidRejected,
+                }
+            })
+        })
 });
 
