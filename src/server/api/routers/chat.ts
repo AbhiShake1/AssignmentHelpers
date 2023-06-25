@@ -1,6 +1,7 @@
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 import {z} from "zod";
 import {Events} from "~/const/events";
+import {TRPCError} from "@trpc/server";
 
 export const chatRouter = createTRPCRouter({
     send: protectedProcedure
@@ -144,6 +145,10 @@ export const chatRouter = createTRPCRouter({
         }))
         .mutation(async ({ctx, input}) => {
             const {isBidAccepted, isBidRejected, id, biddingFor} = input
+            const msg = await ctx.prisma.message.findFirst({where: {id}})
+            if (!msg) {
+                throw new TRPCError({message: 'The bid for this chat has already been finalized', code: 'CONFLICT'})
+            }
             const chat = await ctx.prisma.chat.findFirst({
                 where: {
                     messages: {
@@ -151,6 +156,19 @@ export const chatRouter = createTRPCRouter({
                             id,
                         }
                     }
+                }
+            })
+            await ctx.prisma.message.deleteMany({
+                where: {
+                    chatId: chat!.id,
+                    AND: {
+                        isBid: true,
+                        AND: {
+                            id: {
+                                not: id,
+                            }
+                        }
+                    },
                 }
             })
             await ctx.prisma.chat.update({

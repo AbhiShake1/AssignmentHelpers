@@ -1,5 +1,5 @@
 import React, {type FunctionComponent, useState} from "react";
-import type {Message} from "@prisma/client";
+import type {Message, Chat} from "@prisma/client";
 import {useAuth} from "@clerk/nextjs";
 import {IconCheck, IconX} from "@tabler/icons-react";
 import {api} from "~/utils/api";
@@ -44,7 +44,7 @@ const BidIcons: FunctionComponent<Props> = ({message}) => {
                 isBidRejected: true,
                 biddingFor: biddingPrice || 0,
             })}
-                    className='flex flex-row space-x-2 p-2 text-red-600 hover:text-red-900 border border-red-600 rounded-md hover:border-red-900 transition'>
+                    className='flex flex-row space-x-2 p-2 text-red-600 hover:text-red-900 border border-red-600 rounded-md hover:border-red-900 disabled:text-red-400 disabled:border-red-400 transition'>
                 <IconX size="1rem"/>
             </button>
         </div>
