@@ -10,7 +10,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { useChatBarStyles } from "~/hooks/useChatBarStyles";
 
-function Index() {
+function Index(props) {
     const router = useRouter()
     const assignmentId = parseInt(router.query.assignmentId?.toString() ?? '')
     const [msgs, setMsgs] = useState<Message[]>([])

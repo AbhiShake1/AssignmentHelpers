@@ -75,7 +75,7 @@ export function QuantityInput({ min = 1, max = 100, defaultValue, onChange }: Qu
         handlersRef={handlers}
         value={value}
         onChange={v => {
-          setValue(parseInt(value?.toString() ?? '0'))
+          setValue(parseInt(v?.toString() ?? '0'))
         }}
         classNames={{ input: classes.input }}
       />
