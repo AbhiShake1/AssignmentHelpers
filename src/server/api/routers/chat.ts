@@ -136,12 +136,34 @@ export const chatRouter = createTRPCRouter({
         })
     }),
     updateBid: protectedProcedure
-        .input(z.object({id: z.number().positive(), isBidAccepted: z.boolean().default(false), isBidRejected: z.boolean().default(false)}))
+        .input(z.object({
+            id: z.number().positive(),
+            isBidAccepted: z.boolean().default(false),
+            isBidRejected: z.boolean().default(false),
+            biddingFor: z.number().int(),
+        }))
         .mutation(async ({ctx, input}) => {
-            const {isBidAccepted, isBidRejected} = input
-            await ctx.prisma.message.update({
+            const {isBidAccepted, isBidRejected, id, biddingFor} = input
+            const chat = await ctx.prisma.chat.findFirst({
                 where: {
-                    id: 0,
+                    messages: {
+                        some: {
+                            id,
+                        }
+                    }
+                }
+            })
+            await ctx.prisma.chat.update({
+                where: {
+                    id: chat!.id,
+                },
+                data: {
+                    biddingFor,
+                }
+            })
+            return ctx.prisma.message.update({
+                where: {
+                    id,
                 },
                 data: {
                     isBidAccepted,

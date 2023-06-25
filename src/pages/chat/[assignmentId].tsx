@@ -80,25 +80,29 @@ function Index() {
                        size='lg' className='m-4 absolute bottom-4 w-8/12' rightSectionWidth={96 * 2 + 6}
                        rightSection={
                            <div className='flex flex-row space-x-2'>
-                               <Button variant='subtle'
-                                       onClick={() => modals.open({
-                                           title: 'Enter bidding amount',
-                                           children: <div className='flex flex-col space-y-6'>
-                                               <QuantityInput max={max} defaultValue={max} onChange={setBiddingAmount}/>
-                                               <Button variant='subtle' loading={sendMutation.isLoading}
-                                                       onClick={() => sendMutation.mutate({
-                                                           msg: `New offer from ${auth.user?.firstName ?? ''}`,
-                                                           to: chat!.toUserId!,
-                                                           senderId: user.userId!,
-                                                           isBid: true,
-                                                           biddingPrice: biddingAmount,
-                                                       })}>
-                                                   Start Bidding
-                                               </Button>
-                                           </div>
-                                       })}>
-                                   Start Bidding
-                               </Button>
+                               {
+                                   !chat?.biddingFor && <Button variant='subtle'
+                                                                onClick={() => modals.open({
+                                                                    title: 'Enter bidding amount',
+                                                                    children: <div className='flex flex-col space-y-6'>
+                                                                        <QuantityInput max={max} defaultValue={max}
+                                                                                       onChange={setBiddingAmount}/>
+                                                                        <Button variant='subtle'
+                                                                                loading={sendMutation.isLoading}
+                                                                                onClick={() => sendMutation.mutate({
+                                                                                    msg: `New offer from ${auth.user?.firstName ?? ''}`,
+                                                                                    to: chat!.toUserId!,
+                                                                                    senderId: user.userId!,
+                                                                                    isBid: true,
+                                                                                    biddingPrice: biddingAmount,
+                                                                                })}>
+                                                                            Start Bidding
+                                                                        </Button>
+                                                                    </div>
+                                                                })}>
+                                       Start Bidding
+                                   </Button>
+                               }
                                <Button variant='subtle' disabled={!text} loading={sendMutation.isLoading}
                                        onClick={() => sendMutation.mutate({
                                            msg: text,

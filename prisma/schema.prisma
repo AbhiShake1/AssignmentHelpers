@@ -101,6 +101,7 @@ model Chat {
   assignment Assignment? @relation(fields: [assignmentId], references: [id])
   fromUser   User?       @relation("ChatFromUser", fields: [fromUserId], references: [id])
   toUser     User?       @relation("ChatToUser", fields: [toUserId], references: [id])
+  biddingFor Int?
 
   fromUserId   String?
   toUserId     String?

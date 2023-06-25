@@ -1,33 +1,55 @@
-import React, {type FunctionComponent} from "react";
+import React, {type FunctionComponent, useState} from "react";
 import type {Message} from "@prisma/client";
 import {useAuth} from "@clerk/nextjs";
 import {IconCheck, IconX} from "@tabler/icons-react";
 import {api} from "~/utils/api";
+import {toast} from "react-hot-toast";
 
 interface Props {
     message: Message
 }
 
 const BidIcons: FunctionComponent<Props> = ({message}) => {
-    const {biddingPrice, id} = message
-    const bidMutation = api.chat.updateBid.useMutation()
+    const {biddingPrice, id, isBidAccepted, isBidRejected} = message
+    const [bidAccepted, setBidAccepted] = useState(isBidAccepted)
+    const [bidRejected, setBidRejected] = useState(isBidRejected)
+    const bidMutation = api.chat.updateBid.useMutation({
+        onSuccess: data => {
+            if (data.isBidAccepted) {
+                setBidAccepted(true)
+                toast.success('The bid was accepted')
+            }
+            if (data.isBidRejected) {
+                setBidRejected(true)
+                toast.success('The bid was rejected')
+            }
+        },
+        onError: err => toast.error(err.message)
+    })
+    const disabled = bidAccepted || bidRejected
 
-    return <div className='flex flex-row space-x-2'>
-        <button onClick={() => bidMutation.mutate({
-            id,
-            isBidAccepted: true,
-        })}
-                className='flex flex-row space-x-2 p-2 text-white bg-green-600 rounded-md hover:bg-green-900 transition'>
-            <IconCheck size="1rem"/>
-            <h4>{biddingPrice}</h4>
-        </button>
-        <button onClick={() => bidMutation.mutate({
-            id,
-            isBidRejected: true,
-        })}
-                className='flex flex-row space-x-2 p-2 text-red-600 hover:text-red-900 border border-red-600 rounded-md hover:border-red-900 transition'>
-            <IconX size="1rem"/>
-        </button>
+    return <div className='flex flex-col space-y-2'>
+        <div className='flex flex-row space-x-2'>
+            <button disabled={disabled} onClick={() => bidMutation.mutate({
+                id,
+                isBidAccepted: true,
+                biddingFor: biddingPrice || 0,
+            })}
+                    className='flex flex-row space-x-2 p-2 text-white rounded-md transition disabled:bg-green-800 bg-green-600 hover:bg-green-900'>
+                <IconCheck size="1rem"/>
+                <h4>{biddingPrice}</h4>
+            </button>
+            <button disabled={disabled} onClick={() => bidMutation.mutate({
+                id,
+                isBidRejected: true,
+                biddingFor: biddingPrice || 0,
+            })}
+                    className='flex flex-row space-x-2 p-2 text-red-600 hover:text-red-900 border border-red-600 rounded-md hover:border-red-900 transition'>
+                <IconX size="1rem"/>
+            </button>
+        </div>
+        {bidAccepted && <h3>The bid was accepted</h3>}
+        {bidRejected && <h3>The bid was rejected</h3>}
     </div>
 }
 
