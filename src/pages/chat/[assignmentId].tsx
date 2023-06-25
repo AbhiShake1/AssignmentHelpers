@@ -10,6 +10,7 @@ import {useAuth, useUser} from "@clerk/nextjs";
 import {useRouter} from "next/router";
 import {modals} from '@mantine/modals';
 import {QuantityInput} from '~/components/QuantityInput';
+import ChatBubble from "~/components/ChatBubble";
 
 function Index() {
     const router = useRouter()
@@ -73,24 +74,7 @@ function Index() {
                 className='flex flex-col-reverse space-y-4 w-9/12 overflow-y-auto mb-[5vh] mt-4 mx-2 h-[60vh] [&::-webkit-scrollbar]:hidden'
                 ref={messagesContainerRef}>
                 {
-                    msgs?.map(message => (
-                        <div key={message.id} className='flex flex-col-reverse'>
-                            {
-                                message.senderId != user.userId ? <div className='flex flex-row mb-1'>
-                                        <div
-                                            className='py-2 px-4 bg-blue-300 max-w-xl rounded-b-3xl rounded-tr-3xl'>{message.text}</div>
-                                        <div className='w-full'/>
-                                    </div> :
-                                    <div className='flex flex-row mb-1'>
-                                        <div className='w-full'/>
-                                        <div
-                                            className='py-2 px-4 bg-blue-300 max-w-xl rounded-t-3xl rounded-bl-3xl'>
-                                            {message.text}
-                                        </div>
-                                    </div>
-                            }
-                        </div>
-                    ))
+                    msgs?.map(message => <ChatBubble message={message} key={message.id}/>)
                 }
                 <Input value={text} onChange={e => setText(e.target.value)} placeholder='Write something..'
                        size='lg' className='m-4 absolute bottom-4 w-8/12' rightSectionWidth={96 * 2 + 6}
