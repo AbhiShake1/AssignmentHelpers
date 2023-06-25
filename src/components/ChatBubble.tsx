@@ -32,7 +32,8 @@ const ChatBubble: FunctionComponent<Props> = ({message}) => {
             senderId != userId ? <div className='flex flex-row mb-1'>
                     <div
                         className='py-2 px-4 bg-blue-300 max-w-xl rounded-b-3xl rounded-tr-3xl'>
-                        {text}
+                        <h4>{text}</h4>
+                        {isBid && <BidIcons message={message}/>}
                     </div>
                     <div className='w-full'/>
                 </div> :
