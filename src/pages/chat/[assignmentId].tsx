@@ -11,6 +11,9 @@ import {useRouter} from "next/router";
 import {modals} from '@mantine/modals';
 import {QuantityInput} from '~/components/QuantityInput';
 import ChatBubble from "~/components/ChatBubble";
+import { UploadDropzone } from "@uploadthing/react";
+import type {UploadAssignmentRouter} from "~/server/api/routers/uploadAssignment";
+import FileInput from "~/components/FileInput";
 
 function Index() {
     const router = useRouter()
@@ -80,6 +83,35 @@ function Index() {
                        size='lg' className='m-4 absolute bottom-4 w-8/12' rightSectionWidth={96 * 2 + 6}
                        rightSection={
                            <div className='flex flex-row space-x-2'>
+                               {
+                                   chat?.biddingFor && <Button variant='subtle'
+                                                               onClick={() => modals.open({
+                                                                   title: 'Send assignment',
+                                                                   children: <div className='flex flex-col space-y-6'>
+                                                                       <FileInput/>
+                                                                       <UploadDropzone<UploadAssignmentRouter>
+                                                                           endpoint="imageUploader"
+                                                                           onClientUploadComplete={(res) => {
+
+                                                                           }}
+                                                                           onUploadError={err => toast.error(err.message)}
+                                                                       />
+                                                                       <Button variant='subtle'
+                                                                               loading={sendMutation.isLoading}
+                                                                               onClick={() => sendMutation.mutate({
+                                                                                   msg: `New offer from ${auth.user?.firstName ?? ''}`,
+                                                                                   to: chat.toUserId!,
+                                                                                   senderId: user.userId!,
+                                                                                   isBid: true,
+                                                                                   biddingPrice: biddingAmount,
+                                                                               })}>
+                                                                           Send
+                                                                       </Button>
+                                                                   </div>
+                                                               })}>
+                                       Send assignment
+                                   </Button>
+                               }
                                {
                                    !chat?.biddingFor && <Button variant='subtle'
                                                                 onClick={() => modals.open({
