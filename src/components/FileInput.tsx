@@ -7,7 +7,7 @@ import {Dropzone, type DropzoneProps, type FileWithPath} from '@mantine/dropzone
 import Image from "next/image";
 
 type ExtraProps = {
-    onUploadComplete?: () => void
+    onUploadComplete?: (res?: { fileUrl: string; fileKey: string; }[]) => void
 }
 
 type Props = Partial<DropzoneProps> & ExtraProps
@@ -18,8 +18,8 @@ const FileInput: FunctionComponent<Props> = (props) => {
     const [files, setFiles] = useState<FileWithPath[]>([])
     const {isUploading, startUpload} = useUploadThing('imageUploader', {
         onUploadError: err => toast.error(err.message),
-        onClientUploadComplete: () => {
-            if (onUploadComplete) onUploadComplete()
+        onClientUploadComplete: (res) => {
+            if (onUploadComplete) onUploadComplete(res)
         }
     })
 
