@@ -89,13 +89,6 @@ function Index() {
                                                                    title: 'Send assignment',
                                                                    children: <div className='flex flex-col space-y-6'>
                                                                        <FileInput/>
-                                                                       <UploadDropzone<UploadAssignmentRouter>
-                                                                           endpoint="imageUploader"
-                                                                           onClientUploadComplete={(res) => {
-
-                                                                           }}
-                                                                           onUploadError={err => toast.error(err.message)}
-                                                                       />
                                                                        <Button variant='subtle'
                                                                                loading={sendMutation.isLoading}
                                                                                onClick={() => sendMutation.mutate({

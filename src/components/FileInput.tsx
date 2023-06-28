@@ -1,4 +1,4 @@
-import {type FunctionComponent, useEffect, useState} from 'react';
+import {type FunctionComponent, useState} from 'react';
 import {useUploadThing} from "~/utils/uploadthing";
 import {toast} from "react-hot-toast";
 import {Group, rem, Text, useMantineTheme} from '@mantine/core';
@@ -13,7 +13,8 @@ const FileInput: FunctionComponent<Partial<DropzoneProps>> = (props) => {
         onUploadError: err => toast.error(err.message)
     })
 
-    return <Dropzone {...props} loading={isUploading} onDrop={(files: FileWithPath[]) => setFiles(f=>[...files, ...f])}>
+    return <Dropzone {...props} loading={isUploading}
+                     onDrop={(files: FileWithPath[]) => setFiles(f => [...files, ...f])}>
         <Group position="center" spacing="xl" style={{minHeight: rem(220), pointerEvents: 'none'}}>
             <Dropzone.Accept>
                 <IconUpload
@@ -34,8 +35,9 @@ const FileInput: FunctionComponent<Partial<DropzoneProps>> = (props) => {
                     !files && <IconPhoto size="3.2rem" stroke={1.5}/>
                 }
                 {
-                    files && files.map(file=>(
-                        <div key={file.path} className='flex flex-row items-center justify-start py-2 px-4 border-dotted border-2 border-gray-300 my-2 rounded-lg'>
+                    files && files.map(file => (
+                        <div key={file.path}
+                             className='flex flex-row items-center justify-start py-2 px-4 border-dotted border-2 border-gray-300 my-2 rounded-lg'>
                             <Image src={URL.createObjectURL(file)} alt='' width={64} height={64}/>
                             <h2 className='mx-4'>{file.name}</h2>
                             {/*<div className='text-red-600 bg-gray-200 p-4 rounded-md hover:bg-purple-400 pointer-events-none' onClick={e=>{*/}
