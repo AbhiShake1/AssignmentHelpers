@@ -24,7 +24,7 @@ const FileInput: FunctionComponent<Props> = (props) => {
     })
 
     return <div className='flex flex-col space-y-4'>
-        <Dropzone {...props} disabled={isUploading}
+        <Dropzone {...props} loading={isUploading}
                   onDrop={(files: FileWithPath[]) => setFiles(f => [...files, ...f])}>
             <Group position="center" spacing="xl" style={{minHeight: rem(220), pointerEvents: 'none'}}>
                 <Dropzone.Accept>
