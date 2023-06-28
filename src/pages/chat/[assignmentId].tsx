@@ -87,6 +87,7 @@ function Index() {
                                                                    title: 'Send assignment',
                                                                    children: <FileInput onUploadComplete={() => {
                                                                        toast.success('Assignment Uploaded. Your client has to pay to get it unlocked.')
+                                                                       modals.closeAll()
                                                                    }}/>
                                                                })}>
                                        Send assignment
