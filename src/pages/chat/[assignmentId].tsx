@@ -11,8 +11,6 @@ import {useRouter} from "next/router";
 import {modals} from '@mantine/modals';
 import {QuantityInput} from '~/components/QuantityInput';
 import ChatBubble from "~/components/ChatBubble";
-import { UploadDropzone } from "@uploadthing/react";
-import type {UploadAssignmentRouter} from "~/server/api/routers/uploadAssignment";
 import FileInput from "~/components/FileInput";
 
 function Index() {
@@ -87,7 +85,9 @@ function Index() {
                                    chat?.biddingFor && <Button variant='subtle'
                                                                onClick={() => modals.open({
                                                                    title: 'Send assignment',
-                                                                   children: <FileInput/>
+                                                                   children: <FileInput onUploadComplete={() => {
+                                                                       toast.success('Assignment Uploaded. Your client has to pay to get it unlocked.')
+                                                                   }}/>
                                                                })}>
                                        Send assignment
                                    </Button>
