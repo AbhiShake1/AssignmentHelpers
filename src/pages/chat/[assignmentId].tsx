@@ -60,6 +60,13 @@ function Index() {
     }, [msgs])
 
     const assignment = chat?.assignment
+    const uploadAssignmentMutation = api.chat.uploadAssignment.useMutation({
+        onSuccess: () => {
+            toast.success('Assignment Uploaded. Your client has to pay to get it unlocked.')
+            modals.closeAll()
+        },
+        onError: error => toast.error(error.message),
+    })
 
     const max = Number(assignment?.budget.replace(/\D/g, ""))
 
@@ -85,9 +92,11 @@ function Index() {
                                    chat?.biddingFor && <Button variant='subtle'
                                                                onClick={() => modals.open({
                                                                    title: 'Send assignment',
-                                                                   children: <FileInput onUploadComplete={() => {
-                                                                       toast.success('Assignment Uploaded. Your client has to pay to get it unlocked.')
-                                                                       modals.closeAll()
+                                                                   children: <FileInput onUploadComplete={(res) => {
+                                                                       uploadAssignmentMutation.mutate({
+                                                                           chatId: chat.id,
+                                                                           urls: res?.map(({fileUrl}) => fileUrl) || [],
+                                                                       })
                                                                    }}/>
                                                                })}>
                                        Send assignment
