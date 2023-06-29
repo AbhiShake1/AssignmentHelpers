@@ -13,7 +13,7 @@ type ExtraProps = {
 type Props = Partial<DropzoneProps> & ExtraProps
 
 const FileInput: FunctionComponent<Props> = (props) => {
-    const {onUploadComplete} = props
+    const {onUploadComplete, loading} = props
     const theme = useMantineTheme();
     const [files, setFiles] = useState<FileWithPath[]>([])
     const {isUploading, startUpload} = useUploadThing('imageUploader', {
@@ -24,7 +24,7 @@ const FileInput: FunctionComponent<Props> = (props) => {
     })
 
     return <div className='flex flex-col space-y-4'>
-        <Dropzone {...props} loading={isUploading}
+        <Dropzone {...props} loading={isUploading || loading}
                   onDrop={(files: FileWithPath[]) => setFiles(f => [...files, ...f])}>
             <Group position="center" spacing="xl" style={{minHeight: rem(220), pointerEvents: 'none'}}>
                 <Dropzone.Accept>
@@ -72,7 +72,7 @@ const FileInput: FunctionComponent<Props> = (props) => {
             </Group>
         </Dropzone>
         <Button disabled={files.length == 0} onClick={() => void startUpload(files)} variant='subtle'
-                loading={isUploading}>Upload</Button>
+                loading={isUploading || loading}>Upload</Button>
     </div>
 }
 
