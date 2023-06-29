@@ -92,7 +92,7 @@ function Index() {
                                    chat?.biddingFor && <Button variant='subtle'
                                                                onClick={() => modals.open({
                                                                    title: 'Send assignment',
-                                                                   children: <FileInput onUploadComplete={(res) => {
+                                                                   children: <FileInput loading={uploadAssignmentMutation.isLoading} onUploadComplete={(res) => {
                                                                        uploadAssignmentMutation.mutate({
                                                                            chatId: chat.id,
                                                                            urls: res?.map(({fileUrl}) => fileUrl) || [],
