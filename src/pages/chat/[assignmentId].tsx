@@ -60,8 +60,11 @@ function Index() {
     }, [msgs])
 
     const assignment = chat?.assignment
+    const [assignmentUploaded, setAssignmentUploaded] = useState<boolean>(chat?.assignmentUrls != null || chat?.assignmentUrls != undefined)
+
     const uploadAssignmentMutation = api.chat.uploadAssignment.useMutation({
         onSuccess: () => {
+            setAssignmentUploaded(true)
             toast.success('Assignment Uploaded. Your client has to pay to get it unlocked.')
             modals.closeAll()
         },
@@ -73,6 +76,20 @@ function Index() {
     useEffect(() => {
         setBiddingAmount(amount => amount || max)
     }, [max])
+
+    const showModal = (chatId: number) => {
+        modals.open({
+            title: 'Send assignment',
+            children: <FileInput
+                loading={uploadAssignmentMutation.isLoading}
+                onUploadComplete={(res) => {
+                    uploadAssignmentMutation.mutate({
+                        chatId,
+                        urls: res?.map(({fileUrl}) => fileUrl) || [],
+                    })
+                }}/>
+        })
+    }
 
     if (!chatQuery.isSuccess) return <center><Loader/></center>
 
@@ -90,15 +107,25 @@ function Index() {
                            <div className='flex flex-row space-x-2'>
                                {
                                    chat?.biddingFor && <Button variant='subtle'
-                                                               onClick={() => modals.open({
-                                                                   title: 'Send assignment',
-                                                                   children: <FileInput loading={uploadAssignmentMutation.isLoading} onUploadComplete={(res) => {
-                                                                       uploadAssignmentMutation.mutate({
-                                                                           chatId: chat.id,
-                                                                           urls: res?.map(({fileUrl}) => fileUrl) || [],
+                                                               onClick={() => {
+                                                                   if (assignmentUploaded) {
+                                                                       modals.openConfirmModal({
+                                                                           title: 'Are you sure?',
+                                                                           centered: true,
+                                                                           children: <div>
+                                                                               Assignment has already been uploaded and will be replaced if you re-upload. Are you sure you want to continue?
+                                                                           </div>,
+                                                                           labels: {confirm: 'Yes', cancel: "Cancel"},
+                                                                           confirmProps: {color: 'red', variant: 'outline'},
+                                                                           cancelProps: {variant: 'subtle'},
+                                                                           onConfirm() {
+                                                                               showModal(chat.id)
+                                                                           }
                                                                        })
-                                                                   }}/>
-                                                               })}>
+                                                                   } else {
+                                                                       showModal(chat.id)
+                                                                   }
+                                                               }}>
                                        Send assignment
                                    </Button>
                                }
