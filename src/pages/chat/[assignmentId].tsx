@@ -113,10 +113,15 @@ function Index() {
                                                                            title: 'Are you sure?',
                                                                            centered: true,
                                                                            children: <div>
-                                                                               Assignment has already been uploaded and will be replaced if you re-upload. Are you sure you want to continue?
+                                                                               Assignment has already been uploaded and
+                                                                               will be replaced if you re-upload. Are
+                                                                               you sure you want to continue?
                                                                            </div>,
                                                                            labels: {confirm: 'Yes', cancel: "Cancel"},
-                                                                           confirmProps: {color: 'red', variant: 'outline'},
+                                                                           confirmProps: {
+                                                                               color: 'red',
+                                                                               variant: 'outline'
+                                                                           },
                                                                            cancelProps: {variant: 'subtle'},
                                                                            onConfirm() {
                                                                                showModal(chat.id)

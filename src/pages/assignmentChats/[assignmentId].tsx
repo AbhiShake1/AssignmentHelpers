@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { api } from "~/utils/api";
 import { ActionIcon, Button, Input, Loader, Navbar } from '@mantine/core';
-import { IconArrowFork, IconSend, IconUser, } from '@tabler/icons-react';
+import {IconArrowFork, IconAssembly, IconSend, IconUser,} from '@tabler/icons-react';
 import type { Message } from '@prisma/client'
 import { toast } from "react-hot-toast";
 import pusher from "~/stores/pusher";
@@ -70,7 +70,7 @@ function Index() {
         >
             <IconUser className={classes.linkIcon} stroke={1.5} />
             <span>{item.fromUser?.name || 'Anonymous'}</span>
-            <ActionIcon><IconArrowFork className='ml-4' /></ActionIcon>
+            {item?.assignmentUrls && <ActionIcon className='scale-150 transition-transform duration-200'><IconAssembly className='ml-4'/></ActionIcon>}
         </a>
     ))
 
