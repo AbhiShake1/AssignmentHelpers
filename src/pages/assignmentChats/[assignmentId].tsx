@@ -11,7 +11,7 @@ import {useRouter} from "next/router";
 import {useChatBarStyles} from "~/hooks/useChatBarStyles";
 import {modals} from "@mantine/modals";
 import AssignmentPost from "~/components/AssignmentPost";
-import {checkout} from "~/utils/khalti";
+import {checkout, showCheckout} from "~/utils/khalti";
 
 function Index() {
     const router = useRouter()
@@ -86,7 +86,9 @@ function Index() {
                                 ))
                             }
                         </div> : <Button variant='subtle'
-                                         onClick={() => checkout.show({amount: 50000})}>{`Pay Rs. ${item?.biddingFor} to view`}</Button>),
+                                         onClick={() => showCheckout((item?.biddingFor || 0) * 100, () => {
+                                             console.log('paid')
+                                         })}>{`Pay Rs. ${item?.biddingFor} to view`}</Button>),
                 });
             }} className='scale-150 transition-transform duration-200'><IconAssembly className='ml-4'/></ActionIcon>}
         </a>
