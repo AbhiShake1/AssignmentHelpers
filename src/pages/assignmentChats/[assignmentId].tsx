@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {api} from "~/utils/api";
 import {ActionIcon, Button, Input, Loader, Navbar} from '@mantine/core';
-import {IconArrowFork, IconAssembly, IconSend, IconUser,} from '@tabler/icons-react';
+import {IconAssembly, IconSend, IconUser,} from '@tabler/icons-react';
 import type {Message} from '@prisma/client'
 import {toast} from "react-hot-toast";
 import pusher from "~/stores/pusher";
@@ -10,21 +10,26 @@ import {useAuth} from "@clerk/nextjs";
 import {useRouter} from "next/router";
 import {useChatBarStyles} from "~/hooks/useChatBarStyles";
 import {modals} from "@mantine/modals";
-import AssignmentPost from "~/components/AssignmentPost";
-import {checkout, showCheckout} from "~/utils/khalti";
+import {showCheckout} from "~/utils/khalti";
 
 function Index() {
     const router = useRouter()
     const assignmentId = parseInt(router.query.assignmentId?.toString() ?? '')
     const [msgs, setMsgs] = useState<Message[]>([])
-    const chats = api.chat.assignmentChats.useQuery(assignmentId)
+    const chatsQuery = api.chat.assignmentChats.useQuery(assignmentId)
     const {classes, cx} = useChatBarStyles();
     const [active, setActive] = useState('')
     const [text, setText] = useState('')
     const messagesContainerRef = useRef<HTMLDivElement>(null);
     const user = useAuth()
 
-    const chat = chats.data?.find(c => c.fromUserId == active)
+    const [chats, setChats] = useState(chatsQuery.data || [])
+
+    const chat = chats.find(c => c.fromUserId == active)
+
+    const unlockAssignmentMutation = api.chat.unlockAssignment.useMutation({
+        onError: err => toast.error(err.message),
+    })
 
     const sendMutation = api.chat.send.useMutation({
         onSuccess: () => {
@@ -60,9 +65,9 @@ function Index() {
         messagesContainerRef.current?.scroll({behavior: "smooth", top: 0})
     }, [msgs])
 
-    if (!chats.isSuccess) return <center><Loader/></center>
+    if (!chatsQuery.isSuccess) return <center><Loader/></center>
 
-    const links = chats.data.map((item) => (
+    const links = chats.map((item) => (
         <a
             className={cx(classes.link, {[classes.linkActive]: item.fromUserId === active})}
             key={item.fromUserId}
@@ -87,7 +92,11 @@ function Index() {
                             }
                         </div> : <Button variant='subtle'
                                          onClick={() => showCheckout((item?.biddingFor || 0) * 100, () => {
-                                             console.log('paid')
+                                             void unlockAssignmentMutation.mutate({chatId: item.id})
+                                             setChats(chats => chats.map(c => c.id == item.id ? {
+                                                 ...c,
+                                                 assignmentUnlocked: true,
+                                             } : c))
                                          })}>{`Pay Rs. ${item?.biddingFor} to view`}</Button>),
                 });
             }} className='scale-150 transition-transform duration-200'><IconAssembly className='ml-4'/></ActionIcon>}

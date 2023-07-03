@@ -136,6 +136,16 @@ export const chatRouter = createTRPCRouter({
             },
         })
     }),
+    unlockAssignment: protectedProcedure
+        .input(z.object({chatId: z.number().positive()}))
+        .mutation(({ctx, input})=>{
+            return ctx.prisma.chat.update({
+                where: {id: input.chatId},
+                data: {
+                    assignmentUnlocked: true,
+                },
+            })
+        }),
     uploadAssignment: protectedProcedure
         .input(z.object({urls: z.array(z.string()), chatId: z.number().positive()}))
         .mutation(async ({ctx, input})=>{
