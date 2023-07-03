@@ -91,6 +91,7 @@ function Index() {
                                 ))
                             }
                         </div> : <Button variant='subtle'
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                                          onClick={() => showCheckout((item?.biddingFor || 0) * 100, () => {
                                              void unlockAssignmentMutation.mutate({chatId: item.id})
                                              setChats(chats => chats.map(c => c.id == item.id ? {
