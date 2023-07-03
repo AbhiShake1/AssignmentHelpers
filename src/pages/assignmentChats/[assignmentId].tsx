@@ -9,6 +9,7 @@ import { Events } from "~/const/events";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { useChatBarStyles } from "~/hooks/useChatBarStyles";
+import {modals} from "@mantine/modals";
 
 function Index() {
     const router = useRouter()
@@ -70,7 +71,12 @@ function Index() {
         >
             <IconUser className={classes.linkIcon} stroke={1.5} />
             <span>{item.fromUser?.name || 'Anonymous'}</span>
-            {item?.assignmentUrls && <ActionIcon className='scale-150 transition-transform duration-200'><IconAssembly className='ml-4'/></ActionIcon>}
+            {item?.assignmentUrls && <ActionIcon onClick={()=>{
+                modals.open({
+                    title: 'Assignment',
+                    children: item?.assignmentUnlocked ? <div>{item?.assignmentUrls}</div> : <div>pay to view</div>,
+                });
+            }} className='scale-150 transition-transform duration-200'><IconAssembly className='ml-4'/></ActionIcon>}
         </a>
     ))
 
