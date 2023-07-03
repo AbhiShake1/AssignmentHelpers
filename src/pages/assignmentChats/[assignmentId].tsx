@@ -11,6 +11,7 @@ import {useRouter} from "next/router";
 import {useChatBarStyles} from "~/hooks/useChatBarStyles";
 import {modals} from "@mantine/modals";
 import {showCheckout} from "~/utils/khalti";
+import Image from "next/image";
 
 function Index() {
     const router = useRouter()
@@ -81,24 +82,28 @@ function Index() {
             {item?.assignmentUrls && <ActionIcon onClick={() => {
                 modals.open({
                     title: 'Assignment',
+                    centered: true,
                     children: item.biddingFor && (item?.assignmentUnlocked ?
                         <div className="m-8 p-8 grid w-full grid-rows-6 grid-flow-col gap-4 auto-cols-auto">
                             {
                                 item?.assignmentUrls?.split(',').map((url, index) => (
                                     <div key={index} className='rounded-md shadow-2xl w-36 h-36'>
-                                        <img src={url}/>
+                                        <Image height={1080} width={1080} src={url} alt=''/>
                                     </div>
                                 ))
                             }
-                        </div> : <Button variant='subtle'
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                                         onClick={() => showCheckout((item?.biddingFor || 0) * 100, () => {
-                                             void unlockAssignmentMutation.mutate({chatId: item.id})
-                                             setChats(chats => chats.map(c => c.id == item.id ? {
-                                                 ...c,
-                                                 assignmentUnlocked: true,
-                                             } : c))
-                                         })}>{`Pay Rs. ${item?.biddingFor} to view`}</Button>),
+                        </div> : <center>
+                            <Button variant='subtle'
+                                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+                                    onClick={() => showCheckout((item?.biddingFor || 0) * 100, () => {
+                                        void unlockAssignmentMutation.mutate({chatId: item.id})
+                                        setChats(chats => chats.map(c => c.id == item.id ? {
+                                            ...c,
+                                            assignmentUnlocked: true,
+                                        } : c))
+                                    })}>{`Pay Rs. ${item?.biddingFor} to view`}
+                            </Button>
+                        </center>),
                 });
             }} className='scale-150 transition-transform duration-200'><IconAssembly className='ml-4'/></ActionIcon>}
         </a>
