@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import KhaltiCheckout from "khalti-checkout-web";
 
 function getConfig(onSuccess: () => void) {
@@ -25,5 +27,7 @@ function getConfig(onSuccess: () => void) {
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
 const performCheckout = (onSuccess: () => void) => new KhaltiCheckout(getConfig(onSuccess));
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
 export const showCheckout = (amount: number, onSuccess: () => void) => performCheckout(onSuccess).show({amount})
