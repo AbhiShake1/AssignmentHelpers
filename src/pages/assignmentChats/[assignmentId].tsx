@@ -11,6 +11,7 @@ import {useRouter} from "next/router";
 import {useChatBarStyles} from "~/hooks/useChatBarStyles";
 import {modals} from "@mantine/modals";
 import AssignmentPost from "~/components/AssignmentPost";
+import {checkout} from "~/utils/khalti";
 
 function Index() {
     const router = useRouter()
@@ -75,7 +76,7 @@ function Index() {
             {item?.assignmentUrls && <ActionIcon onClick={() => {
                 modals.open({
                     title: 'Assignment',
-                    children: item?.assignmentUnlocked ?
+                    children: item.biddingFor && (item?.assignmentUnlocked ?
                         <div className="m-8 p-8 grid w-full grid-rows-6 grid-flow-col gap-4 auto-cols-auto">
                             {
                                 item?.assignmentUrls?.split(',').map((url, index) => (
@@ -84,7 +85,8 @@ function Index() {
                                     </div>
                                 ))
                             }
-                        </div> : <div>pay to view</div>,
+                        </div> : <Button variant='subtle'
+                                         onClick={() => checkout.show({amount: 50000})}>{`Pay Rs. ${item?.biddingFor} to view`}</Button>),
                 });
             }} className='scale-150 transition-transform duration-200'><IconAssembly className='ml-4'/></ActionIcon>}
         </a>

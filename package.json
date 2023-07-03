@@ -37,6 +37,7 @@
     "@types/ws": "^8.5.4",
     "@uploadthing/react": "^5.0.0",
     "dayjs": "^1.11.8",
+    "khalti-checkout-web": "^2.2.0",
     "mui-chips-input": "^2.0.2",
     "next": "^13.4.2",
     "next-images": "^1.8.5",
