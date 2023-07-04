@@ -85,7 +85,6 @@ model Payment {
   assignment     Assignment @relation(fields: [assignmentId], references: [id])
   payer          User       @relation(fields: [payerId], references: [id])
   paymentToken   String
-  paid           Boolean    @default(false)
   Bid            Bid[]
   assignmentId   Int
   payerId        String

@@ -3,6 +3,7 @@ import {assignmentRouter} from "~/server/api/routers/assignment";
 import {userRouter} from "~/server/api/routers/user";
 import {referralRouter} from "~/server/api/routers/referral";
 import {chatRouter} from "~/server/api/routers/chat";
+import {paymentRouter} from "~/server/api/routers/payment";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
     user: userRouter,
     referral: referralRouter,
     chat: chatRouter,
+    payment: paymentRouter,
 });
 
 // export type definition of API

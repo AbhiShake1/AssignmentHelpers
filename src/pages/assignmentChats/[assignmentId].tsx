@@ -6,7 +6,7 @@ import type {Message} from '@prisma/client'
 import {toast} from "react-hot-toast";
 import pusher from "~/stores/pusher";
 import {Events} from "~/const/events";
-import {useAuth} from "@clerk/nextjs";
+import {useAuth, useUser} from "@clerk/nextjs";
 import {useRouter} from "next/router";
 import {useChatBarStyles} from "~/hooks/useChatBarStyles";
 import {modals} from "@mantine/modals";
@@ -23,6 +23,7 @@ function Index() {
     const [text, setText] = useState('')
     const messagesContainerRef = useRef<HTMLDivElement>(null);
     const user = useAuth()
+    const clerkUser = useUser()
 
     const [chats, setChats] = useState(chatsQuery.data || [])
 
@@ -31,6 +32,8 @@ function Index() {
     const unlockAssignmentMutation = api.chat.unlockAssignment.useMutation({
         onError: err => toast.error(err.message),
     })
+
+    const paymentMutation = api.payment.create.useMutation();
 
     const sendMutation = api.chat.send.useMutation({
         onSuccess: () => {
@@ -101,6 +104,21 @@ function Index() {
                                             ...c,
                                             assignmentUnlocked: true,
                                         } : c))
+                                        const amount = item.biddingFor || 0;
+                                        const commission = 2 / 100 * amount;
+                                        const merchantCommission = 4 / 100 * amount;
+                                        const referrerCommission = clerkUser.user?.unsafeMetadata['referredBy'] ? commission : 0
+                                        void paymentMutation.mutate({
+                                            data: {
+                                                assignmentId: assignmentId,
+                                                amount,
+                                                payerId: user.userId!,
+                                                merchantAmount: merchantCommission,
+                                                referrerAmount: referrerCommission,
+                                                bidderAmount: amount - merchantCommission - referrerCommission,
+                                                paymentToken: '',
+                                            }
+                                        })
                                     })}>{`Pay Rs. ${item?.biddingFor} to view`}
                             </Button>
                         </center>),
