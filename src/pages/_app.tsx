@@ -82,6 +82,8 @@ function DesktopNavbar() {
                 chats</Link>}
             {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/users' scroll={true}
                                                                                      className={`hover:text-blue-500 p-4 ${path?.includes('users') ? 'text-blue-700' : ''}`}>Users</Link>}
+            {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/payments' scroll={true}
+                                                                                     className={`hover:text-blue-500 p-4 ${path?.includes('payments') ? 'text-blue-700' : ''}`}>Payments</Link>}
             <Link href='/' scroll={true}
                   className={`hover:text-blue-500 p-4 ${path == '/' ? 'text-blue-700' : ''}`}>Home</Link>
             {!user.isSignedIn && <Link href='/login'
@@ -109,6 +111,8 @@ function MobileNavbar() {
             chats</Link>}
         {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/users' scroll={true}
                                                                                  className={`hover:text-blue-500 p-4 ${path?.includes('users') ? 'text-blue-700' : ''}`}>Users</Link>}
+        {user.isSignedIn && (user.user.unsafeMetadata.isAdmin || false) && <Link href='/payments' scroll={true}
+                                                                                 className={`hover:text-blue-500 p-4 ${path?.includes('payments') ? 'text-blue-700' : ''}`}>Payments</Link>}
         {user.isSignedIn && isFreelancer && <Link href='/findWork' scroll={true}
                                                   className={`hover:text-blue-500 p-4 ${path?.includes('findWork') ? 'text-blue-700' : ''}`}>Find
             Work</Link>}
