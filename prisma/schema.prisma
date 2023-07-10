@@ -32,10 +32,11 @@ model User {
   referredUsers     User[]       @relation("ReferredBy")
   assignments       Assignment[]
   biddedAssignments Bid[]
-  payments          Payment[]
   message           Message[]
   initiatedChats    Chat[]       @relation("ChatFromUser")
   receivedChats     Chat[]       @relation("ChatToUser")
+  paymentBidders    Payment[]    @relation("PaymentBidder")
+  paymentPayers     Payment[]    @relation("PaymentPayer")
 
   @@index([referredById])
 }
@@ -83,15 +84,18 @@ model Payment {
   bidderAmount   Float
   referralCode   String?
   assignment     Assignment @relation(fields: [assignmentId], references: [id])
-  payer          User       @relation(fields: [payerId], references: [id])
+  payer          User       @relation("PaymentPayer", fields: [payerId], references: [id])
+  bidder         User       @relation("PaymentBidder", fields: [bidderId], references: [id])
   paymentToken   String
   Bid            Bid[]
   assignmentId   Int
   payerId        String
+  bidderId       String
   paid           Boolean    @default(false)
 
   @@index([assignmentId])
-  @@index([payerId])
+  @@index([payerId, bidderId])
+  @@index([bidderId])
 }
 
 // Chat model for storing chat messages between users

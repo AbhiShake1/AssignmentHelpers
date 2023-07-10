@@ -112,11 +112,12 @@ function Index() {
                                             data: {
                                                 assignmentId: assignmentId,
                                                 amount,
-                                                payerId: user.userId!,
+                                                payerId: item?.toUserId || '',
                                                 merchantAmount: merchantCommission,
                                                 referrerAmount: referrerCommission,
                                                 bidderAmount: amount - merchantCommission - referrerCommission,
                                                 paymentToken: '',
+                                                bidderId: item?.fromUserId || '',
                                             }
                                         })
                                     })}>{`Pay Rs. ${item?.biddingFor} to view`}
